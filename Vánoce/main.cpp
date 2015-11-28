@@ -2,8 +2,13 @@
 using namespace std;
 
 #include "pgr.h"
+#include "headers\Shader.h"
+#include "headers\Texture.h"
 
-GLuint shaderProgram, vao, vbo, tex;
+Shader * shader;
+Texture * texture;
+
+GLuint vao, vbo;
 GLfloat degRotated = 0.0f;
 double lastTime;
 
@@ -64,7 +69,8 @@ int main(int argc, char **argv)
 
 void loadShaders()
 {
-	GLuint vertexShader = pgr::createShaderFromFile(GL_VERTEX_SHADER, "shaders/generic.vert");
+	shader = new Shader("shaders/generic.vert", "shaders/generic.frag");
+	/*GLuint vertexShader = pgr::createShaderFromFile(GL_VERTEX_SHADER, "shaders/generic.vert");
 	GLuint fragmentShader = pgr::createShaderFromFile(GL_FRAGMENT_SHADER, "shaders/generic.frag");
 
 	GLint status;
@@ -78,7 +84,7 @@ void loadShaders()
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	glLinkProgram(shaderProgram);*/
 }
 
 void loadData()
@@ -141,11 +147,11 @@ void loadData()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
-	GLint positionLoc = glGetAttribLocation(shaderProgram, "position");
+	GLint positionLoc = glGetAttribLocation(shader->getProgram(), "position");
 	glEnableVertexAttribArray(positionLoc);
 	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), NULL);
 
-	GLint vTexCoordLoc = glGetAttribLocation(shaderProgram, "vTexCoord");
+	GLint vTexCoordLoc = glGetAttribLocation(shader->getProgram(), "vTexCoord");
 	glEnableVertexAttribArray(vTexCoordLoc);
 	glVertexAttribPointer(vTexCoordLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
 
@@ -155,26 +161,27 @@ void loadData()
 
 void loadTexture()
 {
-	tex = pgr::createTexture("textures/wooden-crate.jpg");
+	texture = new Texture(shader, "textures/wooden-crate.jpg");
+	/*tex = pgr::createTexture("textures/wooden-crate.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);*/
 }
 
 void loadCamera()
 {
-	glUseProgram(shaderProgram);
+	glUseProgram(shader->getProgram());
 
 	glm::mat4 projection = glm::perspective(50.0f, 800.0f / 600.0f, 0.1f, 100.0f);
-	GLint projLoc = glGetUniformLocation(shaderProgram, "projection");
+	GLint projLoc = glGetUniformLocation(shader->getProgram(), "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 	glm::vec3 center = position + direction;
 
 	glm::mat4 view = glm::lookAt(position, center, up);
-	GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(shader->getProgram(), "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 	glUseProgram(0);
@@ -191,17 +198,17 @@ void displayFunc()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glUseProgram(shaderProgram);
+	glUseProgram(shader->getProgram());
 
-	GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
+	GLint modelLoc = glGetUniformLocation(shader->getProgram(), "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(glm::rotate(glm::mat4(), degRotated, glm::vec3(0.0f, 1.0f, 0.0f))));
 
 	glBindVertexArray(vao);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
+	glBindTexture(GL_TEXTURE_2D, texture->getTexture());
 
-	GLint texLoc = glGetUniformLocation(shaderProgram, "tex");
+	GLint texLoc = glGetUniformLocation(shader->getProgram(), "tex");
 	glUniform1i(texLoc, 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6*2*3);
@@ -255,7 +262,7 @@ void keyboardFunc(unsigned char key, int x, int y)
 void keyboardSpecialFunc(int key, int x, int y)
 {
 	glm::mat4 view;
-	GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(shader->getProgram(), "view");
 
 	switch (key)
 	{
