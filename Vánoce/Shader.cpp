@@ -17,8 +17,8 @@ Shader::Shader(string vsPath, string fsPath)
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
-	glDetachShader(shaderProgram, vertexShader);
-	glDetachShader(shaderProgram, fragmentShader);
+	//glDetachShader(shaderProgram, vertexShader);
+	//glDetachShader(shaderProgram, fragmentShader);
 }
 
 Shader::~Shader()

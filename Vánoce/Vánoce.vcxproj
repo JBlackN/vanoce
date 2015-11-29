@@ -136,12 +136,12 @@
     <None Include="shaders\generic.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="box.h" />
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\Model.h" />
     <ClInclude Include="headers\Object.h" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\Texture.h" />
+    <ClInclude Include="models\box.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

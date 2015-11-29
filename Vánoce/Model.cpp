@@ -16,7 +16,7 @@ Model::~Model()
 
 void Model::loadData(const int nAttrPerVert, const int nVert, const int nTri, const float * vertArray, const unsigned * triArray)
 {
-	glUseProgram(shader->getProgram());
+	//glUseProgram(shader->getProgram());
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -25,27 +25,28 @@ void Model::loadData(const int nAttrPerVert, const int nVert, const int nTri, co
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertArray), vertArray, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triArray), triArray, GL_STATIC_DRAW);
-
 	GLint positionLoc = glGetAttribLocation(shader->getProgram(), "position");
 	glEnableVertexAttribArray(positionLoc);
-	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), NULL);
-
+	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)0);
+	
 	GLint normLoc = glGetAttribLocation(shader->getProgram(), "norm");
 	glEnableVertexAttribArray(normLoc);
 	glVertexAttribPointer(normLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)(3 * sizeof(float)));
 
 	GLint vTexCoordLoc = glGetAttribLocation(shader->getProgram(), "vTexCoord");
 	glEnableVertexAttribArray(vTexCoordLoc);
-	glVertexAttribPointer(vTexCoordLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)(6 * sizeof(float)));
+	glVertexAttribPointer(vTexCoordLoc, 2, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)(6 * sizeof(float)));
+	
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triArray), triArray, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	// ERROR HERE - 2 lines
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	glUseProgram(0);
+	//glUseProgram(0);
 }
 
 Shader * Model::getShader()

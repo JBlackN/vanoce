@@ -11,6 +11,19 @@ Camera::Camera()
 	up = glm::vec3(0, 1, 0);
 }
 
+Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane,
+	glm::vec3 position, glm::vec3 direction, glm::vec3 up)
+{
+	this->fov = fov;
+	this->aspectRatio = aspectRatio;
+	this->nearPlane = nearPlane;
+	this->farPlane = farPlane;
+
+	this->position = position;
+	this->direction = direction;
+	this->up = up;
+}
+
 Camera::~Camera()
 {
 }

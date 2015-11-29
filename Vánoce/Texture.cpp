@@ -1,9 +1,9 @@
 #include "headers\Shader.h"
 #include "headers\Texture.h"
 
-Texture::Texture(Shader * shaderProgram, string texPath)
+Texture::Texture(Shader * shader, string texPath)
 {
-	glUseProgram(shaderProgram->getProgram());
+	//glUseProgram(shader->getProgram());
 
 	texture = pgr::createTexture(texPath);
 	glActiveTexture(GL_TEXTURE0);
@@ -12,7 +12,7 @@ Texture::Texture(Shader * shaderProgram, string texPath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glUseProgram(0);
+	//glUseProgram(0);
 }
 
 Texture::~Texture()

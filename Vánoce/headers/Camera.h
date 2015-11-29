@@ -6,6 +6,7 @@ class Camera
 {
 public:
 	Camera();
+	Camera(float, float, float, float, glm::vec3, glm::vec3, glm::vec3);
 	~Camera();
 private:
 	float fov;
