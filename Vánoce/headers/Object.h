@@ -1,17 +1,18 @@
 #pragma once
 
 #include "pgr.h"
-#include "headers/Model.h"
+#include "Model.h"
+#include "Camera.h"
 
 class Object
 {
 public:
-	Object(Model *, glm::mat4);
-	~Object();
-private:
 	Model * model;
 	glm::mat4 adjustmentMatrix;
-public:
-	void drawObject();
+
+	Object(Model * model, glm::mat4 adjustmentMatrix);
+	~Object();
+
+	void draw(Camera * camera);
 };
 

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <map>
 using namespace std;
 
 #include "pgr.h"
@@ -7,36 +9,25 @@ using namespace std;
 #include "headers\Model.h"
 #include "headers\Object.h"
 #include "headers\Camera.h"
-#include "models\box.h"
+#include "models\crate.h"
 
-Shader * shader;
-Texture * texture;
-Model * model;
-Object * obj1;
-Camera * camera;
+const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
+glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
 
-GLuint vao, vbo;
-GLfloat degRotated = 0.0f;
-double lastTime;
-
-glm::vec3 position = glm::vec3(3, 3, 3);
-glm::vec3 direction = glm::vec3(-3, -3, -3);
-glm::vec3 up = glm::vec3(0, 1, 0);
-float viewAngle = 0;
+map<string, Shader *> shaders;
+map<string, Texture *> textures;
+map<string, Model *> models;
+map<string, Object *> objects;
+map<string, Camera *> cameras;
 
 void init(void);
-void loadShaders(void);
-void loadData(void);
-void loadTexture(void);
-void loadCamera(void);
-
-void anim_rotate(void);
 
 void displayFunc(void);
 void reshapeFunc(int, int);
 void keyboardFunc(unsigned char, int, int);
 void keyboardSpecialFunc(int, int, int);
 void mouseFunc(int, int, int, int);
+void passiveMotionFunc(int, int);
 void idleFunc(void);
 void timerFunc(int);
 
@@ -47,15 +38,16 @@ int main(int argc, char **argv)
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(window_dimensions.x, window_dimensions.y);
 	glutCreateWindow("Window");
 
 	glutDisplayFunc(displayFunc);
 	glutReshapeFunc(reshapeFunc);
 	glutKeyboardFunc(keyboardFunc);
 	glutSpecialFunc(keyboardSpecialFunc);
-	//glutMouseFunc(mouseFunc);
-	glutIdleFunc(idleFunc);
+	glutMouseFunc(mouseFunc);
+	glutPassiveMotionFunc(passiveMotionFunc); // TODO
+	//glutIdleFunc(idleFunc);
 	//glutTimerFunc(10, timerFunc, 1);
 
 	if (!pgr::initialize(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR))
@@ -70,7 +62,6 @@ int main(int argc, char **argv)
 	loadData();
 	loadCamera();*/
 
-	//lastTime = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
 
 	return 0;
@@ -78,18 +69,34 @@ int main(int argc, char **argv)
 
 void init()
 {
-	shader = new Shader("shaders/generic.vert", "shaders/generic.frag");
-	texture = new Texture(shader, "textures/wooden-crate.jpg");
-	model = new Model(shader, texture, boxNAttribsPerVertex, boxNVertices, boxNTriangles, boxVertices, boxTriangles);
-	obj1 = new Object(model, glm::mat4());
-	camera = new Camera(50.0f, 800.0f / 600.0f, 0.1f, 100.0f,
-		glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-}
+	// Shaders
 
-void anim_rotate(int step)
-{
-	degRotated += step;
-	if (degRotated > 360.0f) degRotated -= 360.0f;
+	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
+
+	//Textures
+
+	textures["wood"] = new Texture("textures/wood.jpg");
+	textures["wall"] = new Texture("textures/wall.jpg");
+	textures["stone"] = new Texture("textures/stone.jpg");
+	textures["crate"] = new Texture("textures/wooden-crate.jpg");
+
+	// Models
+
+	models["crate"] = new Model(shaders["generic"], textures["crate"], crateNVertices);
+	models["crate"]->loadData(crateNAttribsPerVertex, crateNVertices, crateNTriangles, crateVertices, crateTriangles);
+
+	// Objects
+
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.2, 0.2, 0.2));
+	objects["c1"] = new Object(models["crate"], glm::translate(scale, glm::vec3(0, 0, 5)));
+	objects["c2"] = new Object(models["crate"], glm::translate(scale, glm::vec3(-3, 0, 0)));
+	objects["c3"] = new Object(models["crate"], glm::translate(scale, glm::vec3(3, 0, 0)));
+
+	// Cameras
+
+	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
+	cameras["generic"] = new Camera(50.0f, window_aspectRatio, 0.1f, 100.0f,
+		glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
 
 void displayFunc()
@@ -97,83 +104,123 @@ void displayFunc()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glUseProgram(shader->getProgram());
+	objects["c1"]->draw(cameras["generic"]);
+	objects["c2"]->draw(cameras["generic"]);
+	objects["c3"]->draw(cameras["generic"]);
 
-	GLint camLoc = glGetUniformLocation(shader->getProgram(), "camera");
-	glUniformMatrix4fv(camLoc, 1, GL_FALSE, glm::value_ptr(camera->getCameraMatrix()));
-	cout << camera->getPosition().x << endl;
-
-	glUseProgram(0);
-	
-	obj1->drawObject();
-	
 	glutSwapBuffers();
 }
 
 void reshapeFunc(int width, int height)
 {
+	glViewport(0, 0, width, height);
+	// Setup projection matrix
 }
 
 void keyboardFunc(unsigned char key, int x, int y)
 {
-	glm::vec3 v;
+	Camera * camera = cameras["generic"];
+	glm::vec3 direction = glm::normalize(camera->center - camera->position);
+	direction.y = 0;
+
+	glm::vec3 sideDirection = glm::normalize(glm::cross(direction, camera->up));
 	glm::vec4 a;
 	glm::mat4 rotation;
 
 	switch (key)
 	{
 	case 'w':
-		camera->setPosition(camera->getPosition() + glm::normalize(camera->getDirection()));
-		glutPostRedisplay();
+		camera->position += direction;
+		camera->center += direction;
 		break;
 	case 's':
-		camera->setPosition(camera->getPosition() - glm::normalize(camera->getDirection()));
-		glutPostRedisplay();
+		camera->position -= direction;
+		camera->center -= direction;
 		break;
 	case 'a':
-		rotation = glm::rotate(glm::mat4(1.0), 1.0f, camera->getUp());
-		a = rotation * glm::vec4(camera->getDirection(), 1);
-		camera->setDirection(glm::vec3(a.x, a.y, a.z));
-		glutPostRedisplay();
+		/*camera->position -= sideDirection;
+		camera->center -= sideDirection;*/
+		rotation = glm::rotate(glm::mat4(1.0), 10.0f, camera->up);
+		a = rotation * glm::vec4(camera->center - camera->position, 1);
+		camera->center = camera->position + glm::vec3(a.x, a.y, a.z);
 		break;
 	case 'd':
-		rotation = glm::rotate(glm::mat4(1.0), -1.0f, camera->getUp());
-		a = rotation * glm::vec4(camera->getDirection(), 1);
-		camera->setDirection(glm::vec3(a.x, a.y, a.z));
-		glutPostRedisplay();
+		/*camera->position += sideDirection;
+		camera->center += sideDirection;*/
+		rotation = glm::rotate(glm::mat4(1.0), -10.0f, camera->up);
+		a = rotation * glm::vec4(camera->center - camera->position, 1);
+		camera->center = camera->position + glm::vec3(a.x, a.y, a.z);
 		break;
+	case 27:
+		glutLeaveMainLoop();
 	}
+
+	glutPostRedisplay();
 }
 
 void keyboardSpecialFunc(int key, int x, int y)
 {
-	glm::mat4 view;
-	GLint viewLoc = glGetUniformLocation(shader->getProgram(), "view");
+	Camera * camera = cameras["generic"];
 
 	switch (key)
 	{
 	case GLUT_KEY_F1:
-		camera->setPosition(glm::vec3(3, 3, 3));
-		camera->setDirection(glm::vec3(-3, -3, -3));
-		glutPostRedisplay();
+		camera->position = glm::vec3(3, 3, 3);
+		camera->center = glm::vec3(0, 0, 0);
+		camera->up = glm::vec3(0, 1, 0);
 		break;
 	case GLUT_KEY_F2:
-		camera->setPosition(glm::vec3(10, 0, 0));
-		camera->setDirection(glm::vec3(-10, 0, 0));
-		glutPostRedisplay();
-		//view = glm::lookAt(glm::vec3(10, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-		break;
-	case GLUT_KEY_F3:
-		camera->setPosition(glm::vec3(0, -5, -5));
-		camera->setDirection(glm::vec3(0, 5, 5));
-		glutPostRedisplay();
-		//view = glm::lookAt(glm::vec3(0, -5, -5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		camera->position = glm::vec3(3, 0, 3);
+		camera->center = glm::vec3(0, 0, 0);
+		camera->up = glm::vec3(0, 1, 0);
 		break;
 	}
+
+	glutPostRedisplay();
 }
 
 void mouseFunc(int button, int state, int x, int y)
 {
+}
+
+void passiveMotionFunc(int windowX, int windowY)
+{
+	// TODO: Boundaries, scale
+	
+	float x = ((float)windowX / window_dimensions.x) - 0.5f;
+	float y = ((float)windowY / -window_dimensions.y) + 0.5f;
+
+	/*cameras["generic"]->center.x = x*2;
+	cameras["generic"]->center.y = -y*2;*/
+
+	//cameras["generic"]->center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
+
+	glm::vec2 movement_direction = glm::vec2(x - cursor_position.x, y - cursor_position.y);
+	cursor_position.x = x;
+	cursor_position.y = y;
+
+	if (movement_direction.x > 0 && movement_direction.y > 0)
+	{
+		cameras["generic"]->center.x += 0.05;
+		cameras["generic"]->center.y += 0.05;
+	}
+	else if (movement_direction.x < 0 && movement_direction.y >= 0)
+	{
+		cameras["generic"]->center.x -= 0.05;
+		cameras["generic"]->center.y += 0.05;
+	}
+	else if (movement_direction.x < 0 && movement_direction.y < 0)
+	{
+		cameras["generic"]->center.x -= 0.05;
+		cameras["generic"]->center.y -= 0.05;
+	}
+	else if (movement_direction.x >= 0 && movement_direction.y < 0)
+	{
+		cameras["generic"]->center.x += 0.05;
+		cameras["generic"]->center.y -= 0.05;
+	}
+
+	glutPostRedisplay();
 }
 
 void idleFunc()
@@ -182,7 +229,4 @@ void idleFunc()
 
 void timerFunc(int value)
 {
-	glutTimerFunc(10, timerFunc, 1);
-	anim_rotate(value);
-	glutPostRedisplay();
 }

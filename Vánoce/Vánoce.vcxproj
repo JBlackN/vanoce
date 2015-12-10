@@ -141,7 +141,7 @@
     <ClInclude Include="headers\Object.h" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\Texture.h" />
-    <ClInclude Include="models\box.h" />
+    <ClInclude Include="models\crate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

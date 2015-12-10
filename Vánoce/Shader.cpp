@@ -3,30 +3,16 @@
 Shader::Shader(string vsPath, string fsPath)
 {
 	GLuint vertexShader = pgr::createShaderFromFile(GL_VERTEX_SHADER, vsPath);
+	if (vertexShader == 0) cerr << "Error creating vertex shader." << endl;
+
 	GLuint fragmentShader = pgr::createShaderFromFile(GL_FRAGMENT_SHADER, fsPath);
+	if (fragmentShader == 0) cerr << "Error creating fragment shader." << endl;
 
-	GLint status;
-	glCompileShader(vertexShader);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE) cerr << "Vertex shader compile error.";
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE) cerr << "Fragment shader compile error.";
-
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	//glDetachShader(shaderProgram, vertexShader);
-	//glDetachShader(shaderProgram, fragmentShader);
+	const GLuint shaderArray[] = { vertexShader, fragmentShader, 0 };
+	shaderProgram = pgr::createProgram(shaderArray);
+	if (shaderProgram == 0) cerr << "Error creating shader program." << endl;
 }
 
 Shader::~Shader()
 {
-}
-
-
-GLuint Shader::getProgram()
-{
-	return shaderProgram;
 }

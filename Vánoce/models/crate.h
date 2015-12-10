@@ -1,8 +1,8 @@
 #pragma once
-const int boxNAttribsPerVertex = 8;
-const int boxNVertices = 36;
-const int boxNTriangles = 12;
-const float boxVertices[] = {
+const int crateNAttribsPerVertex = 8;
+const int crateNVertices = 36;
+const int crateNTriangles = 12;
+const float crateVertices[] = {
 	// bottom
 	-1.0f,-1.0f,-1.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
 	1.0f,-1.0f,-1.0f,   0.0f, 0.0f, 0.0f,   1.0f, 0.0f,
@@ -52,7 +52,7 @@ const float boxVertices[] = {
 	1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,   0.0f, 1.0f
 };
 
-const unsigned boxTriangles[] = {
+const unsigned int crateTriangles[] = {
 	0, 1, 2,
 	3, 4, 5,
 	6, 7, 8,

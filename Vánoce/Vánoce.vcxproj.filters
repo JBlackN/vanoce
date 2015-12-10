@@ -64,7 +64,7 @@
     <ClInclude Include="headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\box.h">
+    <ClInclude Include="models\crate.h">
       <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>

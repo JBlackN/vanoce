@@ -1,15 +1,15 @@
 #version 140
 
 in vec3 position;
-in vec3 norm;
 in vec2 vTexCoord;
 out vec2 fTexCoord;
 
 uniform mat4 model;
-uniform mat4 camera;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
 	fTexCoord = vTexCoord;
-	gl_Position = camera * model * vec4(position, 1.0);
+	gl_Position = projection * view * model * vec4(position, 1.0);
 }

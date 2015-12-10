@@ -9,11 +9,9 @@ using namespace std;
 class Shader
 {
 public:
-	Shader(string, string);
-	~Shader();
-private:
 	GLuint shaderProgram;
-public:
-	GLuint getProgram();
+
+	Shader(string vsPath, string fsPath);
+	~Shader();
 };
 

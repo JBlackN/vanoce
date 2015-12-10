@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -8,11 +9,9 @@ using namespace std;
 class Texture
 {
 public:
-	Texture(Shader *, string);
-	~Texture();
-private:
 	GLuint texture;
-public:
-	GLuint getTexture();
+
+	Texture(string texPath);
+	~Texture();
 };
 
