@@ -141,7 +141,14 @@
     <ClInclude Include="headers\Object.h" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\Texture.h" />
-    <ClInclude Include="models\crate.h" />
+    <ClInclude Include="models\carton.h" />
+    <ClInclude Include="models\chair.h" />
+    <ClInclude Include="models\home.h" />
+    <ClInclude Include="models\ornament.h" />
+    <ClInclude Include="models\stand.h" />
+    <ClInclude Include="models\table.h" />
+    <ClInclude Include="models\terrain.h" />
+    <ClInclude Include="models\tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

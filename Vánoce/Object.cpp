@@ -29,7 +29,7 @@ void Object::draw(Camera * camera)
 	GLint texLoc = glGetUniformLocation(model->shader->shaderProgram, "tex");
 	glUniform1i(texLoc, 0);
 
-	glDrawElements(GL_TRIANGLES, model->nVertices, GL_UNSIGNED_INT, (void *)0);
+	glDrawElements(GL_TRIANGLES, model->drawCount, GL_UNSIGNED_INT, (void *)0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(0);

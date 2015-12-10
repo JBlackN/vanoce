@@ -12,9 +12,9 @@ public:
 	GLuint vbo;
 	GLuint ebo;
 	GLuint vao;
-	int nVertices;
+	int drawCount;
 
-	Model(Shader * shader, Texture * texture, const int nVertices);
+	Model(Shader * shader, Texture * texture, const int drawCount);
 	~Model();
 
 	void loadData(const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles);

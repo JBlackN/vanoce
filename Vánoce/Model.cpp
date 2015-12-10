@@ -1,10 +1,10 @@
 #include "headers\Model.h"
 
-Model::Model(Shader * shader, Texture * texture, const int nVertices)
+Model::Model(Shader * shader, Texture * texture, const int nTriangles)
 {
 	this->shader = shader;
 	this->texture = texture;
-	this->nVertices = nVertices;
+	this->drawCount = 3 * nTriangles;
 }
 
 Model::~Model()
@@ -30,7 +30,7 @@ void Model::loadData(const int nAttrPerVert, const int nVert, const int nTri, co
 
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, nVert * sizeof(unsigned int), triangles, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * nTri * sizeof(unsigned int), triangles, GL_STATIC_DRAW);
 
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

@@ -64,7 +64,28 @@
     <ClInclude Include="headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\crate.h">
+    <ClInclude Include="models\terrain.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\home.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\table.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\chair.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\carton.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\ornament.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\stand.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\tree.h">
       <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
