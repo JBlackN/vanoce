@@ -5,6 +5,7 @@ using namespace std;
 
 #include "pgr.h"
 #include "headers\Shader.h"
+#include "headers\Material.h"
 #include "headers\Texture.h"
 #include "headers\Model.h"
 #include "headers\Object.h"
@@ -25,6 +26,7 @@ const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
 
 map<string, Shader *> shaders;
+map<string, Material *> materials;
 map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
@@ -83,12 +85,22 @@ void init()
 
 	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
 
+	// Materials
+
+	materials["snow"] = new Material(glm::vec3(0, 0, 1), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 10);
+	materials["home"] = new Material(glm::vec3(0, 0, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 0);
+	materials["wood"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0.6f, 0.4f, 0.4f), glm::vec3(0.8f, 0.6f, 0.4f), 1);
+	materials["fabric"] = new Material(glm::vec3(0, 0.2f, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
+	materials["cardboard"] = new Material(glm::vec3(0.2f, 0.2f, 0), glm::vec3(0.6f, 0.4f, 0.2f), glm::vec3(0.8f, 0.6f, 0.4f), 5);
+	materials["ornament"] = new Material(glm::vec3(0.2f, 0, 0.2f), glm::vec3(0.7f, 0, 0.2f), glm::vec3(0.6f, 0.2f, 0.1f), 51.2f);
+	materials["metal"] = new Material(glm::vec3(0.2f, 0.4f, 0), glm::vec3(0, 0.2f, 0.2f), glm::vec3(0.2f, 1, 0.8f), 15);
+	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 2);
+
 	//Textures
 
 	textures["snow"] = new Texture("textures/snow.png");
 	textures["home"] = new Texture("textures/home.png");
 	textures["wood"] = new Texture("textures/wood.jpg");
-	textures["leather"] = new Texture("textures/leather.png");
 	textures["fabric"] = new Texture("textures/fabric.png");
 	textures["cardboard"] = new Texture("textures/cardboard.jpg");
 	textures["glass"] = new Texture("textures/glass.png");
@@ -97,21 +109,28 @@ void init()
 
 	// Models
 
-	models["terrain"] = new Model(shaders["generic"], textures["snow"], terrainNTriangles);
+	models["terrain"] = new Model(shaders["generic"], materials["snow"], textures["snow"], terrainNTriangles);
 	models["terrain"]->loadData(terrainNAttribsPerVertex, terrainNVertices, terrainNTriangles, terrainVertices, terrainTriangles);
-	models["home"] = new Model(shaders["generic"], textures["home"], homeNTriangles);
+
+	models["home"] = new Model(shaders["generic"], materials["home"], textures["home"], homeNTriangles);
 	models["home"]->loadData(homeNAttribsPerVertex, homeNVertices, homeNTriangles, homeVertices, homeTriangles);
-	models["table"] = new Model(shaders["generic"], textures["wood"], tableNTriangles);
+
+	models["table"] = new Model(shaders["generic"], materials["wood"], textures["wood"], tableNTriangles);
 	models["table"]->loadData(tableNAttribsPerVertex, tableNVertices, tableNTriangles, tableVertices, tableTriangles);
-	models["chair"] = new Model(shaders["generic"], textures["fabric"], chairNTriangles);
+
+	models["chair"] = new Model(shaders["generic"], materials["fabric"], textures["fabric"], chairNTriangles);
 	models["chair"]->loadData(chairNAttribsPerVertex, chairNVertices, chairNTriangles, chairVertices, chairTriangles);
-	models["carton"] = new Model(shaders["generic"], textures["cardboard"], cartonNTriangles);
+
+	models["carton"] = new Model(shaders["generic"], materials["cardboard"], textures["cardboard"], cartonNTriangles);
 	models["carton"]->loadData(cartonNAttribsPerVertex, cartonNVertices, cartonNTriangles, cartonVertices, cartonTriangles);
-	models["ornament"] = new Model(shaders["generic"], textures["glass"], ornamentNTriangles);
+
+	models["ornament"] = new Model(shaders["generic"], materials["ornament"], textures["glass"], ornamentNTriangles);
 	models["ornament"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
-	models["stand"] = new Model(shaders["generic"], textures["metal"], standNTriangles);
+	
+	models["stand"] = new Model(shaders["generic"], materials["metal"], textures["metal"], standNTriangles);
 	models["stand"]->loadData(standNAttribsPerVertex, standNVertices, standNTriangles, standVertices, standTriangles);
-	models["tree"] = new Model(shaders["generic"], textures["tree"], treeNTriangles);
+	
+	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"], treeNTriangles);
 	models["tree"]->loadData(treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
 
 	// Objects
@@ -143,7 +162,7 @@ void init()
 
 	// Lights
 
-	lights["lamp"] = new Light(glm::vec3(0, 8, 0), glm::vec3(1, 0.6f, 0.2f));
+	lights["lamp"] = new Light(glm::vec3(0, 8, 0), glm::vec3(0, 0, 0.2f), glm::vec3(1, 0.6f, 0.2f), glm::vec3(1, 1, 1));
 
 	// Cameras
 

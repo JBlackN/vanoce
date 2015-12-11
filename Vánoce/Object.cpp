@@ -27,8 +27,8 @@ void Object::draw(Camera * camera, Light * light)
 	GLint lightPosLoc = glGetUniformLocation(model->shader->shaderProgram, "light.position");
 	glUniform3f(lightPosLoc, light->position.x, light->position.y, light->position.z);
 	
-	GLint lightColorLoc = glGetUniformLocation(model->shader->shaderProgram, "light.color");
-	glUniform3f(lightColorLoc, light->color.x, light->color.y, light->color.z);
+	GLint lightDiffuseLoc = glGetUniformLocation(model->shader->shaderProgram, "light.diffuse");
+	glUniform3f(lightDiffuseLoc, light->diffuse.x, light->diffuse.y, light->diffuse.z);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->texture->texture);

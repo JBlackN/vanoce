@@ -1,8 +1,9 @@
 #include "headers\Model.h"
 
-Model::Model(Shader * shader, Texture * texture, const int nTriangles)
+Model::Model(Shader * shader, Material * material, Texture * texture, const int nTriangles)
 {
 	this->shader = shader;
+	this->material = material;
 	this->texture = texture;
 	this->drawCount = 3 * nTriangles;
 }

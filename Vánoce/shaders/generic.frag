@@ -10,8 +10,8 @@ uniform mat4 model;
 uniform sampler2D tex;
 uniform struct Light
 {
+	vec3 diffuse;
 	vec3 position;
-	vec3 color;
 } light;
 
 void main()
@@ -22,5 +22,5 @@ void main()
 	float brightness = clamp(dot(normal, directionToLight) / (length(directionToLight) * length(normal)), 0, 1);
 
 	vec4 texture = texture(tex, fTexCoord);
-	color = vec4(brightness * light.color, 1) * texture;
+	color = vec4(brightness * light.diffuse, 1) * texture;
 }
