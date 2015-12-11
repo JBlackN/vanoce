@@ -42,6 +42,9 @@
     <ClCompile Include="TreeGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\generic.frag">
@@ -92,6 +95,9 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="headers\TreeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

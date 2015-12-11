@@ -9,6 +9,7 @@ using namespace std;
 #include "Model.h"
 #include "Object.h"
 #include "Camera.h"
+#include "Light.h"
 
 class TreeGenerator
 {
@@ -20,6 +21,6 @@ public:
 	~TreeGenerator();
 
 	void generateTrees(int count, int mapQuadrantDimension);
-	void drawTrees(Camera * camera);
+	void drawTrees(Camera * camera, Light * light);
 };
 

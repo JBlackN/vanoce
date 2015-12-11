@@ -76,8 +76,8 @@ void TreeGenerator::generateTrees(int count, int mapDimension)
 	delete map;
 }
 
-void TreeGenerator::drawTrees(Camera * camera)
+void TreeGenerator::drawTrees(Camera * camera, Light * light)
 {
 	for (vector<Object *>::iterator i = trees.begin(); i != trees.end(); i++)
-		(*i)->draw(camera);
+		(*i)->draw(camera, light);
 }

@@ -10,7 +10,7 @@ Object::~Object()
 {
 }
 
-void Object::draw(Camera * camera)
+void Object::draw(Camera * camera, Light * light)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -23,6 +23,12 @@ void Object::draw(Camera * camera)
 
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+
+	GLint lightPosLoc = glGetUniformLocation(model->shader->shaderProgram, "light.position");
+	glUniform3f(lightPosLoc, light->position.x, light->position.y, light->position.z);
+	
+	GLint lightColorLoc = glGetUniformLocation(model->shader->shaderProgram, "light.color");
+	glUniform3f(lightColorLoc, light->color.x, light->color.y, light->color.z);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->texture->texture);

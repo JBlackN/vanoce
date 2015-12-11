@@ -8,8 +8,9 @@ using namespace std;
 #include "headers\Texture.h"
 #include "headers\Model.h"
 #include "headers\Object.h"
-#include "headers\Camera.h"
 #include "headers\TreeGenerator.h"
+#include "headers\Camera.h"
+#include "headers\Light.h"
 
 #include "models\terrain.h"
 #include "models\home.h"
@@ -27,6 +28,7 @@ map<string, Shader *> shaders;
 map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
+map<string, Light *> lights;
 map<string, Camera *> cameras;
 Camera * activeCamera;
 
@@ -139,6 +141,10 @@ void init()
 	treeGenerator = new TreeGenerator(models["tree"]);
 	treeGenerator->generateTrees(50, 19);
 
+	// Lights
+
+	lights["lamp"] = new Light(glm::vec3(0, 8, 0), glm::vec3(1, 0.6f, 0.2f));
+
 	// Cameras
 
 	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
@@ -158,20 +164,20 @@ void displayFunc()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	objects["terrain"]->draw(activeCamera);
-	objects["home"]->draw(activeCamera);
-	objects["table"]->draw(activeCamera);
-	objects["chair"]->draw(activeCamera);
-	objects["carton"]->draw(activeCamera);
+	objects["terrain"]->draw(activeCamera, lights["lamp"]);
+	objects["home"]->draw(activeCamera, lights["lamp"]);
+	objects["table"]->draw(activeCamera, lights["lamp"]);
+	objects["chair"]->draw(activeCamera, lights["lamp"]);
+	objects["carton"]->draw(activeCamera, lights["lamp"]);
 
-	objects["ornament1"]->draw(activeCamera);
-	objects["ornament2"]->draw(activeCamera);
-	objects["ornament3"]->draw(activeCamera);
+	objects["ornament1"]->draw(activeCamera, lights["lamp"]);
+	objects["ornament2"]->draw(activeCamera, lights["lamp"]);
+	objects["ornament3"]->draw(activeCamera, lights["lamp"]);
 
-	objects["stand"]->draw(activeCamera);
+	objects["stand"]->draw(activeCamera, lights["lamp"]);
 
-	objects["christmasTree"]->draw(activeCamera);
-	treeGenerator->drawTrees(activeCamera);
+	objects["christmasTree"]->draw(activeCamera, lights["lamp"]);
+	treeGenerator->drawTrees(activeCamera, lights["lamp"]);
 
 	glutSwapBuffers();
 }

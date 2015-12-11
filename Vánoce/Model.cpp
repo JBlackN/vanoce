@@ -20,9 +20,13 @@ void Model::loadData(const int nAttrPerVert, const int nVert, const int nTri, co
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, nAttrPerVert * nVert * sizeof(float), vertices, GL_STATIC_DRAW);
 
-	GLint posLoc = glGetAttribLocation(shader->shaderProgram, "position");
+	GLint posLoc = glGetAttribLocation(shader->shaderProgram, "vPosition");
 	glEnableVertexAttribArray(posLoc);
 	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)0);
+
+	GLint normLoc = glGetAttribLocation(shader->shaderProgram, "vNormal");
+	glEnableVertexAttribArray(normLoc);
+	glVertexAttribPointer(normLoc, 3, GL_FLOAT, GL_FALSE, nAttrPerVert * sizeof(float), (void *)(3 * sizeof(float)));
 
 	GLint texLoc = glGetAttribLocation(shader->shaderProgram, "vTexCoord");
 	glEnableVertexAttribArray(texLoc);
