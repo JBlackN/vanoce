@@ -8,10 +8,31 @@ out vec4 color;
 
 uniform mat4 model;
 uniform sampler2D tex;
+
+uniform struct Material
+{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 emission;
+	float shininess;
+} material;
+
 uniform struct Light
 {
+	vec3 ambient;
 	vec3 diffuse;
+	vec3 specular;
+
 	vec3 position;
+
+	vec3 spot_direction;
+	float spot_exponent;
+	float spot_cutoff;
+
+	float constant_attenuation;
+	float linear_attenuation;
+	float quadratic_attenuation;
 } light;
 
 void main()

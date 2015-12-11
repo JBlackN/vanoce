@@ -15,5 +15,10 @@ public:
 	~Object();
 
 	void draw(Camera * camera, Light * light);
+
+private:
+	void useCamera(Camera * camera);
+	void useLight(Light * light);
+	void useMaterial();
 };
 
