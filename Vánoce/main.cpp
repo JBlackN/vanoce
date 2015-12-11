@@ -144,9 +144,9 @@ void init()
 	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
 
 	cameras["fps"] = new Camera(50.0f, window_aspectRatio, 0.1f, 1000.0f,
-		glm::vec3(2, 7, -50), glm::vec3(0, 7, 0), glm::vec3(0, 1, 0));
+		glm::vec3(2, 7, -50), glm::vec3(0, 7, 0), glm::vec3(0, 1, 0), true, true);
 	cameras["inside"] = new Camera(100.0f, window_aspectRatio, 0.1f, 1000.0f,
-		glm::vec3(-5, 10, 5), glm::vec3(1.5f, 4, -1.5f), glm::vec3(0, 1, 0));
+		glm::vec3(-5, 10, 5), glm::vec3(1.5f, 4, -1.5f), glm::vec3(0, 1, 0), false, true);
 	cameras["outside"] = new Camera(35.0f, window_aspectRatio, 0.1f, 1000.0f,
 		glm::vec3(100, 100, -100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
@@ -184,36 +184,19 @@ void reshapeFunc(int width, int height)
 
 void keyboardFunc(unsigned char key, int x, int y)
 {
-	glm::vec3 direction = glm::normalize(activeCamera->center - activeCamera->position);
-	direction.y = 0;
-
-	glm::vec3 sideDirection = glm::normalize(glm::cross(direction, activeCamera->up));
-	glm::vec4 a;
-	glm::mat4 rotation;
-
 	switch (key)
 	{
 	case 'w':
-		activeCamera->position += direction;
-		activeCamera->center += direction;
+		activeCamera->move(Camera::Direction::forward);
 		break;
 	case 's':
-		activeCamera->position -= direction;
-		activeCamera->center -= direction;
+		activeCamera->move(Camera::Direction::back);
 		break;
 	case 'a':
-		/*activeCamera->position -= sideDirection;
-		activeCamera->center -= sideDirection;*/
-		rotation = glm::rotate(glm::mat4(1.0), 10.0f, activeCamera->up);
-		a = rotation * glm::vec4(activeCamera->center - activeCamera->position, 1);
-		activeCamera->center = activeCamera->position + glm::vec3(a.x, a.y, a.z);
+		activeCamera->move(Camera::Direction::left);
 		break;
 	case 'd':
-		/*activeCamera->position += sideDirection;
-		activeCamera->center += sideDirection;*/
-		rotation = glm::rotate(glm::mat4(1.0), -10.0f, activeCamera->up);
-		a = rotation * glm::vec4(activeCamera->center - activeCamera->position, 1);
-		activeCamera->center = activeCamera->position + glm::vec3(a.x, a.y, a.z);
+		activeCamera->move(Camera::Direction::right);
 		break;
 	case 27:
 		glutLeaveMainLoop();
@@ -226,6 +209,18 @@ void keyboardSpecialFunc(int key, int x, int y)
 {
 	switch (key)
 	{
+	case GLUT_KEY_UP:
+		activeCamera->move(Camera::Direction::forward);
+		break;
+	case GLUT_KEY_DOWN:
+		activeCamera->move(Camera::Direction::back);
+		break;
+	case GLUT_KEY_LEFT:
+		activeCamera->move(Camera::Direction::left);
+		break;
+	case GLUT_KEY_RIGHT:
+		activeCamera->move(Camera::Direction::right);
+		break;
 	case GLUT_KEY_F1:
 		activeCamera = cameras["fps"];
 		break;
