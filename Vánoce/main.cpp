@@ -22,12 +22,13 @@ using namespace std;
 
 const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
-Camera * camera;
+Camera * activeCamera;
 
 map<string, Shader *> shaders;
 map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
+map<string, Camera *> cameras;
 
 TreeGenerator * treeGenerator;
 
@@ -141,8 +142,15 @@ void init()
 	// Cameras
 
 	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
-	camera = new Camera(50.0f, window_aspectRatio, 0.1f, 1000.0f,
+
+	cameras["fps"] = new Camera(50.0f, window_aspectRatio, 0.1f, 1000.0f,
 		glm::vec3(2, 7, -50), glm::vec3(0, 7, 0), glm::vec3(0, 1, 0));
+	cameras["inside"] = new Camera(100.0f, window_aspectRatio, 0.1f, 1000.0f,
+		glm::vec3(-5, 10, 5), glm::vec3(1.5f, 4, -1.5f), glm::vec3(0, 1, 0));
+	cameras["outside"] = new Camera(35.0f, window_aspectRatio, 0.1f, 1000.0f,
+		glm::vec3(100, 100, -100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	activeCamera = cameras["fps"];
 }
 
 void displayFunc()
@@ -150,20 +158,20 @@ void displayFunc()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	objects["terrain"]->draw(camera);
-	objects["home"]->draw(camera);
-	objects["table"]->draw(camera);
-	objects["chair"]->draw(camera);
-	objects["carton"]->draw(camera);
+	objects["terrain"]->draw(activeCamera);
+	objects["home"]->draw(activeCamera);
+	objects["table"]->draw(activeCamera);
+	objects["chair"]->draw(activeCamera);
+	objects["carton"]->draw(activeCamera);
 
-	objects["ornament1"]->draw(camera);
-	objects["ornament2"]->draw(camera);
-	objects["ornament3"]->draw(camera);
+	objects["ornament1"]->draw(activeCamera);
+	objects["ornament2"]->draw(activeCamera);
+	objects["ornament3"]->draw(activeCamera);
 
-	objects["stand"]->draw(camera);
+	objects["stand"]->draw(activeCamera);
 
-	objects["christmasTree"]->draw(camera);
-	treeGenerator->drawTrees(camera);
+	objects["christmasTree"]->draw(activeCamera);
+	treeGenerator->drawTrees(activeCamera);
 
 	glutSwapBuffers();
 }
@@ -176,36 +184,36 @@ void reshapeFunc(int width, int height)
 
 void keyboardFunc(unsigned char key, int x, int y)
 {
-	glm::vec3 direction = glm::normalize(camera->center - camera->position);
+	glm::vec3 direction = glm::normalize(activeCamera->center - activeCamera->position);
 	direction.y = 0;
 
-	glm::vec3 sideDirection = glm::normalize(glm::cross(direction, camera->up));
+	glm::vec3 sideDirection = glm::normalize(glm::cross(direction, activeCamera->up));
 	glm::vec4 a;
 	glm::mat4 rotation;
 
 	switch (key)
 	{
 	case 'w':
-		camera->position += direction;
-		camera->center += direction;
+		activeCamera->position += direction;
+		activeCamera->center += direction;
 		break;
 	case 's':
-		camera->position -= direction;
-		camera->center -= direction;
+		activeCamera->position -= direction;
+		activeCamera->center -= direction;
 		break;
 	case 'a':
-		/*camera->position -= sideDirection;
-		camera->center -= sideDirection;*/
-		rotation = glm::rotate(glm::mat4(1.0), 10.0f, camera->up);
-		a = rotation * glm::vec4(camera->center - camera->position, 1);
-		camera->center = camera->position + glm::vec3(a.x, a.y, a.z);
+		/*activeCamera->position -= sideDirection;
+		activeCamera->center -= sideDirection;*/
+		rotation = glm::rotate(glm::mat4(1.0), 10.0f, activeCamera->up);
+		a = rotation * glm::vec4(activeCamera->center - activeCamera->position, 1);
+		activeCamera->center = activeCamera->position + glm::vec3(a.x, a.y, a.z);
 		break;
 	case 'd':
-		/*camera->position += sideDirection;
-		camera->center += sideDirection;*/
-		rotation = glm::rotate(glm::mat4(1.0), -10.0f, camera->up);
-		a = rotation * glm::vec4(camera->center - camera->position, 1);
-		camera->center = camera->position + glm::vec3(a.x, a.y, a.z);
+		/*activeCamera->position += sideDirection;
+		activeCamera->center += sideDirection;*/
+		rotation = glm::rotate(glm::mat4(1.0), -10.0f, activeCamera->up);
+		a = rotation * glm::vec4(activeCamera->center - activeCamera->position, 1);
+		activeCamera->center = activeCamera->position + glm::vec3(a.x, a.y, a.z);
 		break;
 	case 27:
 		glutLeaveMainLoop();
@@ -219,19 +227,13 @@ void keyboardSpecialFunc(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_F1:
-		camera->position = glm::vec3(3, 3, 3);
-		camera->center = glm::vec3(0, 0, 0);
-		camera->up = glm::vec3(0, 1, 0);
+		activeCamera = cameras["fps"];
 		break;
 	case GLUT_KEY_F2:
-		camera->position = glm::vec3(3, 0, 3);
-		camera->center = glm::vec3(0, 0, 0);
-		camera->up = glm::vec3(0, 1, 0);
+		activeCamera = cameras["inside"];
 		break;
 	case GLUT_KEY_F3:
-		camera->position = glm::vec3(0, 0, -3);
-		camera->center = glm::vec3(0, 0, 0);
-		camera->up = glm::vec3(0, 1, 0);
+		activeCamera = cameras["outside"];
 		break;
 	}
 
@@ -249,10 +251,10 @@ void passiveMotionFunc(int windowX, int windowY)
 	float x = ((float)windowX / window_dimensions.x) - 0.5f;
 	float y = ((float)windowY / -window_dimensions.y) + 0.5f;
 
-	/*camera->center.x = x*2;
-	camera->center.y = -y*2;*/
+	/*activeCamera->center.x = x*2;
+	activeCamera->center.y = -y*2;*/
 
-	//camera->center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
+	//activeCamera->center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
 
 	glm::vec2 movement_direction = glm::vec2(x - cursor_position.x, y - cursor_position.y);
 	cursor_position.x = x;
@@ -260,23 +262,23 @@ void passiveMotionFunc(int windowX, int windowY)
 
 	if (movement_direction.x > 0 && movement_direction.y > 0)
 	{
-		camera->center.x += 0.05;
-		camera->center.y += 0.05;
+		activeCamera->center.x += 0.05;
+		activeCamera->center.y += 0.05;
 	}
 	else if (movement_direction.x < 0 && movement_direction.y >= 0)
 	{
-		camera->center.x -= 0.05;
-		camera->center.y += 0.05;
+		activeCamera->center.x -= 0.05;
+		activeCamera->center.y += 0.05;
 	}
 	else if (movement_direction.x < 0 && movement_direction.y < 0)
 	{
-		camera->center.x -= 0.05;
-		camera->center.y -= 0.05;
+		activeCamera->center.x -= 0.05;
+		activeCamera->center.y -= 0.05;
 	}
 	else if (movement_direction.x >= 0 && movement_direction.y < 0)
 	{
-		camera->center.x += 0.05;
-		camera->center.y -= 0.05;
+		activeCamera->center.x += 0.05;
+		activeCamera->center.y -= 0.05;
 	}
 
 	glutPostRedisplay();
