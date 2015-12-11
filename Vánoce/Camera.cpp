@@ -60,11 +60,51 @@ void Camera::move(Direction whereTo)
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 		break;
 	case right:
-		/*activeCamera->position += sideDirection;
-		activeCamera->center += sideDirection;*/
+		/*position += sideDirection;
+		center += sideDirection;*/
 		rotation = glm::rotate(glm::mat4(1.0), -10.0f, up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 		break;
+	}
+}
+
+void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::vec2 window_dimensions)
+{
+	if (!looking) return;
+
+	// TODO: Boundaries, scale
+
+	float x = ((float)window_x / window_dimensions.x) - 0.5f;
+	float y = ((float)window_y / -window_dimensions.y) + 0.5f;
+
+	/*center.x = x*2;
+	center.y = -y*2;*/
+
+	//center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
+
+	glm::vec2 movement_direction = glm::vec2(x - cursor_position.x, y - cursor_position.y);
+	cursor_position.x = x;
+	cursor_position.y = y;
+
+	if (movement_direction.x > 0 && movement_direction.y > 0)
+	{
+		center.x += 0.05;
+		center.y += 0.05;
+	}
+	else if (movement_direction.x < 0 && movement_direction.y >= 0)
+	{
+		center.x -= 0.05;
+		center.y += 0.05;
+	}
+	else if (movement_direction.x < 0 && movement_direction.y < 0)
+	{
+		center.x -= 0.05;
+		center.y -= 0.05;
+	}
+	else if (movement_direction.x >= 0 && movement_direction.y < 0)
+	{
+		center.x += 0.05;
+		center.y -= 0.05;
 	}
 }

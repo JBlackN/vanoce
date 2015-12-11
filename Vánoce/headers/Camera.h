@@ -28,5 +28,6 @@ public:
 	glm::mat4 getViewMatrix();
 
 	void move(Direction whereTo);
+	void look(int window_x, int window_y, glm::vec2 & cursor_position, glm::vec2 window_dimensions);
 };
 

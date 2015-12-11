@@ -22,13 +22,13 @@ using namespace std;
 
 const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
-Camera * activeCamera;
 
 map<string, Shader *> shaders;
 map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
 map<string, Camera *> cameras;
+Camera * activeCamera;
 
 TreeGenerator * treeGenerator;
 
@@ -241,41 +241,7 @@ void mouseFunc(int button, int state, int x, int y)
 
 void passiveMotionFunc(int windowX, int windowY)
 {
-	// TODO: Boundaries, scale
-	
-	float x = ((float)windowX / window_dimensions.x) - 0.5f;
-	float y = ((float)windowY / -window_dimensions.y) + 0.5f;
-
-	/*activeCamera->center.x = x*2;
-	activeCamera->center.y = -y*2;*/
-
-	//activeCamera->center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
-
-	glm::vec2 movement_direction = glm::vec2(x - cursor_position.x, y - cursor_position.y);
-	cursor_position.x = x;
-	cursor_position.y = y;
-
-	if (movement_direction.x > 0 && movement_direction.y > 0)
-	{
-		activeCamera->center.x += 0.05;
-		activeCamera->center.y += 0.05;
-	}
-	else if (movement_direction.x < 0 && movement_direction.y >= 0)
-	{
-		activeCamera->center.x -= 0.05;
-		activeCamera->center.y += 0.05;
-	}
-	else if (movement_direction.x < 0 && movement_direction.y < 0)
-	{
-		activeCamera->center.x -= 0.05;
-		activeCamera->center.y -= 0.05;
-	}
-	else if (movement_direction.x >= 0 && movement_direction.y < 0)
-	{
-		activeCamera->center.x += 0.05;
-		activeCamera->center.y -= 0.05;
-	}
-
+	activeCamera->look(windowX, windowY, cursor_position, window_dimensions);
 	glutPostRedisplay();
 }
 
