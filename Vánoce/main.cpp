@@ -9,6 +9,7 @@ using namespace std;
 #include "headers\Model.h"
 #include "headers\Object.h"
 #include "headers\Camera.h"
+#include "headers\TreeGenerator.h"
 
 #include "models\terrain.h"
 #include "models\home.h"
@@ -27,6 +28,8 @@ map<string, Shader *> shaders;
 map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
+
+TreeGenerator * treeGenerator;
 
 void init(void);
 
@@ -65,10 +68,6 @@ int main(int argc, char **argv)
 	glDepthFunc(GL_LESS);
 
 	init();
-	/*loadShaders();
-	loadTexture();
-	loadData();
-	loadCamera();*/
 
 	glutMainLoop();
 
@@ -134,10 +133,10 @@ void init()
 	objects["stand"] = new Object(models["stand"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(1.5f, 0.2f, -1.5f)));
 
-	objects["tree1"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+	objects["christmasTree"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(1.5f, 1.4f, -1.5f)));
-	objects["tree2"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(5.0f, 1.2f, -5.0f)));
+	treeGenerator = new TreeGenerator(models["tree"]);
+	treeGenerator->generateTrees(50, 19);
 
 	// Cameras
 
@@ -163,8 +162,8 @@ void displayFunc()
 
 	objects["stand"]->draw(camera);
 
-	objects["tree1"]->draw(camera);
-	objects["tree2"]->draw(camera);
+	objects["christmasTree"]->draw(camera);
+	treeGenerator->drawTrees(camera);
 
 	glutSwapBuffers();
 }

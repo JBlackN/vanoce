@@ -130,6 +130,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TreeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\generic.frag" />
@@ -141,6 +142,7 @@
     <ClInclude Include="headers\Object.h" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\Texture.h" />
+    <ClInclude Include="headers\TreeGenerator.h" />
     <ClInclude Include="models\carton.h" />
     <ClInclude Include="models\chair.h" />
     <ClInclude Include="models\home.h" />
