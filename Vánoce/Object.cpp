@@ -42,6 +42,9 @@ void Object::useCamera(Camera * camera)
 
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+
+	GLint camPosLoc = glGetUniformLocation(model->shader->shaderProgram, "camera_position");
+	glUniformMatrix4fv(camPosLoc, 1, GL_FALSE, glm::value_ptr(camera->position));
 }
 
 void Object::useLight(Light * light)
