@@ -19,10 +19,12 @@ public:
 	float linear_attenuation;
 	float quadratic_attenuation;
 
-	Light(glm::vec3 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
-		float constant_attenuation = 0, float linear_attenuation = 0, float quadratic_attenuation = 1.5f, bool directional = false);
-	Light(glm::vec3 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
+	enum LightType { point = 0, spot = 1, directional = 2 } type;
+	bool enabled;
+
+	Light(LightType type, glm::vec3 position, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
 		glm::vec3 spot_direction, float spot_exponent, float spot_cutoff,
-		float constant_attenuation = 0, float linear_attenuation = 0, float quadratic_attenuation = 1.5f, bool directional = false);
+		float constant_attenuation, float linear_attenuation, float quadratic_attenuation,
+		bool enabled = true);
 	~Light();
 };

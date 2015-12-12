@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <map>
+using namespace std;
+
 #include "pgr.h"
 #include "Model.h"
 #include "Camera.h"
@@ -14,11 +18,12 @@ public:
 	Object(Model * model, glm::mat4 adjustmentMatrix);
 	~Object();
 
-	void draw(Camera * camera, Light * light);
+	void draw(Camera * camera, map<string, Light *> lights);
 
 private:
 	void useCamera(Camera * camera);
-	void useLight(Light * light);
+	void useLights(map<string, Light *> lights);
+	void useLight(Light * light, int index);
 	void useMaterial();
 };
 

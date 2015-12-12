@@ -2,7 +2,9 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 #include "pgr.h"
@@ -21,6 +23,6 @@ public:
 	~TreeGenerator();
 
 	void generateTrees(int count, int mapQuadrantDimension);
-	void drawTrees(Camera * camera, Light * light);
+	void drawTrees(Camera * camera, map<string, Light *> lights);
 };
 

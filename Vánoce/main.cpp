@@ -160,10 +160,6 @@ void init()
 	treeGenerator = new TreeGenerator(models["tree"]);
 	treeGenerator->generateTrees(50, 19);
 
-	// Lights
-
-	lights["lamp"] = new Light(glm::vec3(0, 8, 0), glm::vec3(0, 0, 0.2f), glm::vec3(1, 0.6f, 0.2f), glm::vec3(0.1f, 0.1f, 0.1f));
-
 	// Cameras
 
 	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
@@ -176,6 +172,15 @@ void init()
 		glm::vec3(100, 100, -100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 	activeCamera = cameras["fps"];
+
+	// Lights
+
+	lights["lamp"] = new Light(Light::LightType::point, glm::vec3(0, 8, 0),
+		glm::vec3(0, 0, 0.2f), glm::vec3(1, 0.6f, 0.2f), glm::vec3(0.1f, 0.1f, 0.1f),
+		glm::vec3(0), 1, 180, 1, 0, 0);
+	lights["flashlight"] = new Light(Light::LightType::spot, cameras["fps"]->position,
+		glm::vec3(0, 0, 0.2f), glm::vec3(0.8f, 1, 1), glm::vec3(0.1f, 0.1f, 0.1f),
+		cameras["fps"]->center - cameras["fps"]->position, 0.9f, 0.5f, 0, 0, 2.5f, false);
 }
 
 void displayFunc()
@@ -183,20 +188,20 @@ void displayFunc()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	objects["terrain"]->draw(activeCamera, lights["lamp"]);
-	objects["home"]->draw(activeCamera, lights["lamp"]);
-	objects["table"]->draw(activeCamera, lights["lamp"]);
-	objects["chair"]->draw(activeCamera, lights["lamp"]);
-	objects["carton"]->draw(activeCamera, lights["lamp"]);
+	objects["terrain"]->draw(activeCamera, lights);
+	objects["home"]->draw(activeCamera, lights);
+	objects["table"]->draw(activeCamera, lights);
+	objects["chair"]->draw(activeCamera, lights);
+	objects["carton"]->draw(activeCamera, lights);
 
-	objects["ornament1"]->draw(activeCamera, lights["lamp"]);
-	objects["ornament2"]->draw(activeCamera, lights["lamp"]);
-	objects["ornament3"]->draw(activeCamera, lights["lamp"]);
+	objects["ornament1"]->draw(activeCamera, lights);
+	objects["ornament2"]->draw(activeCamera, lights);
+	objects["ornament3"]->draw(activeCamera, lights);
 
-	objects["stand"]->draw(activeCamera, lights["lamp"]);
+	objects["stand"]->draw(activeCamera, lights);
 
-	objects["christmasTree"]->draw(activeCamera, lights["lamp"]);
-	treeGenerator->drawTrees(activeCamera, lights["lamp"]);
+	objects["christmasTree"]->draw(activeCamera, lights);
+	treeGenerator->drawTrees(activeCamera, lights);
 
 	glutSwapBuffers();
 }
@@ -223,9 +228,18 @@ void keyboardFunc(unsigned char key, int x, int y)
 	case 'd':
 		activeCamera->move(Camera::Direction::right);
 		break;
+	case 'f':
+		lights["flashlight"]->enabled = !lights["flashlight"]->enabled;
+		break;
+	case 'l':
+		lights["lamp"]->enabled = !lights["lamp"]->enabled;
+		break;
 	case 27:
 		glutLeaveMainLoop();
 	}
+
+	lights["flashlight"]->position = glm::vec4(cameras["fps"]->position, 1);
+	lights["flashlight"]->spot_direction = cameras["fps"]->center - cameras["fps"]->position;
 
 	glutPostRedisplay();
 }
@@ -257,6 +271,9 @@ void keyboardSpecialFunc(int key, int x, int y)
 		break;
 	}
 
+	lights["flashlight"]->position = glm::vec4(cameras["fps"]->position, 1);
+	lights["flashlight"]->spot_direction = cameras["fps"]->center - cameras["fps"]->position;
+
 	glutPostRedisplay();
 }
 
@@ -267,6 +284,7 @@ void mouseFunc(int button, int state, int x, int y)
 void passiveMotionFunc(int windowX, int windowY)
 {
 	activeCamera->look(windowX, windowY, cursor_position, window_dimensions);
+	lights["flashlight"]->spot_direction = cameras["fps"]->center - cameras["fps"]->position;
 	glutPostRedisplay();
 }
 

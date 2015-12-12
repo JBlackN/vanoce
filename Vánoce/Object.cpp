@@ -10,7 +10,7 @@ Object::~Object()
 {
 }
 
-void Object::draw(Camera * camera, Light * light)
+void Object::draw(Camera * camera, map<string, Light *> lights)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -19,7 +19,7 @@ void Object::draw(Camera * camera, Light * light)
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(this->adjustmentMatrix));
 
 	useCamera(camera);
-	useLight(light);
+	useLights(lights);
 	useMaterial();
 
 	glActiveTexture(GL_TEXTURE0);
@@ -47,44 +47,83 @@ void Object::useCamera(Camera * camera)
 	glUniformMatrix4fv(camPosLoc, 1, GL_FALSE, glm::value_ptr(camera->position));
 }
 
-void Object::useLight(Light * light)
+void Object::useLights(map<string, Light *> lights)
 {
+	int index = 0;
+	for (map<string, Light *>::iterator i = lights.begin(); i != lights.end(); i++)
+		useLight(i->second, index++);
+
+	// Lights count
+
+	GLint lightsCountLoc = glGetUniformLocation(model->shader->shaderProgram, "lights_count");
+	glUniform1i(lightsCountLoc, lights.size());
+}
+
+void Object::useLight(Light * light, int index)
+{
+	// Uniform names
+
+	string lightBaseUName = "lights[" + to_string(index) + "]";
+
+	string lightTypeUName = lightBaseUName + ".type";
+	string lightEnabledUName = lightBaseUName + ".enabled";
+	string lightPosUName = lightBaseUName + ".position";
+	string lightAmbientUName = lightBaseUName + ".ambient";
+	string lightDiffuseUName = lightBaseUName + ".diffuse";
+	string lightSpecularUName = lightBaseUName + ".specular";
+	string lightSpotDirUName = lightBaseUName + ".spot_direction";
+	string lightSpotExpUName = lightBaseUName + ".spot_exponent";
+	string lightSpotCutUName = lightBaseUName + ".spot_cutoff";
+	string lightConstAttUName = lightBaseUName + ".constant_attenuation";
+	string lightLinAttUName = lightBaseUName + ".linear_attenuation";
+	string lightQuadAttUName = lightBaseUName + ".quadratic_attenuation";
+
+	// Type
+
+	GLint lightTypeLoc = glGetUniformLocation(model->shader->shaderProgram, lightTypeUName.c_str());
+	glUniform1i(lightTypeLoc, light->type);
+
+	// Enabled
+
+	GLint lightEnabledLoc = glGetUniformLocation(model->shader->shaderProgram, lightEnabledUName.c_str());
+	glUniform1i(lightEnabledLoc, light->enabled);
+
 	// Position
 
-	GLint lightPosLoc = glGetUniformLocation(model->shader->shaderProgram, "light.position");
+	GLint lightPosLoc = glGetUniformLocation(model->shader->shaderProgram, lightPosUName.c_str());
 	glUniform3f(lightPosLoc, light->position.x, light->position.y, light->position.z);
 
 	// Colors
 
-	GLint lightAmbientLoc = glGetUniformLocation(model->shader->shaderProgram, "light.ambient");
+	GLint lightAmbientLoc = glGetUniformLocation(model->shader->shaderProgram, lightAmbientUName.c_str());
 	glUniform3f(lightAmbientLoc, light->ambient.x, light->ambient.y, light->ambient.z);
 
-	GLint lightDiffuseLoc = glGetUniformLocation(model->shader->shaderProgram, "light.diffuse");
+	GLint lightDiffuseLoc = glGetUniformLocation(model->shader->shaderProgram, lightDiffuseUName.c_str());
 	glUniform3f(lightDiffuseLoc, light->diffuse.x, light->diffuse.y, light->diffuse.z);
 
-	GLint lightSpecularLoc = glGetUniformLocation(model->shader->shaderProgram, "light.specular");
+	GLint lightSpecularLoc = glGetUniformLocation(model->shader->shaderProgram, lightSpecularUName.c_str());
 	glUniform3f(lightSpecularLoc, light->specular.x, light->specular.y, light->specular.z);
 
 	// Spotlight parameters
 
-	GLint lightSpotDirLoc = glGetUniformLocation(model->shader->shaderProgram, "light.spot_direction");
+	GLint lightSpotDirLoc = glGetUniformLocation(model->shader->shaderProgram, lightSpotDirUName.c_str());
 	glUniform3f(lightSpotDirLoc, light->spot_direction.x, light->spot_direction.y, light->spot_direction.z);
 
-	GLint lightSpotExpLoc = glGetUniformLocation(model->shader->shaderProgram, "light.spot_exponent");
+	GLint lightSpotExpLoc = glGetUniformLocation(model->shader->shaderProgram, lightSpotExpUName.c_str());
 	glUniform1f(lightSpotExpLoc, light->spot_exponent);
 
-	GLint lightSpotCutLoc = glGetUniformLocation(model->shader->shaderProgram, "light.spot_cutoff");
+	GLint lightSpotCutLoc = glGetUniformLocation(model->shader->shaderProgram, lightSpotCutUName.c_str());
 	glUniform1f(lightSpotCutLoc, light->spot_cutoff);
 
 	// Attenuation parameters
 
-	GLint lightConstAttLoc = glGetUniformLocation(model->shader->shaderProgram, "light.constant_attenuation");
+	GLint lightConstAttLoc = glGetUniformLocation(model->shader->shaderProgram, lightConstAttUName.c_str());
 	glUniform1f(lightConstAttLoc, light->constant_attenuation);
 
-	GLint lightLinAttLoc = glGetUniformLocation(model->shader->shaderProgram, "light.linear_attenuation");
+	GLint lightLinAttLoc = glGetUniformLocation(model->shader->shaderProgram, lightLinAttUName.c_str());
 	glUniform1f(lightLinAttLoc, light->linear_attenuation);
 
-	GLint lightQuadAttLoc = glGetUniformLocation(model->shader->shaderProgram, "light.quadratic_attenuation");
+	GLint lightQuadAttLoc = glGetUniformLocation(model->shader->shaderProgram, lightQuadAttUName.c_str());
 	glUniform1f(lightQuadAttLoc, light->quadratic_attenuation);
 }
 

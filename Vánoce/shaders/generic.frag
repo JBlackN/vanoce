@@ -20,6 +20,9 @@ uniform struct Material
 
 uniform struct Light
 {
+	int type;
+	bool enabled;
+
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
@@ -33,17 +36,18 @@ uniform struct Light
 	float constant_attenuation;
 	float linear_attenuation;
 	float quadratic_attenuation;
-} light;
+} lights[10];
+uniform int lights_count;
 
 uniform vec3 camera_position;
 
-void main()
+vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 {
-	vec3 normal = normalize(transpose(inverse(mat3(model))) * fNormal);
-	vec3 worldPosition = vec3(model * vec4(fPosition, 1));
-	vec3 directionToLight = light.position - worldPosition;
+	if (!light.enabled) return 0;
 
-	vec3 global_ambient = vec3(0, 0, 0.05) * material.ambient;
+	vec3 directionToLight = light.position - worldPosition;
+	vec3 directionFromLight = -directionToLight;
+	float distanceToLight = length(directionToLight);
 
 	vec3 ambient = light.ambient * material.ambient;
 	vec3 diffuse = max(dot(normalize(directionToLight), normal), 0) * light.diffuse * material.diffuse;
@@ -52,12 +56,38 @@ void main()
 	vec3 s = normalize((camera_direction + directionToLight) / length(camera_direction + directionToLight));
 	vec3 specular = pow(max(dot(s, normal), 0), material.shininess) * light.specular * material.specular;
 
-	//light.quadratic_attenuation = 0.2;
-	float distanceToLight = length(light.position - worldPosition);
-	float attenuation = 1.0 / (light.constant_attenuation + (length(distanceToLight) * light.linear_attenuation)
-		+ (pow(length(distanceToLight), 2) * light.quadratic_attenuation));
+	if (light.type == 0) // Point
+	{
+		float attenuation = 1.0 / (light.constant_attenuation + (length(distanceToLight) * light.linear_attenuation)
+			+ (pow(length(distanceToLight), 2) * light.quadratic_attenuation));
+
+		return attenuation * clamp(ambient + diffuse + specular, 0, 1);
+	}
+	else if (light.type == 1) // Spot
+	{
+		float attenuation = 1.0 / (light.constant_attenuation + (length(distanceToLight) * light.linear_attenuation)
+			+ (pow(length(distanceToLight), 2) * light.quadratic_attenuation));
+
+		float cos_alpha_positive = max(dot(directionFromLight, light.spot_direction), 0);
+		float spotlight_effect = cos_alpha_positive < light.spot_cutoff ? 0 : pow(cos_alpha_positive, light.spot_exponent);
+		return spotlight_effect * attenuation * clamp(ambient + diffuse + specular, 0, 1);
+	}
+	else // Dir
+	{
+	}
+}
+
+void main()
+{
+	vec3 normal = normalize(transpose(inverse(mat3(model))) * fNormal);
+	vec3 worldPosition = vec3(model * vec4(fPosition, 1));
+
+	vec3 global_ambient = vec3(0, 0, 0.05) * material.ambient;
+
+	vec3 computed_color = material.emission + global_ambient;
+	for (int i = 0; i < lights_count; i++)
+		computed_color += useLight(lights[i], normal, worldPosition);
 
 	vec4 texture = texture(tex, fTexCoord);
-	vec3 computed_color = material.emission + global_ambient + /*100 * attenuation * */clamp((ambient + diffuse + specular), 0, 1);
 	color = vec4(computed_color, 1) * texture;
 }
