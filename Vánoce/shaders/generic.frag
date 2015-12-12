@@ -45,7 +45,7 @@ vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 {
 	if (!light.enabled) return 0;
 
-	vec3 directionToLight = light.position - worldPosition;
+	vec3 directionToLight = light.type == 2 ? normalize(light.position.xyz) : light.position - worldPosition; // Directional or not
 	vec3 directionFromLight = -directionToLight;
 	float distanceToLight = length(directionToLight);
 
@@ -74,6 +74,7 @@ vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 	}
 	else // Dir
 	{
+		return clamp(ambient + diffuse + specular, 0, 1);
 	}
 }
 

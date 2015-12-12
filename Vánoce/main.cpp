@@ -93,8 +93,8 @@ void init()
 	materials["fabric"] = new Material(glm::vec3(0, 0.2f, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
 	materials["cardboard"] = new Material(glm::vec3(0.2f, 0.2f, 0), glm::vec3(0.6f, 0.4f, 0.2f), glm::vec3(0.8f, 0.6f, 0.4f), 5);
 	materials["ornament"] = new Material(glm::vec3(0.2f, 0, 0.2f), glm::vec3(0.7f, 0, 0.2f), glm::vec3(0.6f, 0.2f, 0.1f), 51.2f);
-	materials["metal"] = new Material(glm::vec3(0.2f, 0.4f, 0), glm::vec3(0, 0.2f, 0.2f), glm::vec3(0.2f, 1, 0.8f), 15);
-	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 2);
+	materials["metal"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0, 0.1f, 0.3f), glm::vec3(1, 1, 1), 15);
+	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 1);
 
 	//Textures
 
@@ -175,6 +175,9 @@ void init()
 
 	// Lights
 
+	lights["moon"] = new Light(Light::LightType::directional, glm::vec3(100, 100, -100),
+		glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.1f, 0.1f, 0.15f), glm::vec3(0.1f, 0.1f, 0.1f),
+		glm::vec3(0), 1, 360, 0, 0, 0);
 	lights["lamp"] = new Light(Light::LightType::point, glm::vec3(0, 8, 0),
 		glm::vec3(0, 0, 0.2f), glm::vec3(1, 0.6f, 0.2f), glm::vec3(0.1f, 0.1f, 0.1f),
 		glm::vec3(0), 1, 180, 1, 0, 0);
@@ -233,6 +236,9 @@ void keyboardFunc(unsigned char key, int x, int y)
 		break;
 	case 'l':
 		lights["lamp"]->enabled = !lights["lamp"]->enabled;
+		break;
+	case 'm':
+		lights["moon"]->enabled = !lights["moon"]->enabled;
 		break;
 	case 27:
 		glutLeaveMainLoop();
