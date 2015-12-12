@@ -47,10 +47,12 @@ void Camera::move(Direction whereTo)
 	case forward:
 		position += direction;
 		center += direction;
+		checkBoundaries(forward, direction);
 		break;
 	case back:
 		position -= direction;
 		center -= direction;
+		checkBoundaries(back, direction);
 		break;
 	case left:
 		//position -= sideDirection;
@@ -106,5 +108,22 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 	{
 		center.x += 0.05;
 		center.y -= 0.05;
+	}
+}
+
+void Camera::checkBoundaries(Direction direction, glm::vec3 amount)
+{
+	if (position.x > -100 && position.x < 100 && position.z > -100 && position.z < 100) return;
+
+	switch (direction)
+	{
+	case forward:
+		position -= amount;
+		center -= amount;
+		break;
+	case back:
+		position += amount;
+		center += amount;
+		break;
 	}
 }
