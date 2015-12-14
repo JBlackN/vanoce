@@ -101,7 +101,7 @@ void init()
 
 	//Textures
 
-	textures["skybox"] = new Texture("textures/skybox.jpg");
+	textures["skybox"] = new Texture("textures/skybox.jpg", true);
 	textures["snow"] = new Texture("textures/snow.png");
 	textures["home"] = new Texture("textures/home.png");
 	textures["wood"] = new Texture("textures/wood.jpg");

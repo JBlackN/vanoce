@@ -11,7 +11,7 @@ class Texture
 public:
 	GLuint texture;
 
-	Texture(string texPath);
+	Texture(string texPath, bool clamp = false);
 	~Texture();
 };
 
