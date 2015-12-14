@@ -13,6 +13,7 @@ using namespace std;
 #include "headers\Camera.h"
 #include "headers\Light.h"
 
+#include "models\skybox.h"
 #include "models\terrain.h"
 #include "models\home.h"
 #include "models\table.h"
@@ -84,9 +85,11 @@ void init()
 	// Shaders
 
 	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
+	shaders["skybox"] = new Shader("shaders/generic.vert", "shaders/skybox.frag");
 
 	// Materials
 
+	materials["skybox"] = new Material(glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 0);
 	materials["snow"] = new Material(glm::vec3(0, 0, 1), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 10);
 	materials["home"] = new Material(glm::vec3(0, 0, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
 	materials["wood"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0.6f, 0.4f, 0.4f), glm::vec3(0.8f, 0.6f, 0.4f), 1);
@@ -98,6 +101,7 @@ void init()
 
 	//Textures
 
+	textures["skybox"] = new Texture("textures/skybox.jpg");
 	textures["snow"] = new Texture("textures/snow.png");
 	textures["home"] = new Texture("textures/home.png");
 	textures["wood"] = new Texture("textures/wood.jpg");
@@ -108,6 +112,9 @@ void init()
 	textures["tree"] = new Texture("textures/tree.png");
 
 	// Models
+
+	models["skybox"] = new Model(shaders["skybox"], materials["skybox"], textures["skybox"], skyboxNTriangles);
+	models["skybox"]->loadData(skyboxNAttribsPerVertex, skyboxNVertices, skyboxNTriangles, skyboxVertices, skyboxTriangles);
 
 	models["terrain"] = new Model(shaders["generic"], materials["snow"], textures["snow"], terrainNTriangles);
 	models["terrain"]->loadData(terrainNAttribsPerVertex, terrainNVertices, terrainNTriangles, terrainVertices, terrainTriangles);
@@ -135,6 +142,8 @@ void init()
 
 	// Objects
 
+	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
+		90.0f, glm::vec3(-1, 0, 0)), glm::vec3(100, 100, 100)));
 	objects["terrain"] = new Object(models["terrain"], glm::scale(glm::rotate(glm::mat4(), 90.0f, glm::vec3(-1, 0, 0)),
 		glm::vec3(100, 100, 1)));
 	objects["home"] = new Object(models["home"], glm::scale(glm::mat4(), glm::vec3(5, 5, 5)));
@@ -175,7 +184,7 @@ void init()
 
 	// Lights
 
-	lights["moon"] = new Light(Light::LightType::directional, glm::vec3(100, 100, -100),
+	lights["moon"] = new Light(Light::LightType::directional, glm::vec3(100, 50, 100),
 		glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.1f, 0.1f, 0.15f), glm::vec3(0.1f, 0.1f, 0.1f),
 		glm::vec3(0), 1, 360, 0, 0, 0);
 	lights["lamp"] = new Light(Light::LightType::point, glm::vec3(0, 8, 0),
@@ -190,6 +199,10 @@ void displayFunc()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glDepthMask(0);
+	objects["skybox"]->draw(activeCamera, map<string, Light *>());
+	glDepthMask(1);
 
 	objects["terrain"]->draw(activeCamera, lights);
 	objects["home"]->draw(activeCamera, lights);
