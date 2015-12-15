@@ -7,6 +7,7 @@ in vec2 fTexCoord;
 out vec4 color;
 
 uniform mat4 model;
+uniform mat4 view;
 uniform sampler2D tex;
 
 uniform struct Material
@@ -40,6 +41,13 @@ uniform struct Light
 uniform int lights_count;
 
 uniform vec3 camera_position;
+
+uniform struct Fog
+{
+	float density;
+	vec4 color;
+	bool enabled;
+} fog;
 
 vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 {
@@ -78,6 +86,15 @@ vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 	}
 }
 
+vec4 useFog(vec4 color, vec3 worldPosition)
+{
+	if (!fog.enabled) return color;
+
+	float z = length(view * model * vec4(fPosition, 1));//normalize(length(worldPosition - camera_position));
+	float f = clamp(exp(-pow((fog.density * z), 2)), 0, 1);
+	return vec4(f * color.rgb + (1 - f) * fog.color.rgb, color.a);
+}
+
 void main()
 {
 	vec3 normal = normalize(transpose(inverse(mat3(model))) * fNormal);
@@ -91,4 +108,5 @@ void main()
 
 	vec4 texture = texture(tex, fTexCoord);
 	color = vec4(computed_color, 1) * texture;
+	color = useFog(color, worldPosition);
 }

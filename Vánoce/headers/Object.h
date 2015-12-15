@@ -8,6 +8,7 @@ using namespace std;
 #include "Model.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Fog.h"
 
 class Object
 {
@@ -18,12 +19,13 @@ public:
 	Object(Model * model, glm::mat4 adjustmentMatrix);
 	~Object();
 
-	void draw(Camera * camera, map<string, Light *> lights);
+	void draw(Camera * camera, map<string, Light *> lights = map<string, Light *>(), Fog * fog = NULL);
 
 private:
 	void useCamera(Camera * camera);
 	void useLights(map<string, Light *> lights);
 	void useLight(Light * light, int index);
 	void useMaterial();
+	void useFog(Fog * fog);
 };
 

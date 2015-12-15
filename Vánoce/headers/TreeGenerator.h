@@ -12,6 +12,7 @@ using namespace std;
 #include "Object.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Fog.h"
 
 class TreeGenerator
 {
@@ -23,6 +24,6 @@ public:
 	~TreeGenerator();
 
 	void generateTrees(int count, int mapQuadrantDimension);
-	void drawTrees(Camera * camera, map<string, Light *> lights);
+	void drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog);
 };
 

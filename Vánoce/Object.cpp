@@ -10,7 +10,7 @@ Object::~Object()
 {
 }
 
-void Object::draw(Camera * camera, map<string, Light *> lights)
+void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -21,6 +21,7 @@ void Object::draw(Camera * camera, map<string, Light *> lights)
 	useCamera(camera);
 	useLights(lights);
 	useMaterial();
+	if (fog != NULL) useFog(fog);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->texture->texture);
@@ -143,4 +144,16 @@ void Object::useMaterial()
 
 	GLint matShininessLoc = glGetUniformLocation(model->shader->shaderProgram, "material.shininess");
 	glUniform1f(matShininessLoc, model->material->shininess);
+}
+
+void Object::useFog(Fog * fog)
+{
+	GLint fogDensityLoc = glGetUniformLocation(model->shader->shaderProgram, "fog.density");
+	glUniform1f(fogDensityLoc, fog->density);
+
+	GLint fogColorLoc = glGetUniformLocation(model->shader->shaderProgram, "fog.color");
+	glUniform4f(fogColorLoc, fog->color.r, fog->color.g, fog->color.b, fog->color.a);
+
+	GLint fogEnabledLoc = glGetUniformLocation(model->shader->shaderProgram, "fog.enabled");
+	glUniform1i(fogEnabledLoc, fog->enabled);
 }

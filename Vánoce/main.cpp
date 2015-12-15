@@ -12,6 +12,7 @@ using namespace std;
 #include "headers\TreeGenerator.h"
 #include "headers\Camera.h"
 #include "headers\Light.h"
+#include "headers\Fog.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -32,6 +33,7 @@ map<string, Texture *> textures;
 map<string, Model *> models;
 map<string, Object *> objects;
 map<string, Light *> lights;
+Fog * fog;
 map<string, Camera *> cameras;
 Camera * activeCamera;
 
@@ -193,6 +195,10 @@ void init()
 	lights["flashlight"] = new Light(Light::LightType::spot, cameras["fps"]->position,
 		glm::vec3(0, 0, 0.2f), glm::vec3(0.8f, 1, 1), glm::vec3(0.1f, 0.1f, 0.1f),
 		cameras["fps"]->center - cameras["fps"]->position, 0.9f, 0.5f, 0, 0, 2.5f, false);
+
+	// Fog
+
+	fog = new Fog(0.015f, glm::vec4(0, 0, 0, 1));
 }
 
 void displayFunc()
@@ -201,23 +207,23 @@ void displayFunc()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glDepthMask(0);
-	objects["skybox"]->draw(activeCamera, map<string, Light *>());
+	objects["skybox"]->draw(activeCamera);
 	glDepthMask(1);
 
-	objects["terrain"]->draw(activeCamera, lights);
-	objects["home"]->draw(activeCamera, lights);
-	objects["table"]->draw(activeCamera, lights);
-	objects["chair"]->draw(activeCamera, lights);
-	objects["carton"]->draw(activeCamera, lights);
+	objects["terrain"]->draw(activeCamera, lights, fog);
+	objects["home"]->draw(activeCamera, lights, fog);
+	objects["table"]->draw(activeCamera, lights, fog);
+	objects["chair"]->draw(activeCamera, lights, fog);
+	objects["carton"]->draw(activeCamera, lights, fog);
 
-	objects["ornament1"]->draw(activeCamera, lights);
-	objects["ornament2"]->draw(activeCamera, lights);
-	objects["ornament3"]->draw(activeCamera, lights);
+	objects["ornament1"]->draw(activeCamera, lights, fog);
+	objects["ornament2"]->draw(activeCamera, lights, fog);
+	objects["ornament3"]->draw(activeCamera, lights, fog);
 
-	objects["stand"]->draw(activeCamera, lights);
+	objects["stand"]->draw(activeCamera, lights, fog);
 
-	objects["christmasTree"]->draw(activeCamera, lights);
-	treeGenerator->drawTrees(activeCamera, lights);
+	objects["christmasTree"]->draw(activeCamera, lights, fog);
+	treeGenerator->drawTrees(activeCamera, lights, fog);
 
 	glutSwapBuffers();
 }
@@ -253,6 +259,9 @@ void keyboardFunc(unsigned char key, int x, int y)
 	case 'm':
 		lights["moon"]->enabled = !lights["moon"]->enabled;
 		break;
+	case 'M':
+		fog->enabled = !fog->enabled;
+		break;
 	case 27:
 		glutLeaveMainLoop();
 	}
@@ -281,12 +290,15 @@ void keyboardSpecialFunc(int key, int x, int y)
 		break;
 	case GLUT_KEY_F1:
 		activeCamera = cameras["fps"];
+		fog->enabled = true;
 		break;
 	case GLUT_KEY_F2:
 		activeCamera = cameras["inside"];
+		fog->enabled = true;
 		break;
 	case GLUT_KEY_F3:
 		activeCamera = cameras["outside"];
+		fog->enabled = false;
 		break;
 	}
 
