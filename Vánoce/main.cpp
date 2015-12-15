@@ -97,7 +97,9 @@ void init()
 	materials["wood"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0.6f, 0.4f, 0.4f), glm::vec3(0.8f, 0.6f, 0.4f), 1);
 	materials["fabric"] = new Material(glm::vec3(0, 0.2f, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
 	materials["cardboard"] = new Material(glm::vec3(0.2f, 0.2f, 0), glm::vec3(0.6f, 0.4f, 0.2f), glm::vec3(0.8f, 0.6f, 0.4f), 5);
-	materials["ornament"] = new Material(glm::vec3(0.2f, 0, 0.2f), glm::vec3(0.7f, 0, 0.2f), glm::vec3(0.6f, 0.2f, 0.1f), 51.2f);
+	materials["ornament_red"] = new Material(glm::vec3(0.2f, 0, 0.2f), glm::vec3(0.7f, 0, 0.2f), glm::vec3(0.6f, 0.2f, 0.1f), 51.2f);
+	materials["ornament_green"] = new Material(glm::vec3(0, 0.2f, 0.2f), glm::vec3(0, 0.7f, 0.2f), glm::vec3(0, 0.8f, 0.2f), 51.2f);
+	materials["ornament_blue"] = new Material(glm::vec3(0.2f, 0.2f, 0.4f), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0.2f, 0.6f, 1), 51.2f);
 	materials["metal"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0, 0.1f, 0.3f), glm::vec3(1, 1, 1), 15);
 	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 1);
 
@@ -133,8 +135,14 @@ void init()
 	models["carton"] = new Model(shaders["generic"], materials["cardboard"], textures["cardboard"], cartonNTriangles);
 	models["carton"]->loadData(cartonNAttribsPerVertex, cartonNVertices, cartonNTriangles, cartonVertices, cartonTriangles);
 
-	models["ornament"] = new Model(shaders["generic"], materials["ornament"], textures["glass"], ornamentNTriangles);
-	models["ornament"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+	models["ornament_red"] = new Model(shaders["generic"], materials["ornament_red"], textures["glass"], ornamentNTriangles);
+	models["ornament_red"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+
+	models["ornament_green"] = new Model(shaders["generic"], materials["ornament_green"], textures["glass"], ornamentNTriangles);
+	models["ornament_green"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+
+	models["ornament_blue"] = new Model(shaders["generic"], materials["ornament_blue"], textures["glass"], ornamentNTriangles);
+	models["ornament_blue"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
 	
 	models["stand"] = new Model(shaders["generic"], materials["metal"], textures["metal"], standNTriangles);
 	models["stand"]->loadData(standNAttribsPerVertex, standNVertices, standNTriangles, standVertices, standTriangles);
@@ -156,11 +164,11 @@ void init()
 	objects["carton"] = new Object(models["carton"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 3, 5)),
 		glm::vec3(-0.9f, 1.75f, -0.6f)));
 
-	objects["ornament1"] = new Object(models["ornament"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+	objects["ornament_red"] = new Object(models["ornament_red"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(-0.9f, 1.0f, -0.55f)));
-	objects["ornament2"] = new Object(models["ornament"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+	objects["ornament_green"] = new Object(models["ornament_green"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(-1.0f, 1.0f, -0.55f)));
-	objects["ornament3"] = new Object(models["ornament"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+	objects["ornament_blue"] = new Object(models["ornament_blue"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(-0.97f, 1.0f, -0.67f)));
 
 	objects["stand"] = new Object(models["stand"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
@@ -216,9 +224,9 @@ void displayFunc()
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
 
-	objects["ornament1"]->draw(activeCamera, lights, fog);
-	objects["ornament2"]->draw(activeCamera, lights, fog);
-	objects["ornament3"]->draw(activeCamera, lights, fog);
+	objects["ornament_red"]->draw(activeCamera, lights, fog);
+	objects["ornament_green"]->draw(activeCamera, lights, fog);
+	objects["ornament_blue"]->draw(activeCamera, lights, fog);
 
 	objects["stand"]->draw(activeCamera, lights, fog);
 
