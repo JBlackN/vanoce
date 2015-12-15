@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitContextVersion(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
 
 	glutInitWindowSize(window_dimensions.x, window_dimensions.y);
 	glutCreateWindow("Window");
@@ -72,6 +72,7 @@ int main(int argc, char **argv)
 	if (!pgr::initialize(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR))
 		pgr::dieWithError("pgr init failed");
 
+	glClearStencil(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
@@ -212,7 +213,7 @@ void init()
 void displayFunc()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glDepthMask(0);
 	objects["skybox"]->draw(activeCamera);
@@ -224,9 +225,17 @@ void displayFunc()
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
 
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glStencilFunc(GL_ALWAYS, 1, -1);
 	objects["ornament_red"]->draw(activeCamera, lights, fog);
+	glStencilFunc(GL_ALWAYS, 2, -1);
 	objects["ornament_yellow"]->draw(activeCamera, lights, fog);
+	glStencilFunc(GL_ALWAYS, 3, -1);
 	objects["ornament_blue"]->draw(activeCamera, lights, fog);
+
+	glDisable(GL_STENCIL_TEST);
 
 	objects["stand"]->draw(activeCamera, lights, fog);
 
@@ -318,6 +327,29 @@ void keyboardSpecialFunc(int key, int x, int y)
 
 void mouseFunc(int button, int state, int x, int y)
 {
+	if ((button == GLUT_LEFT_BUTTON) && (state = GLUT_UP))
+	{
+		unsigned char ornamentID;
+		glReadPixels(x, window_dimensions.y - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &ornamentID);
+		glDisable(GL_STENCIL_TEST);
+		if (ornamentID == 0)
+			cout << "BG" << endl;
+		else
+		{
+			switch (ornamentID)
+			{
+			case 1:
+				cout << "Red" << endl;
+				break;
+			case 2:
+				cout << "Yellow" << endl;
+				break;
+			case 3:
+				cout << "Blue" << endl;
+				break;
+			}
+		}
+	}
 }
 
 void passiveMotionFunc(int windowX, int windowY)
