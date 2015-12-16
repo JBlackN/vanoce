@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream> // TODO: Remove
 #include <list>
 using namespace std;
 
@@ -19,6 +20,7 @@ private:
 	unsigned int nBlueOrnaments;
 
 	list<Object *> placedObjects;
+
 public:
 	enum OrnamentType { red, yellow, blue };
 
@@ -26,6 +28,8 @@ public:
 	~Inventory();
 
 	void insertOrnament(OrnamentType type);
+	void removeOrnament(OrnamentType type);
 	unsigned int ornamentCount(OrnamentType type);
+	void placeOrnament(OrnamentType type, Object * tree);
 };
 

@@ -261,6 +261,10 @@ void reshapeFunc(int width, int height)
 
 void keyboardFunc(unsigned char key, int x, int y)
 {
+	unsigned char treeID;
+	glReadPixels(x, window_dimensions.y - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &treeID);
+	glDisable(GL_STENCIL_TEST);
+
 	switch (key)
 	{
 	case 'w':
@@ -286,6 +290,15 @@ void keyboardFunc(unsigned char key, int x, int y)
 		break;
 	case 'M':
 		fog->enabled = !fog->enabled;
+		break;
+	case 'r':
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::red, objects["christmasTree"]);
+		break;
+	case 'y':
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::yellow, objects["christmasTree"]);
+		break;
+	case 'b':
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::blue, objects["christmasTree"]);
 		break;
 	case 27:
 		glutLeaveMainLoop();
@@ -340,28 +353,23 @@ void mouseFunc(int button, int state, int x, int y)
 		unsigned char ornamentID;
 		glReadPixels(x, window_dimensions.y - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &ornamentID);
 		glDisable(GL_STENCIL_TEST);
-		if (ornamentID == 0)
-			cout << "BG" << endl;
-		else
+		switch (ornamentID)
 		{
-			switch (ornamentID)
-			{
-			case 1:
-				inventory->insertOrnament(Inventory::OrnamentType::red);
-				cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
-				break;
-			case 2:
-				inventory->insertOrnament(Inventory::OrnamentType::yellow);
-				cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
-				break;
-			case 3:
-				inventory->insertOrnament(Inventory::OrnamentType::blue);
-				cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
-				break;
-			case 4:
-				cout << "Christmas tree" << endl;
-				break;
-			}
+		case 1:
+			inventory->insertOrnament(Inventory::OrnamentType::red);
+			cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
+			break;
+		case 2:
+			inventory->insertOrnament(Inventory::OrnamentType::yellow);
+			cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
+			break;
+		case 3:
+			inventory->insertOrnament(Inventory::OrnamentType::blue);
+			cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
+			break;
+		case 4:
+			cout << "Christmas tree" << endl;
+			break;
 		}
 	}
 }
