@@ -17,18 +17,18 @@ Inventory::~Inventory()
 {
 }
 
-void Inventory::insertOrnament(OrnamentType type)
+void Inventory::insertOrnament(OrnamentType type, unsigned int count)
 {
 	switch (type)
 	{
 	case red:
-		this->nRedOrnaments++;
+		this->nRedOrnaments += count;
 		break;
 	case yellow:
-		this->nYellowOrnaments++;
+		this->nYellowOrnaments += count;
 		break;
 	case blue:
-		this->nBlueOrnaments++;
+		this->nBlueOrnaments += count;
 		break;
 	}
 }

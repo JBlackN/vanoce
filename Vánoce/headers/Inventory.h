@@ -32,7 +32,7 @@ public:
 	Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
 	~Inventory();
 
-	void insertOrnament(OrnamentType type);
+	void insertOrnament(OrnamentType type, unsigned int count = 1);
 	void removeOrnament(OrnamentType type);
 	unsigned int ornamentCount(OrnamentType type);
 	void placeOrnament(OrnamentType type, Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera);

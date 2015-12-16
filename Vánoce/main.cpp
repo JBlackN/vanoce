@@ -358,23 +358,28 @@ void keyboardSpecialFunc(int key, int x, int y)
 
 void mouseFunc(int button, int state, int x, int y)
 {
+	int modifiers = glutGetModifiers();
+
 	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		unsigned char ornamentID;
 		glReadPixels(x, window_dimensions.y - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &ornamentID);
 		glDisable(GL_STENCIL_TEST);
+
+		int ornamentInsertStep = (modifiers == GLUT_ACTIVE_SHIFT) ? 10 : 1;
+
 		switch (ornamentID)
 		{
 		case 1:
-			inventory->insertOrnament(Inventory::OrnamentType::red);
+			inventory->insertOrnament(Inventory::OrnamentType::red, ornamentInsertStep);
 			cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
 			break;
 		case 2:
-			inventory->insertOrnament(Inventory::OrnamentType::yellow);
+			inventory->insertOrnament(Inventory::OrnamentType::yellow, ornamentInsertStep);
 			cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
 			break;
 		case 3:
-			inventory->insertOrnament(Inventory::OrnamentType::blue);
+			inventory->insertOrnament(Inventory::OrnamentType::blue, ornamentInsertStep);
 			cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
 			break;
 		case 4:
