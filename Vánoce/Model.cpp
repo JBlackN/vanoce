@@ -1,18 +1,28 @@
 #include "headers\Model.h"
 
-Model::Model(Shader * shader, Material * material, Texture * texture, const int nTriangles)
+Model::Model(Shader * shader, Material * material, Texture * texture,
+	const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles)
 {
 	this->shader = shader;
 	this->material = material;
 	this->texture = texture;
-	this->drawCount = 3 * nTriangles;
+	
+	this->nAttrPerVert = nAttrPerVert;
+	this->nVert = nVert;
+	this->nTri = nTri;
+	this->vertices = vertices;
+	this->triangles = triangles;
+
+	this->drawCount = 3 * nTri;
+
+	loadData();
 }
 
 Model::~Model()
 {
 }
 
-void Model::loadData(const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles)
+void Model::loadData()
 {
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);

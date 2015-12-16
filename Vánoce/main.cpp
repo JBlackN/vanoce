@@ -72,7 +72,6 @@ int main(int argc, char **argv)
 	if (!pgr::initialize(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR))
 		pgr::dieWithError("pgr init failed");
 
-	glClearStencil(0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
@@ -118,38 +117,38 @@ void init()
 
 	// Models
 
-	models["skybox"] = new Model(shaders["skybox"], materials["skybox"], textures["skybox"], skyboxNTriangles);
-	models["skybox"]->loadData(skyboxNAttribsPerVertex, skyboxNVertices, skyboxNTriangles, skyboxVertices, skyboxTriangles);
+	models["skybox"] = new Model(shaders["skybox"], materials["skybox"], textures["skybox"],
+		skyboxNAttribsPerVertex, skyboxNVertices, skyboxNTriangles, skyboxVertices, skyboxTriangles);
 
-	models["terrain"] = new Model(shaders["generic"], materials["snow"], textures["snow"], terrainNTriangles);
-	models["terrain"]->loadData(terrainNAttribsPerVertex, terrainNVertices, terrainNTriangles, terrainVertices, terrainTriangles);
+	models["terrain"] = new Model(shaders["generic"], materials["snow"], textures["snow"],
+		terrainNAttribsPerVertex, terrainNVertices, terrainNTriangles, terrainVertices, terrainTriangles);
 
-	models["home"] = new Model(shaders["generic"], materials["home"], textures["home"], homeNTriangles);
-	models["home"]->loadData(homeNAttribsPerVertex, homeNVertices, homeNTriangles, homeVertices, homeTriangles);
+	models["home"] = new Model(shaders["generic"], materials["home"], textures["home"],
+		homeNAttribsPerVertex, homeNVertices, homeNTriangles, homeVertices, homeTriangles);
 
-	models["table"] = new Model(shaders["generic"], materials["wood"], textures["wood"], tableNTriangles);
-	models["table"]->loadData(tableNAttribsPerVertex, tableNVertices, tableNTriangles, tableVertices, tableTriangles);
+	models["table"] = new Model(shaders["generic"], materials["wood"], textures["wood"],
+		tableNAttribsPerVertex, tableNVertices, tableNTriangles, tableVertices, tableTriangles);
 
-	models["chair"] = new Model(shaders["generic"], materials["fabric"], textures["fabric"], chairNTriangles);
-	models["chair"]->loadData(chairNAttribsPerVertex, chairNVertices, chairNTriangles, chairVertices, chairTriangles);
+	models["chair"] = new Model(shaders["generic"], materials["fabric"], textures["fabric"],
+		chairNAttribsPerVertex, chairNVertices, chairNTriangles, chairVertices, chairTriangles);
 
-	models["carton"] = new Model(shaders["generic"], materials["cardboard"], textures["cardboard"], cartonNTriangles);
-	models["carton"]->loadData(cartonNAttribsPerVertex, cartonNVertices, cartonNTriangles, cartonVertices, cartonTriangles);
+	models["carton"] = new Model(shaders["generic"], materials["cardboard"], textures["cardboard"],
+		cartonNAttribsPerVertex, cartonNVertices, cartonNTriangles, cartonVertices, cartonTriangles);
 
-	models["ornament_red"] = new Model(shaders["generic"], materials["ornament_red"], textures["glass"], ornamentNTriangles);
-	models["ornament_red"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+	models["ornament_red"] = new Model(shaders["generic"], materials["ornament_red"], textures["glass"],
+		ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
 
-	models["ornament_yellow"] = new Model(shaders["generic"], materials["ornament_yellow"], textures["glass"], ornamentNTriangles);
-	models["ornament_yellow"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+	models["ornament_yellow"] = new Model(shaders["generic"], materials["ornament_yellow"], textures["glass"],
+		ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
 
-	models["ornament_blue"] = new Model(shaders["generic"], materials["ornament_blue"], textures["glass"], ornamentNTriangles);
-	models["ornament_blue"]->loadData(ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
+	models["ornament_blue"] = new Model(shaders["generic"], materials["ornament_blue"], textures["glass"],
+		ornamentNAttribsPerVertex, ornamentNVertices, ornamentNTriangles, ornamentVertices, ornamentTriangles);
 	
-	models["stand"] = new Model(shaders["generic"], materials["metal"], textures["metal"], standNTriangles);
-	models["stand"]->loadData(standNAttribsPerVertex, standNVertices, standNTriangles, standVertices, standTriangles);
+	models["stand"] = new Model(shaders["generic"], materials["metal"], textures["metal"],
+		standNAttribsPerVertex, standNVertices, standNTriangles, standVertices, standTriangles);
 	
-	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"], treeNTriangles);
-	models["tree"]->loadData(treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
+	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"],
+		treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
 
 	// Objects
 
@@ -213,6 +212,7 @@ void init()
 void displayFunc()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearStencil(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glDepthMask(0);

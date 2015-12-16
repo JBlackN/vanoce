@@ -14,11 +14,20 @@ public:
 	GLuint vbo;
 	GLuint ebo;
 	GLuint vao;
+
+	int nAttrPerVert;
+	int nVert;
+	int nTri;
+	const float * vertices;
+	const unsigned int * triangles;
+
 	int drawCount;
 
-	Model(Shader * shader, Material * material, Texture * texture, const int drawCount);
+	Model(Shader * shader, Material * material, Texture * texture,
+		const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles);
 	~Model();
 
-	void loadData(const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles);
+private:
+	void loadData();
 };
 
