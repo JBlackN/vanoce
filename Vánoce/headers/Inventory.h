@@ -10,6 +10,7 @@ using namespace std;
 #include "Model.h"
 #include "Object.h"
 #include "Camera.h"
+#include "Material.h"
 #include "Light.h"
 #include "Fog.h"
 
@@ -35,7 +36,10 @@ public:
 	void insertOrnament(OrnamentType type);
 	void removeOrnament(OrnamentType type);
 	unsigned int ornamentCount(OrnamentType type);
-	void placeOrnament(OrnamentType type, Object * tree);
+	void placeOrnament(OrnamentType type, Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera);
 	void drawOrnaments(Camera * camera, map<string, Light *> lights, Fog * fog);
+
+private:
+	glm::vec3 findPosition(Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera);
 };
 

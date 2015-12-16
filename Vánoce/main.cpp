@@ -293,13 +293,13 @@ void keyboardFunc(unsigned char key, int x, int y)
 		fog->enabled = !fog->enabled;
 		break;
 	case 'r':
-		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::red, objects["christmasTree"]);
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::red, objects["christmasTree"], window_dimensions, x, y, activeCamera);
 		break;
 	case 'y':
-		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::yellow, objects["christmasTree"]);
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::yellow, objects["christmasTree"], window_dimensions, x, y, activeCamera);
 		break;
 	case 'b':
-		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::blue, objects["christmasTree"]);
+		if (treeID == 4) inventory->placeOrnament(Inventory::OrnamentType::blue, objects["christmasTree"], window_dimensions, x, y, activeCamera);
 		break;
 	case 27:
 		glutLeaveMainLoop();

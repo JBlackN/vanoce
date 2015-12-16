@@ -65,7 +65,7 @@ unsigned int Inventory::ornamentCount(OrnamentType type)
 	}
 }
 
-void Inventory::placeOrnament(OrnamentType type, Object * tree)
+void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera)
 {
 	if (ornamentCount(type) == 0) return;
 
@@ -86,8 +86,11 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree)
 		break;
 	}
 
+	glm::vec3 position = findPosition(tree, window_dimensions, windowX, windowY, camera);
+	//cout << "x= " << position.x << ", y= " << position.y << ", z= " << position.z << endl;
+
 	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(0, 2, 0)));
+		position / 5.0f));
 	this->placedOrnaments.push_back(placedOrnament);
 
 	removeOrnament(type);
@@ -95,6 +98,32 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree)
 
 void Inventory::drawOrnaments(Camera * camera, map<string, Light*> lights, Fog * fog)
 {
+	Material * ornamentMaterial = NULL;
+	if (!placedOrnaments.empty())
+	{
+		ornamentMaterial = (*(placedOrnaments.begin()))->model->material;
+		ornamentMaterial->emission = ornamentMaterial->diffuse * 1.5f;
+	}
+
 	for (list<Object *>::iterator i = placedOrnaments.begin(); i != placedOrnaments.end(); i++)
+	{
 		(*i)->draw(camera, lights, fog);
+	}
+
+	if (ornamentMaterial != NULL) ornamentMaterial->emission = glm::vec4(0, 0, 0, 1);
+}
+
+glm::vec3 Inventory::findPosition(Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera)
+{
+	glm::vec3 ray_start, ray_end;
+
+	GLint winWidth = glutGet(GLUT_WINDOW_WIDTH);
+	GLint winHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	glm::vec4 viewport = glm::vec4(0, 0, winWidth, winHeight);
+	GLfloat winZ;
+	glReadPixels((GLint)windowX, (GLint)(winHeight - windowY - 1), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+	glm::vec3 winCoords = glm::vec3(windowX, winHeight - windowY - 1, winZ);
+
+	return glm::unProject(winCoords, /*tree->adjustmentMatrix * */camera->getViewMatrix(), camera->getProjectionMatrix(), viewport);
 }
