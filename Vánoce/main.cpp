@@ -14,6 +14,7 @@ using namespace std;
 #include "headers\Light.h"
 #include "headers\Fog.h"
 #include "headers\Inventory.h"
+#include "headers\Hud.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -41,6 +42,7 @@ Camera * activeCamera;
 TreeGenerator * treeGenerator;
 
 Inventory * inventory;
+Hud * hud;
 
 void init(void);
 
@@ -106,9 +108,11 @@ void init()
 	materials["ornament_blue"] = new Material(glm::vec3(0.2f, 0.2f, 0.4f), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0.2f, 0.6f, 1), 51.2f);
 	materials["metal"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0, 0.1f, 0.3f), glm::vec3(1, 1, 1), 15);
 	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 1);
-	materials["ornament_red_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0, 0), glm::vec3(0), 0, glm::vec3(0));
-	materials["ornament_yellow_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0.7f, 0), glm::vec3(0), 0, glm::vec3(0));
-	materials["ornament_blue_hud"] = new Material(glm::vec3(0), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0), 0, glm::vec3(0));
+
+	map<string, Material *> hudMaterials;
+	hudMaterials["ornament_red_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0, 0), glm::vec3(0), 0, glm::vec3(0));
+	hudMaterials["ornament_yellow_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0.7f, 0), glm::vec3(0), 0, glm::vec3(0));
+	hudMaterials["ornament_blue_hud"] = new Material(glm::vec3(0), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0), 0, glm::vec3(0));
 
 	//Textures
 
@@ -121,9 +125,20 @@ void init()
 	textures["glass"] = new Texture("textures/glass.png");
 	textures["metal"] = new Texture("textures/metal.png");
 	textures["tree"] = new Texture("textures/tree.png");
-	textures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
-	textures["ornament_yellow_hud"] = new Texture("textures/ornament_yellow.png");
-	textures["ornament_blue_hud"] = new Texture("textures/ornament_blue.png");
+	
+	map<string, Texture *> hudTextures;
+	hudTextures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
+	hudTextures["ornament_yellow_hud"] = new Texture("textures/ornament_yellow.png");
+	hudTextures["ornament_blue_hud"] = new Texture("textures/ornament_blue.png");
+	hudTextures["ornament_1_hud"] = new Texture("textures/ornament_1.png");
+	hudTextures["ornament_2_hud"] = new Texture("textures/ornament_2.png");
+	hudTextures["ornament_3_hud"] = new Texture("textures/ornament_3.png");
+	hudTextures["ornament_4_hud"] = new Texture("textures/ornament_4.png");
+	hudTextures["ornament_5_hud"] = new Texture("textures/ornament_5.png");
+	hudTextures["ornament_6_hud"] = new Texture("textures/ornament_6.png");
+	hudTextures["ornament_7_hud"] = new Texture("textures/ornament_7.png");
+	hudTextures["ornament_8_hud"] = new Texture("textures/ornament_8.png");
+	hudTextures["ornament_9_hud"] = new Texture("textures/ornament_9.png");
 
 	// Models
 
@@ -160,25 +175,6 @@ void init()
 	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"],
 		treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
 
-	float testSize = 40;
-	float testBorderPercent = 4;
-	const float testVertices[] = {
-		window_dimensions.x - (testSize + (window_dimensions.x/100)*testBorderPercent), window_dimensions.y - (window_dimensions.y / 100)*testBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-		window_dimensions.x - (testSize + (window_dimensions.x / 100)*testBorderPercent), window_dimensions.y - (testSize + (window_dimensions.y / 100)*testBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
-		window_dimensions.x - (window_dimensions.x / 100)*testBorderPercent, window_dimensions.y - (window_dimensions.y / 100)*testBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-		window_dimensions.x - (window_dimensions.x / 100)*testBorderPercent, window_dimensions.y - (testSize + (window_dimensions.y / 100)*testBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
-	};
-	const unsigned int testTriangles[] = {
-		0, 1, 2,
-		1, 2, 3
-	};
-	models["ornament_red_hud"] = new Model(shaders["hud"], materials["ornament_red_hud"], textures["ornament_red_hud"],
-		8, 4, 2, testVertices, testTriangles);
-	models["ornament_yellow_hud"] = new Model(shaders["hud"], materials["ornament_yellow_hud"], textures["ornament_yellow_hud"],
-		8, 4, 2, testVertices, testTriangles);
-	models["ornament_blue_hud"] = new Model(shaders["hud"], materials["ornament_blue_hud"], textures["ornament_blue_hud"],
-		8, 4, 2, testVertices, testTriangles);
-
 	// Objects
 
 	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
@@ -207,10 +203,6 @@ void init()
 		glm::vec3(1.5f, 1.4f, -1.5f)));
 	treeGenerator = new TreeGenerator(models["tree"]);
 	treeGenerator->generateTrees(50, 19);
-
-	objects["ornament_red_hud"] = new Object(models["ornament_red_hud"], glm::translate(glm::mat4(1), glm::vec3(-2*(48), 0, 0)));
-	objects["ornament_yellow_hud"] = new Object(models["ornament_yellow_hud"], glm::translate(glm::mat4(1), glm::vec3(-1*(48), 0, 0)));
-	objects["ornament_blue_hud"] = new Object(models["ornament_blue_hud"], glm::translate(glm::mat4(1), glm::vec3(-0*(48), 0, 0)));
 
 	// Cameras
 
@@ -244,6 +236,10 @@ void init()
 	// Inventory
 
 	inventory = new Inventory(models["ornament_red"], models["ornament_yellow"], models["ornament_blue"]);
+
+	// HUD
+
+	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures, true);
 }
 
 void displayFunc()
@@ -284,9 +280,7 @@ void displayFunc()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	objects["ornament_red_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
-	objects["ornament_yellow_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
-	objects["ornament_blue_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	hud->draw(0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
 
 	glDisable(GL_BLEND);
 
@@ -348,6 +342,9 @@ void keyboardFunc(unsigned char key, int x, int y)
 			inventory->placeOrnament(Inventory::OrnamentType::blue, objects["christmasTree"], window_dimensions, x, y, activeCamera);
 		if (treeID > 4)
 			inventory->placeOrnament(Inventory::OrnamentType::blue, treeGenerator->trees[(int)treeID - 5], window_dimensions, x, y, activeCamera);
+		break;
+	case 'h':
+		hud->enabled = !hud->enabled;
 		break;
 	case 27:
 		glutLeaveMainLoop();

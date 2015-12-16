@@ -36,7 +36,7 @@ void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 	glUseProgram(0);
 }
 
-void Object::draw(Camera * camera, float left, float right, float bottom, float top, float nearPlane, float farPlane)
+void Object::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -49,7 +49,7 @@ void Object::draw(Camera * camera, float left, float right, float bottom, float 
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(orthoProjection));
 
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)/*camera->getViewMatrix()*/));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 
 	useMaterial();
 

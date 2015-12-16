@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Fog.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\Fog.h" />
+    <ClInclude Include="headers\Hud.h" />
     <ClInclude Include="headers\Inventory.h" />
     <ClInclude Include="headers\Light.h" />
     <ClInclude Include="headers\Material.h" />
