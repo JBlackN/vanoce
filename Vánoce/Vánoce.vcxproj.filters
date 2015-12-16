@@ -65,6 +65,9 @@
     <None Include="shaders\skybox.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="shaders\hud.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Shader.h">

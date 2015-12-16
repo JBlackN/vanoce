@@ -6,7 +6,6 @@ in vec2 fTexCoord;
 
 out vec4 color;
 
-uniform mat4 model;
 uniform sampler2D tex;
 
 uniform struct Material

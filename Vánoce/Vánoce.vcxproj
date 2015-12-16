@@ -139,6 +139,7 @@
   <ItemGroup>
     <None Include="shaders\generic.frag" />
     <None Include="shaders\generic.vert" />
+    <None Include="shaders\hud.frag" />
     <None Include="shaders\skybox.frag" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ public:
 	~Object();
 
 	void draw(Camera * camera, map<string, Light *> lights = map<string, Light *>(), Fog * fog = NULL);
+	void draw(Camera * camera, float left, float right, float bottom, float top, float nearPlane, float farPlane);
 
 private:
 	void useCamera(Camera * camera);

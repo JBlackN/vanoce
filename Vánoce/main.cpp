@@ -91,6 +91,7 @@ void init()
 
 	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
 	shaders["skybox"] = new Shader("shaders/generic.vert", "shaders/skybox.frag");
+	shaders["hud"] = new Shader("shaders/generic.vert", "shaders/hud.frag");
 
 	// Materials
 
@@ -105,6 +106,9 @@ void init()
 	materials["ornament_blue"] = new Material(glm::vec3(0.2f, 0.2f, 0.4f), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0.2f, 0.6f, 1), 51.2f);
 	materials["metal"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0, 0.1f, 0.3f), glm::vec3(1, 1, 1), 15);
 	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 1);
+	materials["ornament_red_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0, 0), glm::vec3(0), 0, glm::vec3(0));
+	materials["ornament_yellow_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0.7f, 0), glm::vec3(0), 0, glm::vec3(0));
+	materials["ornament_blue_hud"] = new Material(glm::vec3(0), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0), 0, glm::vec3(0));
 
 	//Textures
 
@@ -117,6 +121,9 @@ void init()
 	textures["glass"] = new Texture("textures/glass.png");
 	textures["metal"] = new Texture("textures/metal.png");
 	textures["tree"] = new Texture("textures/tree.png");
+	textures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
+	textures["ornament_yellow_hud"] = new Texture("textures/ornament_yellow.png");
+	textures["ornament_blue_hud"] = new Texture("textures/ornament_blue.png");
 
 	// Models
 
@@ -153,6 +160,25 @@ void init()
 	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"],
 		treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
 
+	float testSize = 40;
+	float testBorderPercent = 4;
+	const float testVertices[] = {
+		window_dimensions.x - (testSize + (window_dimensions.x/100)*testBorderPercent), window_dimensions.y - (window_dimensions.y / 100)*testBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+		window_dimensions.x - (testSize + (window_dimensions.x / 100)*testBorderPercent), window_dimensions.y - (testSize + (window_dimensions.y / 100)*testBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+		window_dimensions.x - (window_dimensions.x / 100)*testBorderPercent, window_dimensions.y - (window_dimensions.y / 100)*testBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+		window_dimensions.x - (window_dimensions.x / 100)*testBorderPercent, window_dimensions.y - (testSize + (window_dimensions.y / 100)*testBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
+	};
+	const unsigned int testTriangles[] = {
+		0, 1, 2,
+		1, 2, 3
+	};
+	models["ornament_red_hud"] = new Model(shaders["hud"], materials["ornament_red_hud"], textures["ornament_red_hud"],
+		8, 4, 2, testVertices, testTriangles);
+	models["ornament_yellow_hud"] = new Model(shaders["hud"], materials["ornament_yellow_hud"], textures["ornament_yellow_hud"],
+		8, 4, 2, testVertices, testTriangles);
+	models["ornament_blue_hud"] = new Model(shaders["hud"], materials["ornament_blue_hud"], textures["ornament_blue_hud"],
+		8, 4, 2, testVertices, testTriangles);
+
 	// Objects
 
 	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
@@ -181,6 +207,10 @@ void init()
 		glm::vec3(1.5f, 1.4f, -1.5f)));
 	treeGenerator = new TreeGenerator(models["tree"]);
 	treeGenerator->generateTrees(50, 19);
+
+	objects["ornament_red_hud"] = new Object(models["ornament_red_hud"], glm::translate(glm::mat4(1), glm::vec3(-2*(48), 0, 0)));
+	objects["ornament_yellow_hud"] = new Object(models["ornament_yellow_hud"], glm::translate(glm::mat4(1), glm::vec3(-1*(48), 0, 0)));
+	objects["ornament_blue_hud"] = new Object(models["ornament_blue_hud"], glm::translate(glm::mat4(1), glm::vec3(-0*(48), 0, 0)));
 
 	// Cameras
 
@@ -250,6 +280,15 @@ void displayFunc()
 	glDisable(GL_STENCIL_TEST);
 
 	inventory->drawOrnaments(activeCamera, lights, fog);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	objects["ornament_red_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	objects["ornament_yellow_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	objects["ornament_blue_hud"]->draw(activeCamera, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+
+	glDisable(GL_BLEND);
 
 	glutSwapBuffers();
 }
