@@ -24,6 +24,6 @@ public:
 	~TreeGenerator();
 
 	void generateTrees(int count, int mapQuadrantDimension);
-	void drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog);
+	void drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, bool useIds = false);
 };
 
