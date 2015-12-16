@@ -1,12 +1,17 @@
 #pragma once
 
 #include <iostream> // TODO: Remove
+#include <string>
+#include <map>
 #include <list>
 using namespace std;
 
 #include "pgr.h"
 #include "Model.h"
 #include "Object.h"
+#include "Camera.h"
+#include "Light.h"
+#include "Fog.h"
 
 class Inventory
 {
@@ -19,7 +24,7 @@ private:
 	unsigned int nYellowOrnaments;
 	unsigned int nBlueOrnaments;
 
-	list<Object *> placedObjects;
+	list<Object *> placedOrnaments;
 
 public:
 	enum OrnamentType { red, yellow, blue };
@@ -31,5 +36,6 @@ public:
 	void removeOrnament(OrnamentType type);
 	unsigned int ornamentCount(OrnamentType type);
 	void placeOrnament(OrnamentType type, Object * tree);
+	void drawOrnaments(Camera * camera, map<string, Light *> lights, Fog * fog);
 };
 

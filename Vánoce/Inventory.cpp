@@ -70,5 +70,31 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree)
 	if (ornamentCount(type) == 0) return;
 
 	cout << "Placing " << type << endl;
+
+	Model * ornamentModel;
+	switch (type)
+	{
+	case red:
+		ornamentModel = this->redOrnament;
+		break;
+	case yellow:
+		ornamentModel = this->yellowOrnament;
+		break;
+	case blue:
+	default:
+		ornamentModel = this->blueOrnament;
+		break;
+	}
+
+	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+		glm::vec3(0, 2, 0)));
+	this->placedOrnaments.push_back(placedOrnament);
+
 	removeOrnament(type);
+}
+
+void Inventory::drawOrnaments(Camera * camera, map<string, Light*> lights, Fog * fog)
+{
+	for (list<Object *>::iterator i = placedOrnaments.begin(); i != placedOrnaments.end(); i++)
+		(*i)->draw(camera, lights, fog);
 }

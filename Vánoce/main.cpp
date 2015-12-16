@@ -249,6 +249,7 @@ void displayFunc()
 	glDisable(GL_STENCIL_TEST);
 
 	treeGenerator->drawTrees(activeCamera, lights, fog);
+	inventory->drawOrnaments(activeCamera, lights, fog);
 
 	glutSwapBuffers();
 }
