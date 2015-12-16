@@ -16,6 +16,8 @@ using namespace std;
 
 class Inventory
 {
+public:
+	enum OrnamentType { red, yellow, blue };
 private:
 	Model * redOrnament;
 	Model * yellowOrnament;
@@ -25,11 +27,8 @@ private:
 	unsigned int nYellowOrnaments;
 	unsigned int nBlueOrnaments;
 
-	list<Object *> placedOrnaments;
-
+	map<OrnamentType, list<Object *>> placedOrnaments;
 public:
-	enum OrnamentType { red, yellow, blue };
-
 	Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
 	~Inventory();
 

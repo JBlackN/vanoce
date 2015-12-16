@@ -69,7 +69,7 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 {
 	if (ornamentCount(type) == 0) return;
 
-	cout << "Placing " << type << endl;
+	//cout << "Placing " << type << endl;
 
 	Model * ornamentModel;
 	switch (type)
@@ -91,26 +91,44 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 
 	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		position / 5.0f));
-	this->placedOrnaments.push_back(placedOrnament);
+	this->placedOrnaments[type].push_back(placedOrnament);
 
 	removeOrnament(type);
 }
 
 void Inventory::drawOrnaments(Camera * camera, map<string, Light*> lights, Fog * fog)
 {
-	Material * ornamentMaterial = NULL;
-	if (!placedOrnaments.empty())
+	if (placedOrnaments.empty()) return;
+
+	if (placedOrnaments.find(red) != placedOrnaments.end() && !placedOrnaments[red].empty())
 	{
-		ornamentMaterial = (*(placedOrnaments.begin()))->model->material;
-		ornamentMaterial->emission = ornamentMaterial->diffuse * 1.5f;
+		(*(placedOrnaments[red].begin()))->model->material->emission = glm::vec4(0.9f, 0, 0.2f, 1);
+		for (list<Object *>::iterator r = placedOrnaments[red].begin(); r != placedOrnaments[red].end(); r++)
+		{
+			(*r)->draw(camera, lights, fog);
+		}
+		(*(placedOrnaments[red].begin()))->model->material->emission = glm::vec4(0, 0, 0, 1);
 	}
 
-	for (list<Object *>::iterator i = placedOrnaments.begin(); i != placedOrnaments.end(); i++)
+	if (placedOrnaments.find(yellow) != placedOrnaments.end() && !placedOrnaments[yellow].empty())
 	{
-		(*i)->draw(camera, lights, fog);
+		(*(placedOrnaments[yellow].begin()))->model->material->emission = glm::vec4(1, 0.9f, 0, 1);
+		for (list<Object *>::iterator y = placedOrnaments[yellow].begin(); y != placedOrnaments[yellow].end(); y++)
+		{
+			(*y)->draw(camera, lights, fog);
+		}
+		(*(placedOrnaments[yellow].begin()))->model->material->emission = glm::vec4(0, 0, 0, 1);
 	}
 
-	if (ornamentMaterial != NULL) ornamentMaterial->emission = glm::vec4(0, 0, 0, 1);
+	if (placedOrnaments.find(blue) != placedOrnaments.end() && !placedOrnaments[blue].empty())
+	{
+		(*(placedOrnaments[blue].begin()))->model->material->emission = glm::vec4(0, 0.8f, 1, 1);
+		for (list<Object *>::iterator b = placedOrnaments[blue].begin(); b != placedOrnaments[blue].end(); b++)
+		{
+			(*b)->draw(camera, lights, fog);
+		}
+		(*(placedOrnaments[blue].begin()))->model->material->emission = glm::vec4(0, 0, 0, 1);
+	}
 }
 
 glm::vec3 Inventory::findPosition(Object * tree, glm::vec2 window_dimensions, int windowX, int windowY, Camera * camera)

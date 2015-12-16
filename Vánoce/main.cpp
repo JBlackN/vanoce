@@ -358,15 +358,15 @@ void mouseFunc(int button, int state, int x, int y)
 		{
 		case 1:
 			inventory->insertOrnament(Inventory::OrnamentType::red);
-			cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
+			//cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
 			break;
 		case 2:
 			inventory->insertOrnament(Inventory::OrnamentType::yellow);
-			cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
+			//cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
 			break;
 		case 3:
 			inventory->insertOrnament(Inventory::OrnamentType::blue);
-			cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
+			//cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
 			break;
 		case 4:
 			cout << "Christmas tree" << endl;
