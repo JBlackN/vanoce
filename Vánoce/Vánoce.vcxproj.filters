@@ -51,6 +51,9 @@
     <ClCompile Include="Fog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\generic.frag">
@@ -116,6 +119,9 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="headers\Fog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
