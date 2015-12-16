@@ -221,6 +221,7 @@ void displayFunc()
 
 	objects["terrain"]->draw(activeCamera, lights, fog);
 	objects["home"]->draw(activeCamera, lights, fog);
+	objects["stand"]->draw(activeCamera, lights, fog);
 	objects["table"]->draw(activeCamera, lights, fog);
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
@@ -235,11 +236,11 @@ void displayFunc()
 	glStencilFunc(GL_ALWAYS, 3, -1);
 	objects["ornament_blue"]->draw(activeCamera, lights, fog);
 
+	glStencilFunc(GL_ALWAYS, 4, -1);
+	objects["christmasTree"]->draw(activeCamera, lights, fog);
+
 	glDisable(GL_STENCIL_TEST);
 
-	objects["stand"]->draw(activeCamera, lights, fog);
-
-	objects["christmasTree"]->draw(activeCamera, lights, fog);
 	treeGenerator->drawTrees(activeCamera, lights, fog);
 
 	glutSwapBuffers();
@@ -346,6 +347,9 @@ void mouseFunc(int button, int state, int x, int y)
 				break;
 			case 3:
 				cout << "Blue" << endl;
+				break;
+			case 4:
+				cout << "Christmas tree" << endl;
 				break;
 			}
 		}
