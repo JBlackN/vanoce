@@ -36,7 +36,7 @@ void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 	glUseProgram(0);
 }
 
-void Object::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+void Object::draw(Texture * numberTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -55,8 +55,16 @@ void Object::draw(float left, float right, float bottom, float top, float nearPl
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->texture->texture);
-	GLint texLoc = glGetUniformLocation(model->shader->shaderProgram, "tex");
-	glUniform1i(texLoc, 0);
+	GLint ornamentTexLoc = glGetUniformLocation(model->shader->shaderProgram, "ornamentTex");
+	glUniform1i(ornamentTexLoc, 0);
+
+	if (numberTexture != NULL)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, numberTexture->texture);
+		GLint numberTexLoc = glGetUniformLocation(model->shader->shaderProgram, "numTex");
+		glUniform1i(numberTexLoc, 1);
+	}
 
 	glDrawElements(GL_TRIANGLES, model->drawCount, GL_UNSIGNED_INT, (void *)0);
 

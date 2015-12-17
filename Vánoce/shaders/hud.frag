@@ -24,6 +24,6 @@ void main()
 	vec4 ornamentTexColor = texture(ornamentTex, fTexCoord);
 	if (ornamentTexColor.a < 0.5f) discard;
 	vec4 numberTexColor = texture(numTex, fTexCoord);
-	color = mix(ornamentTexColor, numberTexColor, numberTexColor.a);
+	color = mix(ornamentTexColor, numberTexColor, /*numberTexColor.a*/0.3f);
 	color = vec4(material.diffuse, 1) * vec4(color.xyz, 0.75f);
 }

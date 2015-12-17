@@ -10,6 +10,7 @@ using namespace std;
 #include "Material.h"
 #include "Model.h"
 #include "Object.h"
+#include "Inventory.h"
 
 class Hud
 {
@@ -31,6 +32,7 @@ public:
 		bool enabled = false);
 	~Hud();
 
-	void draw(float left, float right, float bottom, float top, float nearPlane = -1.0f, float farPlane = 100.0f);
+	void draw(Inventory * inventory, float left, float right, float bottom, float top,
+		float nearPlane = -1.0f, float farPlane = 100.0f);
 };
 

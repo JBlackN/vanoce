@@ -280,7 +280,7 @@ void displayFunc()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	hud->draw(0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	hud->draw(inventory, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
 
 	glDisable(GL_BLEND);
 
@@ -408,18 +408,15 @@ void mouseFunc(int button, int state, int x, int y)
 		{
 		case 1:
 			inventory->insertOrnament(Inventory::OrnamentType::red, ornamentInsertStep);
-			cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
+			//cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
 			break;
 		case 2:
 			inventory->insertOrnament(Inventory::OrnamentType::yellow, ornamentInsertStep);
-			cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
+			//cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
 			break;
 		case 3:
 			inventory->insertOrnament(Inventory::OrnamentType::blue, ornamentInsertStep);
-			cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
-			break;
-		case 4:
-			cout << "Christmas tree" << endl;
+			//cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
 			break;
 		}
 	}

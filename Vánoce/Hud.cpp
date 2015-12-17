@@ -43,11 +43,39 @@ Hud::~Hud()
 {
 }
 
-void Hud::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+void Hud::draw(Inventory * inventory, float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	if (!this->enabled) return;
 
-	this->hudOrnamentRed->draw(left, right, bottom, top, nearPlane, farPlane);
-	this->hudOrnamentYellow->draw(left, right, bottom, top, nearPlane, farPlane);
-	this->hudOrnamentBlue->draw(left, right, bottom, top, nearPlane, farPlane);
+	Texture * redNumberTexture;
+	Texture * yellowNumberTexture;
+	Texture * blueNumberTexture;
+
+	unsigned int redOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::red);
+	if (redOrnamentCount > 0 && redOrnamentCount < 10)
+		redNumberTexture = numbers[redOrnamentCount - 1];
+	else if (redOrnamentCount > 9)
+		redNumberTexture = numbers[8];
+	else
+		redNumberTexture = NULL;
+
+	unsigned int yellowOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::yellow);
+	if (yellowOrnamentCount > 0 && yellowOrnamentCount < 10)
+		yellowNumberTexture = numbers[yellowOrnamentCount - 1];
+	else if (yellowOrnamentCount > 9)
+		yellowNumberTexture = numbers[8];
+	else
+		yellowNumberTexture = NULL;
+
+	unsigned int blueOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::blue);
+	if (blueOrnamentCount > 0 && blueOrnamentCount < 10)
+		blueNumberTexture = numbers[blueOrnamentCount - 1];
+	else if (blueOrnamentCount > 9)
+		blueNumberTexture = numbers[8];
+	else
+		blueNumberTexture = NULL;
+
+	this->hudOrnamentRed->draw(redNumberTexture, left, right, bottom, top, nearPlane, farPlane);
+	this->hudOrnamentYellow->draw(yellowNumberTexture, left, right, bottom, top, nearPlane, farPlane);
+	this->hudOrnamentBlue->draw(blueNumberTexture, left, right, bottom, top, nearPlane, farPlane);
 }
