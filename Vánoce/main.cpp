@@ -239,7 +239,7 @@ void init()
 
 	// HUD
 
-	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures, true);
+	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures);
 }
 
 void displayFunc()
@@ -407,14 +407,17 @@ void mouseFunc(int button, int state, int x, int y)
 		switch (ornamentID)
 		{
 		case 1:
+			hud->enabled = true;
 			inventory->insertOrnament(Inventory::OrnamentType::red, ornamentInsertStep);
 			//cout << "Red: " << inventory->ornamentCount(Inventory::OrnamentType::red) << endl;
 			break;
 		case 2:
+			hud->enabled = true;
 			inventory->insertOrnament(Inventory::OrnamentType::yellow, ornamentInsertStep);
 			//cout << "Yellow: " << inventory->ornamentCount(Inventory::OrnamentType::yellow) << endl;
 			break;
 		case 3:
+			hud->enabled = true;
 			inventory->insertOrnament(Inventory::OrnamentType::blue, ornamentInsertStep);
 			//cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
 			break;
