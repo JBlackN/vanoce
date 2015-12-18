@@ -378,6 +378,10 @@ void keyboardFunc(unsigned char key, int x, int y)
 	case 'h':
 		hud->enabled = !hud->enabled;
 		break;
+	case 'S':
+		if (snowGenerator->isEnabled()) snowGenerator->disable();
+		else snowGenerator->enable();
+		break;
 	case 27:
 		glutLeaveMainLoop();
 	}

@@ -32,6 +32,8 @@ public:
 		}
 	};
 private:
+	bool enabled;
+
 	Model * snowflake;
 	list<Snowflake *> snowflakes;
 
@@ -39,12 +41,15 @@ private:
 	int snowflakeCount;
 	int frameCount;
 public:
-	SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps);
+	SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps, bool enabled = true);
 	~SnowGenerator();
+
+	void enable();
+	void disable();
+	bool isEnabled();
 
 	void generate();
 	void update();
-	void checkCount();
 	void remove(list<Snowflake *>::iterator i);
 	void draw(Camera * camera, map<string, Light *> lights, Fog * fog);
 private:

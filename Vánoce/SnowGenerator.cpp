@@ -1,7 +1,8 @@
 #include "headers\SnowGenerator.h"
 
-SnowGenerator::SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps)
+SnowGenerator::SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps, bool enabled)
 {
+	this->enabled = enabled;
 	this->snowflake = snowflake;
 	this->fallHeight = fallHeight;
 	this->snowflakeCount = snowflakeCount;
@@ -14,8 +15,27 @@ SnowGenerator::~SnowGenerator()
 {
 }
 
+void SnowGenerator::enable()
+{
+	this->enabled = true;
+	for (int i = 0; i < snowflakeCount; i++) generate();
+}
+
+void SnowGenerator::disable()
+{
+	this->enabled = false;
+	snowflakes.clear();
+}
+
+bool SnowGenerator::isEnabled()
+{
+	return this->enabled;
+}
+
 void SnowGenerator::generate()
 {
+	if (!enabled) return;
+
 	glm::vec3 start_position = glm::vec3(rand() % 38 - 19, fallHeight, rand() % 38 - 19);
 
 	Object * newSnowflake = new Object(snowflake, glm::translate(glm::scale(glm::mat4(1), glm::vec3(5, 5, 5)), start_position));
@@ -26,6 +46,8 @@ void SnowGenerator::generate()
 
 void SnowGenerator::update()
 {
+	if (!enabled) return;
+
 	list<Snowflake *>::iterator i = snowflakes.begin();
 	while (i != snowflakes.end())
 	{
@@ -44,19 +66,18 @@ void SnowGenerator::update()
 	}
 }
 
-void SnowGenerator::checkCount()
-{
-	while (snowflakes.size() < snowflakeCount) generate();
-}
-
 void SnowGenerator::remove(list<Snowflake*>::iterator i)
 {
+	if (!enabled) return;
+
 	snowflakes.erase(i);
 	generate();
 }
 
 void SnowGenerator::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 {
+	if (!enabled) return;
+
 	for (list<Snowflake *>::iterator i = snowflakes.begin(); i != snowflakes.end(); i++)
 		(*i)->snowflake->draw(camera, lights, fog);
 }
