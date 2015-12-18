@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <string>
 #include <map>
 using namespace std;
@@ -15,6 +16,8 @@ using namespace std;
 #include "headers\Fog.h"
 #include "headers\Inventory.h"
 #include "headers\Hud.h"
+#include "headers\Spline.h"
+#include "headers\SnowGenerator.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -26,6 +29,7 @@ using namespace std;
 #include "models\stand.h"
 #include "models\tree.h"
 #include "models\gift.h"
+#include "models\snowflake.h"
 
 const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
@@ -41,9 +45,15 @@ map<string, Camera *> cameras;
 Camera * activeCamera;
 
 TreeGenerator * treeGenerator;
+SnowGenerator * snowGenerator;
 
 Inventory * inventory;
 Hud * hud;
+
+/*int frame = 0;
+int frameCount = 25 * 20;
+glm::vec3 snowflakeTest = glm::vec3(0, 5, -5);
+Spline * spline = new Spline(snowflakeTest, 5, 30);*/
 
 void init(void);
 
@@ -58,6 +68,8 @@ void timerFunc(int);
 
 int main(int argc, char **argv)
 {
+	srand(time(NULL));
+
 	glutInit(&argc, argv);
 	glutInitContextVersion(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
@@ -73,7 +85,7 @@ int main(int argc, char **argv)
 	glutMouseFunc(mouseFunc);
 	glutMotionFunc(motionFunc); // TODO
 	//glutIdleFunc(idleFunc);
-	//glutTimerFunc(10, timerFunc, 1);
+	//glutTimerFunc(40, timerFunc, frame);
 
 	if (!pgr::initialize(pgr::OGL_VER_MAJOR, pgr::OGL_VER_MINOR))
 		pgr::dieWithError("pgr init failed");
@@ -100,6 +112,7 @@ void init()
 
 	materials["skybox"] = new Material(glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 0);
 	materials["snow"] = new Material(glm::vec3(0, 0, 1), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 10);
+	materials["snowflake"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 10, glm::vec3(0.5f, 0.5f, 0.5f));
 	materials["home"] = new Material(glm::vec3(0, 0, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
 	materials["wood"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0.6f, 0.4f, 0.4f), glm::vec3(0.8f, 0.6f, 0.4f), 1);
 	materials["fabric"] = new Material(glm::vec3(0, 0.2f, 0.4f), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 1);
@@ -181,6 +194,9 @@ void init()
 	models["gift"] = new Model(shaders["generic"], materials["gift"], textures["gift"],
 		giftNAttribsPerVertex, giftNVertices, giftNTriangles, giftVertices, giftTriangles);
 
+	models["snowflake"] = new Model(shaders["generic"], materials["snowflake"], textures["snow"],
+		snowflakeNAttribsPerVertex, snowflakeNVertices, snowflakeNTriangles, snowflakeVertices, snowflakeTriangles);
+
 	// Objects
 
 	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
@@ -211,6 +227,9 @@ void init()
 		glm::vec3(1.5f, 1.4f, -1.5f)));
 	treeGenerator = new TreeGenerator(models["tree"]);
 	treeGenerator->generateTrees(50, 19);
+
+	snowGenerator = new SnowGenerator(models["snowflake"], 10.0f, 30, 20, 25);
+	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
 
 	// Cameras
 
@@ -267,6 +286,10 @@ void displayFunc()
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
 	objects["gift"]->draw(activeCamera, lights, fog);
+
+	/*objects["snowflake"]->adjustmentMatrix = glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)), snowflakeTest);
+	objects["snowflake"]->draw(activeCamera, lights, fog);*/
+	snowGenerator->draw(activeCamera, lights, fog);
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -447,4 +470,9 @@ void idleFunc()
 
 void timerFunc(int value)
 {
+	snowGenerator->update();
+	glutTimerFunc(40, timerFunc, 0);
+	/*snowflakeTest = spline->point(frame++, frameCount)->position;
+	if (frame < frameCount) glutTimerFunc(40, timerFunc, 0);*/
+	glutPostRedisplay();
 }

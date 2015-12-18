@@ -3,7 +3,6 @@
 TreeGenerator::TreeGenerator(Model * treeModel)
 {
 	tree = treeModel;
-	srand(time(NULL));
 }
 
 TreeGenerator::~TreeGenerator()

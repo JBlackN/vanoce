@@ -57,6 +57,12 @@
     <ClCompile Include="Hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SnowGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Spline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\generic.frag">
@@ -134,6 +140,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="models\gift.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\SnowGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Spline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models\snowflake.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="models\snowflake-lowpoly.h">
       <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
