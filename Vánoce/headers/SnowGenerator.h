@@ -21,12 +21,14 @@ public:
 		Object * snowflake;
 		Spline * path;
 		int frame;
+		glm::vec3 previousDirection;
 
 		Snowflake(Object * snowflake, Spline * path, int frame)
 		{
 			this->snowflake = snowflake;
 			this->path = path;
 			this->frame = frame;
+			this->previousDirection = glm::vec3(0);
 		}
 	};
 private:
@@ -46,6 +48,6 @@ public:
 	void remove(list<Snowflake *>::iterator i);
 	void draw(Camera * camera, map<string, Light *> lights, Fog * fog);
 private:
-	glm::mat4 getPlacementMatrix(glm::vec3 position);
+	glm::mat4 getPlacementMatrix(Snowflake * snowflake, glm::vec3 position, glm::vec3 direction);
 };
 

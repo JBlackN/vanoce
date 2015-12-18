@@ -18,7 +18,7 @@ void SnowGenerator::generate()
 {
 	glm::vec3 start_position = glm::vec3(rand() % 38 - 19, fallHeight, rand() % 38 - 19);
 
-	Object * newSnowflake = new Object(snowflake, getPlacementMatrix(start_position));
+	Object * newSnowflake = new Object(snowflake, glm::translate(glm::scale(glm::mat4(1), glm::vec3(5, 5, 5)), start_position));
 	Spline * newPath = new Spline(start_position, 4, 0); // TODO: Angle
 
 	snowflakes.push_back(new Snowflake(newSnowflake, newPath, 0));
@@ -29,7 +29,12 @@ void SnowGenerator::update()
 	list<Snowflake *>::iterator i = snowflakes.begin();
 	while (i != snowflakes.end())
 	{
-		(*i)->snowflake->adjustmentMatrix = getPlacementMatrix((*i)->path->point(((*i)->frame)++, frameCount)->position);
+		(*i)->snowflake->adjustmentMatrix = getPlacementMatrix(
+			(*i),
+			(*i)->path->point((*i)->frame, frameCount)->position,
+			(*i)->path->point((*i)->frame, frameCount)->direction);
+		((*i)->frame)++;
+
 		if (((*i)->frame) >= frameCount)
 		{
 			remove(i++);
@@ -56,7 +61,13 @@ void SnowGenerator::draw(Camera * camera, map<string, Light *> lights, Fog * fog
 		(*i)->snowflake->draw(camera, lights, fog);
 }
 
-glm::mat4 SnowGenerator::getPlacementMatrix(glm::vec3 position)
+glm::mat4 SnowGenerator::getPlacementMatrix(Snowflake * snowflake, glm::vec3 position, glm::vec3 direction)
 {
-	return glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)), position);
+	float angle = glm::degrees(glm::acos((glm::dot(snowflake->previousDirection, direction)) / (glm::dot(glm::length(snowflake->previousDirection), glm::length(direction)))));
+	glm::vec3 axis = glm::cross(snowflake->previousDirection, direction);
+	//glm::mat4 rotation = glm::rotate(glm::mat4(1), angle, axis);
+
+	snowflake->previousDirection = direction;
+
+	return glm::rotate(glm::translate(glm::scale(glm::mat4(1), glm::vec3(5, 5, 5)), position), angle, axis);
 }

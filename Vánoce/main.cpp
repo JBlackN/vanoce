@@ -471,7 +471,7 @@ void idleFunc()
 void timerFunc(int value)
 {
 	snowGenerator->update();
-	glutTimerFunc(40, timerFunc, 0);
+	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
 	/*snowflakeTest = spline->point(frame++, frameCount)->position;
 	if (frame < frameCount) glutTimerFunc(40, timerFunc, 0);*/
 	glutPostRedisplay();
