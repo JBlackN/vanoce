@@ -25,6 +25,7 @@ using namespace std;
 #include "models\ornament.h"
 #include "models\stand.h"
 #include "models\tree.h"
+#include "models\gift.h"
 
 const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
@@ -108,6 +109,7 @@ void init()
 	materials["ornament_blue"] = new Material(glm::vec3(0.2f, 0.2f, 0.4f), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0.2f, 0.6f, 1), 51.2f);
 	materials["metal"] = new Material(glm::vec3(0, 0, 0.2f), glm::vec3(0, 0.1f, 0.3f), glm::vec3(1, 1, 1), 15);
 	materials["tree"] = new Material(glm::vec3(0, 0.2f, 0), glm::vec3(0.2f, 0.4f, 0.2f), glm::vec3(0.2f, 0.4f, 0.4f), 1);
+	materials["gift"] = new Material(glm::vec3(0.3f, 0.1f, 0), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), 2);
 
 	map<string, Material *> hudMaterials;
 	hudMaterials["ornament_red_hud"] = new Material(glm::vec3(0), glm::vec3(1, 0, 0), glm::vec3(0), 0, glm::vec3(0));
@@ -125,6 +127,7 @@ void init()
 	textures["glass"] = new Texture("textures/glass.png");
 	textures["metal"] = new Texture("textures/metal.png");
 	textures["tree"] = new Texture("textures/tree.png");
+	textures["gift"] = new Texture("textures/gift.png");
 	
 	map<string, Texture *> hudTextures;
 	hudTextures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
@@ -175,6 +178,9 @@ void init()
 	models["tree"] = new Model(shaders["generic"], materials["tree"], textures["tree"],
 		treeNAttribsPerVertex, treeNVertices, treeNTriangles, treeVertices, treeTriangles);
 
+	models["gift"] = new Model(shaders["generic"], materials["gift"], textures["gift"],
+		giftNAttribsPerVertex, giftNVertices, giftNTriangles, giftVertices, giftTriangles);
+
 	// Objects
 
 	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
@@ -198,6 +204,8 @@ void init()
 
 	objects["stand"] = new Object(models["stand"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(1.5f, 0.2f, -1.5f)));
+	objects["gift"] = new Object(models["gift"], glm::rotate(glm::translate(glm::scale(glm::mat4(),
+		glm::vec3(5, 5, 5)), glm::vec3(1.3f, 0.2f, -0.8f)), 45.0f, glm::vec3(0, 1, 0)));
 
 	objects["christmasTree"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(1.5f, 1.4f, -1.5f)));
@@ -258,6 +266,7 @@ void displayFunc()
 	objects["table"]->draw(activeCamera, lights, fog);
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
+	objects["gift"]->draw(activeCamera, lights, fog);
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);

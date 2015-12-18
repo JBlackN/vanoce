@@ -157,6 +157,7 @@
     <ClInclude Include="headers\TreeGenerator.h" />
     <ClInclude Include="models\carton.h" />
     <ClInclude Include="models\chair.h" />
+    <ClInclude Include="models\gift.h" />
     <ClInclude Include="models\home.h" />
     <ClInclude Include="models\ornament.h" />
     <ClInclude Include="models\skybox.h" />

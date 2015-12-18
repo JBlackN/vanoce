@@ -133,5 +133,8 @@
     <ClInclude Include="headers\Hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="models\gift.h">
+      <Filter>Models</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
