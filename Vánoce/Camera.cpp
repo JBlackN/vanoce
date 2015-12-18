@@ -80,34 +80,39 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 	float x = ((float)window_x / window_dimensions.x) - 0.5f;
 	float y = ((float)window_y / -window_dimensions.y) + 0.5f;
 
-	/*center.x = x*2;
-	center.y = -y*2;*/
-
-	//center += ((float)0.01 * glm::normalize(glm::vec3(x, y, 0)));
-
 	glm::vec2 movement_direction = glm::vec2(x - cursor_position.x, y - cursor_position.y);
 	cursor_position.x = x;
 	cursor_position.y = y;
 
-	if (movement_direction.x > 0 && movement_direction.y > 0)
+	glm::mat4 rotation;
+	glm::vec4 newDirection;
+
+	if (movement_direction.x < 0)
 	{
-		center.x += 0.05;
-		center.y += 0.05;
+		rotation = glm::rotate(glm::mat4(1.0), 2.0f, up);
+		newDirection = rotation * glm::vec4(center - position, 1);
+		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
-	else if (movement_direction.x < 0 && movement_direction.y >= 0)
+	else if (movement_direction.x > 0)
 	{
-		center.x -= 0.05;
-		center.y += 0.05;
+		rotation = glm::rotate(glm::mat4(1.0), -2.0f, up);
+		newDirection = rotation * glm::vec4(center - position, 1);
+		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
-	else if (movement_direction.x < 0 && movement_direction.y < 0)
+
+	glm::vec3 direction = position - center;
+
+	if (movement_direction.y < 0)
 	{
-		center.x -= 0.05;
-		center.y -= 0.05;
+		rotation = glm::rotate(glm::mat4(1.0), 2.0f, glm::cross(direction, up));
+		newDirection = rotation * glm::vec4(center - position, 1);
+		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
-	else if (movement_direction.x >= 0 && movement_direction.y < 0)
+	else if (movement_direction.y > 0)
 	{
-		center.x += 0.05;
-		center.y -= 0.05;
+		rotation = glm::rotate(glm::mat4(1.0), -2.0f, glm::cross(direction, up));
+		newDirection = rotation * glm::vec4(center - position, 1);
+		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
 }
 

@@ -52,7 +52,7 @@ void reshapeFunc(int, int);
 void keyboardFunc(unsigned char, int, int);
 void keyboardSpecialFunc(int, int, int);
 void mouseFunc(int, int, int, int);
-void passiveMotionFunc(int, int);
+void motionFunc(int, int);
 void idleFunc(void);
 void timerFunc(int);
 
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboardFunc);
 	glutSpecialFunc(keyboardSpecialFunc);
 	glutMouseFunc(mouseFunc);
-	glutPassiveMotionFunc(passiveMotionFunc); // TODO
+	glutMotionFunc(motionFunc); // TODO
 	//glutIdleFunc(idleFunc);
 	//glutTimerFunc(10, timerFunc, 1);
 
@@ -434,7 +434,7 @@ void mouseFunc(int button, int state, int x, int y)
 	}
 }
 
-void passiveMotionFunc(int windowX, int windowY)
+void motionFunc(int windowX, int windowY)
 {
 	activeCamera->look(windowX, windowY, cursor_position, window_dimensions);
 	lights["flashlight"]->spot_direction = cameras["fps"]->center - cameras["fps"]->position;
