@@ -18,6 +18,7 @@ using namespace std;
 #include "headers\Hud.h"
 #include "headers\Spline.h"
 #include "headers\SnowGenerator.h"
+#include "headers\Overlay.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -49,11 +50,7 @@ SnowGenerator * snowGenerator;
 
 Inventory * inventory;
 Hud * hud;
-
-/*int frame = 0;
-int frameCount = 25 * 20;
-glm::vec3 snowflakeTest = glm::vec3(0, 5, -5);
-Spline * spline = new Spline(snowflakeTest, 5, 30);*/
+Overlay * overlay;
 
 void init(void);
 
@@ -107,6 +104,7 @@ void init()
 	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
 	shaders["skybox"] = new Shader("shaders/generic.vert", "shaders/skybox.frag");
 	shaders["hud"] = new Shader("shaders/generic.vert", "shaders/hud.frag");
+	shaders["overlay"] = new Shader("shaders/overlay.vert", "shaders/overlay.frag");
 
 	// Materials
 
@@ -141,6 +139,7 @@ void init()
 	textures["metal"] = new Texture("textures/metal.png");
 	textures["tree"] = new Texture("textures/tree.png");
 	textures["gift"] = new Texture("textures/gift.png");
+	textures["overlay_text"] = new Texture("textures/overlay_text.png");
 	
 	map<string, Texture *> hudTextures;
 	hudTextures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
@@ -267,6 +266,14 @@ void init()
 	// HUD
 
 	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures);
+
+	// Overlay
+
+	map<string, Texture *> tmp;
+	tmp["bg"] = textures["glass"];
+	tmp["text"] = textures["overlay_text"];
+	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"], tmp,
+		glm::scale(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)), glm::vec3(0.33f, 1, 1)), true, 25, 5, 25);
 }
 
 void displayFunc()
@@ -287,8 +294,6 @@ void displayFunc()
 	objects["carton"]->draw(activeCamera, lights, fog);
 	objects["gift"]->draw(activeCamera, lights, fog);
 
-	/*objects["snowflake"]->adjustmentMatrix = glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)), snowflakeTest);
-	objects["snowflake"]->draw(activeCamera, lights, fog);*/
 	snowGenerator->draw(activeCamera, lights, fog);
 
 	glEnable(GL_STENCIL_TEST);
@@ -313,6 +318,7 @@ void displayFunc()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	hud->draw(inventory, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	overlay->draw(0, window_dimensions.x, window_dimensions.y, 0);
 
 	glDisable(GL_BLEND);
 
@@ -475,8 +481,7 @@ void idleFunc()
 void timerFunc(int value)
 {
 	snowGenerator->update();
+	overlay->update();
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
-	/*snowflakeTest = spline->point(frame++, frameCount)->position;
-	if (frame < frameCount) glutTimerFunc(40, timerFunc, 0);*/
 	glutPostRedisplay();
 }

@@ -21,9 +21,7 @@ uniform struct Material
 
 void main()
 {
-	vec4 ornamentTexColor = texture(bgTex, fTexCoord);
-	if (ornamentTexColor.a < 0.5f) discard;
-	vec4 numberTexColor = texture(fgTex, fTexCoord);
-	color = mix(ornamentTexColor, numberTexColor, /*numberTexColor.a*/0.3f);
-	color = vec4(material.diffuse, 1) * vec4(color.xyz, 0.75f);
+	vec4 bgTexColor = texture(bgTex, fTexCoord);
+	vec4 fgTexColor = texture(fgTex, fTexCoord);
+	color = mix(bgTexColor, fgTexColor, 0.7f);
 }

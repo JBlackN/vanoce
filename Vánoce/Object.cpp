@@ -36,7 +36,8 @@ void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 	glUseProgram(0);
 }
 
-void Object::draw(Texture * numberTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane)
+void Object::draw(Texture * fgTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane,
+	glm::mat4 textureAdjustmentMatrix)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
@@ -51,19 +52,22 @@ void Object::draw(Texture * numberTexture, float left, float right, float bottom
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 
+	GLint textureMatrixLoc = glGetUniformLocation(model->shader->shaderProgram, "textureAdjustmentMatrix");
+	if (textureMatrixLoc != -1) glUniformMatrix4fv(textureMatrixLoc, 1, GL_FALSE, glm::value_ptr(textureAdjustmentMatrix));
+
 	useMaterial();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->texture->texture);
-	GLint ornamentTexLoc = glGetUniformLocation(model->shader->shaderProgram, "ornamentTex");
-	glUniform1i(ornamentTexLoc, 0);
+	GLint bgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "bgTex");
+	glUniform1i(bgTexLoc, 0);
 
-	if (numberTexture != NULL)
+	if (fgTexture != NULL)
 	{
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, numberTexture->texture);
-		GLint numberTexLoc = glGetUniformLocation(model->shader->shaderProgram, "numTex");
-		glUniform1i(numberTexLoc, 1);
+		glBindTexture(GL_TEXTURE_2D, fgTexture->texture);
+		GLint fgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "fgTex");
+		glUniform1i(fgTexLoc, 1);
 	}
 
 	glDrawElements(GL_TRIANGLES, model->drawCount, GL_UNSIGNED_INT, (void *)0);

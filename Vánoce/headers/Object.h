@@ -20,7 +20,8 @@ public:
 	~Object();
 
 	void draw(Camera * camera, map<string, Light *> lights = map<string, Light *>(), Fog * fog = NULL);
-	void draw(Texture * numberTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane);
+	void draw(Texture * numberTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane,
+		glm::mat4 textureAdjustmentMatrix = glm::mat4(1));
 
 private:
 	void useCamera(Camera * camera);
