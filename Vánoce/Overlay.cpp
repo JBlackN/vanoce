@@ -42,6 +42,8 @@ void Overlay::draw(float left, float right, float bottom, float top, float nearP
 
 void Overlay::update()
 {
+	if (!enabled) return;
+
 	float offsetRange = 1 - 0.33f;
 	offset += (offsetRange / ((float)fps * seconds));
 	if (offset > offsetRange) offset = 0;

@@ -273,7 +273,7 @@ void init()
 	tmp["bg"] = textures["glass"];
 	tmp["text"] = textures["overlay_text"];
 	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"], tmp,
-		glm::scale(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)), glm::vec3(0.33f, 1, 1)), true, 25, 5, 25);
+		glm::scale(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)), glm::vec3(0.33f, 1, 1)), false, 25, 5, 25);
 }
 
 void displayFunc()
@@ -292,7 +292,6 @@ void displayFunc()
 	objects["table"]->draw(activeCamera, lights, fog);
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
-	objects["gift"]->draw(activeCamera, lights, fog);
 
 	snowGenerator->draw(activeCamera, lights, fog);
 
@@ -307,6 +306,9 @@ void displayFunc()
 	objects["ornament_blue"]->draw(activeCamera, lights, fog);
 
 	glStencilFunc(GL_ALWAYS, 4, -1);
+	objects["gift"]->draw(activeCamera, lights, fog);
+
+	glStencilFunc(GL_ALWAYS, 5, -1);
 	objects["christmasTree"]->draw(activeCamera, lights, fog);
 	treeGenerator->drawTrees(activeCamera, lights, fog, true);
 
@@ -364,22 +366,22 @@ void keyboardFunc(unsigned char key, int x, int y)
 		fog->enabled = !fog->enabled;
 		break;
 	case 'r':
-		if (treeID == 4)
+		if (treeID == 5)
 			inventory->placeOrnament(Inventory::OrnamentType::red, objects["christmasTree"], window_dimensions, x, y, activeCamera);
-		if (treeID > 4)
-			inventory->placeOrnament(Inventory::OrnamentType::red, treeGenerator->trees[(int)treeID - 5], window_dimensions, x, y, activeCamera);
+		if (treeID > 5)
+			inventory->placeOrnament(Inventory::OrnamentType::red, treeGenerator->trees[(int)treeID - 6], window_dimensions, x, y, activeCamera);
 		break;
 	case 'y':
-		if (treeID == 4)
+		if (treeID == 5)
 			inventory->placeOrnament(Inventory::OrnamentType::yellow, objects["christmasTree"], window_dimensions, x, y, activeCamera);
-		if (treeID > 4)
-			inventory->placeOrnament(Inventory::OrnamentType::yellow, treeGenerator->trees[(int)treeID - 5], window_dimensions, x, y, activeCamera);
+		if (treeID > 5)
+			inventory->placeOrnament(Inventory::OrnamentType::yellow, treeGenerator->trees[(int)treeID - 6], window_dimensions, x, y, activeCamera);
 		break;
 	case 'b':
-		if (treeID == 4)
+		if (treeID == 5)
 			inventory->placeOrnament(Inventory::OrnamentType::blue, objects["christmasTree"], window_dimensions, x, y, activeCamera);
-		if (treeID > 4)
-			inventory->placeOrnament(Inventory::OrnamentType::blue, treeGenerator->trees[(int)treeID - 5], window_dimensions, x, y, activeCamera);
+		if (treeID > 5)
+			inventory->placeOrnament(Inventory::OrnamentType::blue, treeGenerator->trees[(int)treeID - 6], window_dimensions, x, y, activeCamera);
 		break;
 	case 'h':
 		hud->enabled = !hud->enabled;
@@ -440,6 +442,8 @@ void mouseFunc(int button, int state, int x, int y)
 
 	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
+		if (overlay->enabled) overlay->enabled = false;
+
 		unsigned char ornamentID;
 		glReadPixels(x, window_dimensions.y - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &ornamentID);
 		glDisable(GL_STENCIL_TEST);
@@ -462,6 +466,9 @@ void mouseFunc(int button, int state, int x, int y)
 			hud->enabled = true;
 			inventory->insertOrnament(Inventory::OrnamentType::blue, ornamentInsertStep);
 			//cout << "Blue: " << inventory->ornamentCount(Inventory::OrnamentType::blue) << endl;
+			break;
+		case 4:
+			overlay->enabled = true;
 			break;
 		}
 	}

@@ -77,7 +77,7 @@ void TreeGenerator::generateTrees(int count, int mapDimension)
 
 void TreeGenerator::drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, bool useIds)
 {
-	int id = 5;
+	int id = 6;
 	for (vector<Object *>::iterator i = trees.begin(); i != trees.end(); i++)
 	{
 		if (useIds) glStencilFunc(GL_ALWAYS, id++, -1);
