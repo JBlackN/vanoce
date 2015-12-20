@@ -10,7 +10,7 @@ class Shader
 {
 public:
 	GLuint shaderProgram;
-
+public:
 	Shader(string vsPath, string fsPath);
 	~Shader();
 };

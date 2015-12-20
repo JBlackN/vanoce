@@ -9,15 +9,6 @@ Material::Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, flo
 	this->emission = glm::vec4(emission, 1);
 }
 
-Material::Material(glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float shininess, glm::vec4 emission)
-{
-	this->ambient = ambient;
-	this->diffuse = diffuse;
-	this->specular = specular;
-	this->shininess = shininess;
-	this->emission = emission;
-}
-
 Material::~Material()
 {
 }

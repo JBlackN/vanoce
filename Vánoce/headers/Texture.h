@@ -10,7 +10,7 @@ class Texture
 {
 public:
 	GLuint texture;
-
+public:
 	Texture(string texPath, bool clamp = false);
 	~Texture();
 };
