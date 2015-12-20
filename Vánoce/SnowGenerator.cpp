@@ -44,7 +44,7 @@ void SnowGenerator::generate()
 	snowflakes.push_back(new Snowflake(newSnowflake, newPath, 0));
 }
 
-void SnowGenerator::update()
+void SnowGenerator::update(Collision * collision)
 {
 	if (!enabled) return;
 
@@ -57,7 +57,7 @@ void SnowGenerator::update()
 			(*i)->path->point((*i)->frame, frameCount)->direction);
 		((*i)->frame)++;
 
-		if (((*i)->frame) >= frameCount)
+		if ((((*i)->frame) >= frameCount) || collision->check((*i)->path->point((*i)->frame - 1, frameCount)->position))
 		{
 			remove(i++);
 			continue;

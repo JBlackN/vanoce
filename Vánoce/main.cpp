@@ -20,6 +20,7 @@ using namespace std;
 #include "headers\SnowGenerator.h"
 #include "headers\Overlay.h"
 #include "headers\Frame.h"
+#include "headers\Collision.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -54,6 +55,7 @@ Inventory * inventory;
 Hud * hud;
 Overlay * overlay;
 Frame * frame;
+Collision * collision;
 
 void init(void);
 
@@ -287,6 +289,10 @@ void init()
 
 	frame = new Frame(models["frame"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(2.5f, 1.7f, 0.8f)));
+
+	// Collisions
+
+	collision = new Collision(objects["home"]);
 }
 
 void displayFunc()
@@ -501,7 +507,7 @@ void idleFunc()
 
 void timerFunc(int value)
 {
-	snowGenerator->update();
+	snowGenerator->update(collision);
 	overlay->update();
 	frame->update();
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);

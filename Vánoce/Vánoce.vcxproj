@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Fog.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="Hud.cpp" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Camera.h" />
+    <ClInclude Include="headers\Collision.h" />
     <ClInclude Include="headers\Fog.h" />
     <ClInclude Include="headers\Frame.h" />
     <ClInclude Include="headers\Hud.h" />

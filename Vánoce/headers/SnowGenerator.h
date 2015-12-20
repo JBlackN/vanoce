@@ -13,6 +13,7 @@ using namespace std;
 #include "Light.h"
 #include "Fog.h"
 #include "Spline.h"
+#include "Collision.h"
 
 class SnowGenerator
 {
@@ -49,7 +50,7 @@ public:
 	bool isEnabled();
 
 	void generate();
-	void update();
+	void update(Collision * collision);
 	void remove(list<Snowflake *>::iterator i);
 	void draw(Camera * camera, map<string, Light *> lights, Fog * fog);
 private:
