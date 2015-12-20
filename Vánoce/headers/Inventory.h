@@ -26,8 +26,10 @@ private:
 	unsigned int nRedOrnaments;
 	unsigned int nYellowOrnaments;
 	unsigned int nBlueOrnaments;
+	float ornamentDiameter;
 
 	map<OrnamentType, list<Object *>> placedOrnaments;
+	list<glm::vec3> placedPositions;
 public:
 	Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
 	~Inventory();

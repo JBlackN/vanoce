@@ -10,7 +10,13 @@ Inventory::Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOr
 	this->nYellowOrnaments = 0;
 	this->nBlueOrnaments = 0;
 
-	//this->placedObjects = list<Object *>();
+	list<float> y_values;
+	int nAttrPerVertex = redOrnament->nAttrPerVert;
+	int nVert = redOrnament->nVert;
+	for (int i = 1; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
+		y_values.push_back(redOrnament->vertices[i]);
+
+	this->ornamentDiameter = *max_element(y_values.begin(), y_values.end()) - *min_element(y_values.begin(), y_values.end());
 }
 
 Inventory::~Inventory()
@@ -88,6 +94,10 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 
 	glm::vec3 position = findPosition(tree, window_dimensions, windowX, windowY, camera);
 	//cout << "x= " << position.x << ", y= " << position.y << ", z= " << position.z << endl;
+
+	for (list<glm::vec3>::iterator i = placedPositions.begin(); i != placedPositions.end(); i++)
+		if (glm::length((*i) - position) < 5 * ornamentDiameter) return;
+	placedPositions.push_back(position);
 
 	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		position / 5.0f));

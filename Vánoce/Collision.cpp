@@ -9,11 +9,11 @@ Collision::Collision(Object * object)
 	int nAttrPerVertex = object->model->nAttrPerVert;
 	int nVert = object->model->nVert;
 
-	for (int i = 0; i < nAttrPerVertex * nVert; i += object->model->nAttrPerVert)
+	for (int i = 0; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
 		x_values.push_back(object->model->vertices[i]);
-	for (int i = 1; i < nAttrPerVertex * nVert; i += object->model->nAttrPerVert)
+	for (int i = 1; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
 		y_values.push_back(object->model->vertices[i]);
-	for (int i = 2; i < nAttrPerVertex * nVert; i += object->model->nAttrPerVert)
+	for (int i = 2; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
 		z_values.push_back(object->model->vertices[i]);
 
 	float x_min = *min_element(x_values.begin(), x_values.end());
