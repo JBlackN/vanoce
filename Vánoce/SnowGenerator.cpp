@@ -51,7 +51,7 @@ void SnowGenerator::update(Collision * collision)
 	list<Snowflake *>::iterator i = snowflakes.begin();
 	while (i != snowflakes.end())
 	{
-		(*i)->snowflake->adjustmentMatrix = getPlacementMatrix(
+		(*i)->snowflake->placementMatrix = getPlacementMatrix(
 			(*i),
 			(*i)->path->point((*i)->frame, frameCount)->position,
 			(*i)->path->point((*i)->frame, frameCount)->direction);

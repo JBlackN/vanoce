@@ -22,9 +22,6 @@ private:
 	unsigned int * overlayTriangles;
 
 	Object * overlay;
-	Texture * text;
-
-	glm::mat4 textureAdjustmentMatrix;
 
 	float magnification;
 	float offset;

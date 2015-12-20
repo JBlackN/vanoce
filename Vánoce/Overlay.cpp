@@ -18,11 +18,12 @@ Overlay::Overlay(int winWidth, int winHeight, Shader * shader, Material * materi
 		1, 2, 3
 	};
 
-	Model * overlayModel = new Model(shader, material, textures["bg"], 8, 4, 2, overlayVertices, overlayTriangles);
-	this->overlay = new Object(overlayModel, glm::mat4(1));
-	this->text = textures["text"];
+	vector<Texture *> textureArray;
+	textureArray.push_back(textures["bg"]);
+	textureArray.push_back(textures["text"]);
 
-	this->textureAdjustmentMatrix = textureAdjustmentMatrix;
+	Model * overlayModel = new Model(shader, material, textureArray, 8, 4, 2, overlayVertices, overlayTriangles);
+	this->overlay = new Object(overlayModel, glm::mat4(1), textureAdjustmentMatrix);
 
 	this->magnification = magnification;
 	this->offset = 0;
@@ -37,7 +38,7 @@ Overlay::~Overlay()
 void Overlay::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	if (!enabled) return;
-	overlay->draw(text, left, right, bottom, top, nearPlane, farPlane, textureAdjustmentMatrix);
+	overlay->draw(left, right, bottom, top, nearPlane, farPlane);
 }
 
 void Overlay::update()
@@ -57,7 +58,7 @@ void Overlay::update()
 	if (scale < (1.0f - scaleRange / 2)) descending = false;
 	if (scale > 1.0f) descending = true;
 
-	textureAdjustmentMatrix = glm::scale( // "Global" scale
+	overlay->textureMatrix = glm::scale( // "Global" scale
 		glm::translate( // "Global" translate
 		glm::scale( // "Local" scale
 		glm::translate( // "Local " translate

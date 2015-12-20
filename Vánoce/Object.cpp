@@ -1,35 +1,29 @@
 #include "headers\Object.h"
 
-Object::Object(Model * model, glm::mat4 adjustmentMatrix)
+Object::Object(Model * model, glm::mat4 placementMatrix, glm::mat4 textureMatrix)
 {
 	this->model = model;
-	this->adjustmentMatrix = adjustmentMatrix;
+	this->placementMatrix = placementMatrix;
+	this->textureMatrix = textureMatrix;
 }
 
 Object::~Object()
 {
 }
 
-void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog, glm::mat4 textureAdjustmentMatrix)
+void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
 
 	GLint modelLoc = glGetUniformLocation(model->shader->shaderProgram, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(this->adjustmentMatrix));
-
-	GLint textureMatrixLoc = glGetUniformLocation(model->shader->shaderProgram, "textureAdjustmentMatrix");
-	if (textureMatrixLoc != -1) glUniformMatrix4fv(textureMatrixLoc, 1, GL_FALSE, glm::value_ptr(textureAdjustmentMatrix));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(placementMatrix));
 
 	useCamera(camera);
 	useLights(lights);
 	useMaterial();
+	useTextures();
 	if (fog != NULL) useFog(fog);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model->texture->texture);
-	GLint texLoc = glGetUniformLocation(model->shader->shaderProgram, "tex");
-	glUniform1i(texLoc, 0);
 
 	glDrawElements(GL_TRIANGLES, model->drawCount, GL_UNSIGNED_INT, (void *)0);
 
@@ -39,39 +33,22 @@ void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog, glm::
 	glUseProgram(0);
 }
 
-void Object::draw(Texture * fgTexture, float left, float right, float bottom, float top, float nearPlane, float farPlane,
-	glm::mat4 textureAdjustmentMatrix)
+void Object::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
 
 	GLint modelLoc = glGetUniformLocation(model->shader->shaderProgram, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(this->adjustmentMatrix));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(placementMatrix));
 
-	glm::mat4 orthoProjection = glm::ortho(left, right, bottom, top, nearPlane, farPlane);
 	GLint projLoc = glGetUniformLocation(model->shader->shaderProgram, "projection");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(orthoProjection));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(glm::ortho(left, right, bottom, top, nearPlane, farPlane)));
 
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 
-	GLint textureMatrixLoc = glGetUniformLocation(model->shader->shaderProgram, "textureAdjustmentMatrix");
-	if (textureMatrixLoc != -1) glUniformMatrix4fv(textureMatrixLoc, 1, GL_FALSE, glm::value_ptr(textureAdjustmentMatrix));
-
 	useMaterial();
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model->texture->texture);
-	GLint bgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "bgTex");
-	glUniform1i(bgTexLoc, 0);
-
-	if (fgTexture != NULL)
-	{
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, fgTexture->texture);
-		GLint fgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "fgTex");
-		glUniform1i(fgTexLoc, 1);
-	}
+	useTextures();
 
 	glDrawElements(GL_TRIANGLES, model->drawCount, GL_UNSIGNED_INT, (void *)0);
 
@@ -99,7 +76,7 @@ void Object::useLights(map<string, Light *> lights)
 	for (map<string, Light *>::iterator i = lights.begin(); i != lights.end(); i++)
 		useLight(i->second, index++);
 
-	// Lights count
+	// Light count
 
 	GLint lightCountLoc = glGetUniformLocation(model->shader->shaderProgram, "lightCount");
 	glUniform1i(lightCountLoc, lights.size());
@@ -189,6 +166,25 @@ void Object::useMaterial()
 
 	GLint matShininessLoc = glGetUniformLocation(model->shader->shaderProgram, "material.shininess");
 	glUniform1f(matShininessLoc, model->material->shininess);
+}
+
+void Object::useTextures()
+{
+	GLint textureMatrixLoc = glGetUniformLocation(model->shader->shaderProgram, "textureAdjustmentMatrix");
+	if (textureMatrixLoc != -1) glUniformMatrix4fv(textureMatrixLoc, 1, GL_FALSE, glm::value_ptr(textureMatrix));
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, model->textures[0]->texture);
+	GLint bgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "bgTex");
+	glUniform1i(bgTexLoc, 0);
+
+	if ((model->textures).size() > 1)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, model->textures[1]->texture);
+		GLint fgTexLoc = glGetUniformLocation(model->shader->shaderProgram, "fgTex");
+		glUniform1i(fgTexLoc, 1);
+	}
 }
 
 void Object::useFog(Fog * fog)

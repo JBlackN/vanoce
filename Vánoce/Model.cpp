@@ -5,8 +5,27 @@ Model::Model(Shader * shader, Material * material, Texture * texture,
 {
 	this->shader = shader;
 	this->material = material;
-	this->texture = texture;
+	this->textures.push_back(texture);
 	
+	this->nAttrPerVert = nAttrPerVert;
+	this->nVert = nVert;
+	this->nTri = nTri;
+	this->vertices = vertices;
+	this->triangles = triangles;
+
+	this->drawCount = 3 * nTri;
+
+	loadData();
+}
+
+Model::Model(Shader * shader, Material * material, vector<Texture*> textures,
+	const int nAttrPerVert, const int nVert, const int nTri, const float * vertices, const unsigned int * triangles)
+{
+	this->shader = shader;
+	this->material = material;	
+	for (vector<Texture *>::iterator i = textures.begin(); i != textures.end(); i++)
+		this->textures.push_back(*i);
+
 	this->nAttrPerVert = nAttrPerVert;
 	this->nVert = nVert;
 	this->nTri = nTri;
@@ -47,6 +66,5 @@ void Model::loadData()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * nTri * sizeof(unsigned int), triangles, GL_STATIC_DRAW);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

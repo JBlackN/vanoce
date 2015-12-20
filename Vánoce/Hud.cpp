@@ -45,7 +45,7 @@ Hud::~Hud()
 
 void Hud::draw(Inventory * inventory, float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
-	if (!this->enabled) return;
+	if (!enabled) return;
 
 	Texture * redNumberTexture;
 	Texture * yellowNumberTexture;
@@ -75,7 +75,15 @@ void Hud::draw(Inventory * inventory, float left, float right, float bottom, flo
 	else
 		blueNumberTexture = NULL;
 
-	this->hudOrnamentRed->draw(redNumberTexture, left, right, bottom, top, nearPlane, farPlane);
-	this->hudOrnamentYellow->draw(yellowNumberTexture, left, right, bottom, top, nearPlane, farPlane);
-	this->hudOrnamentBlue->draw(blueNumberTexture, left, right, bottom, top, nearPlane, farPlane);
+	if (redNumberTexture != NULL) hudOrnamentRed->model->textures.push_back(redNumberTexture);
+	hudOrnamentRed->draw(left, right, bottom, top, nearPlane, farPlane);
+	if (redNumberTexture != NULL) hudOrnamentRed->model->textures.pop_back();
+
+	if (yellowNumberTexture != NULL) hudOrnamentYellow->model->textures.push_back(yellowNumberTexture);
+	hudOrnamentYellow->draw(left, right, bottom, top, nearPlane, farPlane);
+	if (yellowNumberTexture != NULL) hudOrnamentYellow->model->textures.pop_back();
+
+	if (blueNumberTexture != NULL) hudOrnamentBlue->model->textures.push_back(blueNumberTexture);
+	hudOrnamentBlue->draw(left, right, bottom, top, nearPlane, farPlane);
+	if (blueNumberTexture != NULL) hudOrnamentBlue->model->textures.pop_back();
 }

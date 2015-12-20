@@ -13,7 +13,6 @@ public:
 	float seconds;
 private:
 	Object * frame;
-	glm::mat4 textureAdjustmentMatrix;
 	int frameCounter;
 	int currentPicture;
 public:
