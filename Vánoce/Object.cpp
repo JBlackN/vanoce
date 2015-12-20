@@ -89,7 +89,7 @@ void Object::useCamera(Camera * camera)
 	GLint viewLoc = glGetUniformLocation(model->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
 
-	GLint camPosLoc = glGetUniformLocation(model->shader->shaderProgram, "camera_position");
+	GLint camPosLoc = glGetUniformLocation(model->shader->shaderProgram, "cameraPosition");
 	glUniformMatrix4fv(camPosLoc, 1, GL_FALSE, glm::value_ptr(camera->position));
 }
 
@@ -101,8 +101,8 @@ void Object::useLights(map<string, Light *> lights)
 
 	// Lights count
 
-	GLint lightsCountLoc = glGetUniformLocation(model->shader->shaderProgram, "lights_count");
-	glUniform1i(lightsCountLoc, lights.size());
+	GLint lightCountLoc = glGetUniformLocation(model->shader->shaderProgram, "lightCount");
+	glUniform1i(lightCountLoc, lights.size());
 }
 
 void Object::useLight(Light * light, int index)
@@ -117,12 +117,12 @@ void Object::useLight(Light * light, int index)
 	string lightAmbientUName = lightBaseUName + ".ambient";
 	string lightDiffuseUName = lightBaseUName + ".diffuse";
 	string lightSpecularUName = lightBaseUName + ".specular";
-	string lightSpotDirUName = lightBaseUName + ".spot_direction";
-	string lightSpotExpUName = lightBaseUName + ".spot_exponent";
-	string lightSpotCutUName = lightBaseUName + ".spot_cutoff";
-	string lightConstAttUName = lightBaseUName + ".constant_attenuation";
-	string lightLinAttUName = lightBaseUName + ".linear_attenuation";
-	string lightQuadAttUName = lightBaseUName + ".quadratic_attenuation";
+	string lightSpotDirUName = lightBaseUName + ".spotDirection";
+	string lightSpotExpUName = lightBaseUName + ".spotExponent";
+	string lightSpotCutUName = lightBaseUName + ".spotCutoff";
+	string lightConstAttUName = lightBaseUName + ".constantAttenuation";
+	string lightLinAttUName = lightBaseUName + ".linearAttenuation";
+	string lightQuadAttUName = lightBaseUName + ".quadraticAttenuation";
 
 	// Type
 

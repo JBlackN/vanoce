@@ -6,7 +6,6 @@ in vec2 fTexCoord;
 
 out vec4 color;
 
-uniform mat4 model;
 uniform sampler2D bgTex;
 uniform sampler2D fgTex;
 
@@ -23,7 +22,9 @@ void main()
 {
 	vec4 ornamentTexColor = texture(bgTex, fTexCoord);
 	if (ornamentTexColor.a < 0.5f) discard;
+
 	vec4 numberTexColor = texture(fgTex, fTexCoord);
-	color = mix(ornamentTexColor, numberTexColor, /*numberTexColor.a*/0.3f);
+	color = mix(ornamentTexColor, numberTexColor, 0.3f);
+
 	color = vec4(material.diffuse, 1) * vec4(color.xyz, 0.75f);
 }

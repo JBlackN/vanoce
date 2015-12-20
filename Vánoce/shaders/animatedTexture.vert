@@ -17,8 +17,8 @@ void main()
 {
 	fPosition = vPosition;
 	fNormal = vNormal;
-	vec4 adjustedVTexCoords = textureAdjustmentMatrix * vec4(vTexCoord.x, vTexCoord.y, 0, 1);
-	fTexCoord = vec2(adjustedVTexCoords.x, adjustedVTexCoords.y);
+
+	fTexCoord = vec2(textureAdjustmentMatrix * vec4(vTexCoord.x, vTexCoord.y, 0, 1));
 
 	gl_Position = projection * view * model * vec4(vPosition, 1.0);
 }

@@ -89,7 +89,7 @@
     <None Include="shaders\overlay.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\overlay.vert">
+    <None Include="shaders\animatedTexture.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

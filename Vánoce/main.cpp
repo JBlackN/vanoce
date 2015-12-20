@@ -109,8 +109,8 @@ void init()
 	shaders["generic"] = new Shader("shaders/generic.vert", "shaders/generic.frag");
 	shaders["skybox"] = new Shader("shaders/generic.vert", "shaders/skybox.frag");
 	shaders["hud"] = new Shader("shaders/generic.vert", "shaders/hud.frag");
-	shaders["overlay"] = new Shader("shaders/overlay.vert", "shaders/overlay.frag");
-	shaders["frame"] = new Shader("shaders/overlay.vert", "shaders/generic.frag");
+	shaders["overlay"] = new Shader("shaders/animatedTexture.vert", "shaders/overlay.frag");
+	shaders["frame"] = new Shader("shaders/animatedTexture.vert", "shaders/generic.frag");
 
 	// Materials
 
