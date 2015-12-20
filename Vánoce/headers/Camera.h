@@ -18,7 +18,7 @@ public:
 	bool looking;
 
 	enum Direction { forward, back, left, right };
-
+public:
 	Camera(float fov, float aspectRatio, float nearPlane, float farPlane,
 		glm::vec3 position, glm::vec3 center, glm::vec3 up,
 		bool moving = false, bool looking = false);
@@ -29,7 +29,6 @@ public:
 
 	void move(Direction whereTo);
 	void look(int window_x, int window_y, glm::vec2 & cursor_position, glm::vec2 window_dimensions);
-
 private:
 	void checkBoundaries(Direction direction, glm::vec3 amount);
 };

@@ -38,7 +38,6 @@ void Camera::move(Direction whereTo)
 	glm::vec3 direction = glm::normalize(center - position);
 	direction.y = 0;
 
-	//glm::vec3 sideDirection = glm::normalize(glm::cross(direction, up));
 	glm::mat4 rotation;
 	glm::vec4 newDirection;
 
@@ -55,15 +54,11 @@ void Camera::move(Direction whereTo)
 		checkBoundaries(back, direction);
 		break;
 	case left:
-		//position -= sideDirection;
-		//center -= sideDirection;
 		rotation = glm::rotate(glm::mat4(1.0), 10.0f, up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 		break;
 	case right:
-		/*position += sideDirection;
-		center += sideDirection;*/
 		rotation = glm::rotate(glm::mat4(1.0), -10.0f, up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
@@ -74,8 +69,6 @@ void Camera::move(Direction whereTo)
 void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::vec2 window_dimensions)
 {
 	if (!looking) return;
-
-	// TODO: Boundaries, scale
 
 	float x = ((float)window_x / window_dimensions.x) - 0.5f;
 	float y = ((float)window_y / -window_dimensions.y) + 0.5f;
