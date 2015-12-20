@@ -66,6 +66,9 @@
     <ClCompile Include="Overlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\generic.frag">
@@ -164,6 +167,9 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="headers\Overlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Frame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

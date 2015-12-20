@@ -10,13 +10,16 @@ Object::~Object()
 {
 }
 
-void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog)
+void Object::draw(Camera * camera, map<string, Light *> lights, Fog * fog, glm::mat4 textureAdjustmentMatrix)
 {
 	glUseProgram(model->shader->shaderProgram);
 	glBindVertexArray(model->vao);
 
 	GLint modelLoc = glGetUniformLocation(model->shader->shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(this->adjustmentMatrix));
+
+	GLint textureMatrixLoc = glGetUniformLocation(model->shader->shaderProgram, "textureAdjustmentMatrix");
+	if (textureMatrixLoc != -1) glUniformMatrix4fv(textureMatrixLoc, 1, GL_FALSE, glm::value_ptr(textureAdjustmentMatrix));
 
 	useCamera(camera);
 	useLights(lights);

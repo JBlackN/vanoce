@@ -19,6 +19,7 @@ using namespace std;
 #include "headers\Spline.h"
 #include "headers\SnowGenerator.h"
 #include "headers\Overlay.h"
+#include "headers\Frame.h"
 
 #include "models\skybox.h"
 #include "models\terrain.h"
@@ -31,6 +32,7 @@ using namespace std;
 #include "models\tree.h"
 #include "models\gift.h"
 #include "models\snowflake.h"
+#include "models\picture.h"
 
 const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
@@ -51,6 +53,7 @@ SnowGenerator * snowGenerator;
 Inventory * inventory;
 Hud * hud;
 Overlay * overlay;
+Frame * frame;
 
 void init(void);
 
@@ -105,6 +108,7 @@ void init()
 	shaders["skybox"] = new Shader("shaders/generic.vert", "shaders/skybox.frag");
 	shaders["hud"] = new Shader("shaders/generic.vert", "shaders/hud.frag");
 	shaders["overlay"] = new Shader("shaders/overlay.vert", "shaders/overlay.frag");
+	shaders["frame"] = new Shader("shaders/overlay.vert", "shaders/generic.frag");
 
 	// Materials
 
@@ -140,6 +144,7 @@ void init()
 	textures["tree"] = new Texture("textures/tree.png");
 	textures["gift"] = new Texture("textures/gift.png");
 	textures["overlay_text"] = new Texture("textures/overlay_text.png");
+	textures["pictures"] = new Texture("textures/pictures.png");
 	
 	map<string, Texture *> hudTextures;
 	hudTextures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
@@ -195,6 +200,9 @@ void init()
 
 	models["snowflake"] = new Model(shaders["generic"], materials["snowflake"], textures["snow"],
 		snowflakeNAttribsPerVertex, snowflakeNVertices, snowflakeNTriangles, snowflakeVertices, snowflakeTriangles);
+
+	models["frame"] = new Model(shaders["frame"], materials["wood"], textures["pictures"],
+		pictureNAttribsPerVertex, pictureNVertices, pictureNTriangles, pictureVertices, pictureTriangles);
 
 	// Objects
 
@@ -274,6 +282,11 @@ void init()
 	tmp["text"] = textures["overlay_text"];
 	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"], tmp,
 		glm::scale(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)), glm::vec3(0.33f, 1, 1)), false, 25, 5, 25);
+
+	// Frame
+
+	frame = new Frame(models["frame"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+		glm::vec3(2.5f, 1.7f, 0.8f)));
 }
 
 void displayFunc()
@@ -292,6 +305,7 @@ void displayFunc()
 	objects["table"]->draw(activeCamera, lights, fog);
 	objects["chair"]->draw(activeCamera, lights, fog);
 	objects["carton"]->draw(activeCamera, lights, fog);
+	frame->draw(activeCamera, lights, fog);
 
 	snowGenerator->draw(activeCamera, lights, fog);
 
@@ -489,6 +503,7 @@ void timerFunc(int value)
 {
 	snowGenerator->update();
 	overlay->update();
+	frame->update();
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
 	glutPostRedisplay();
 }
