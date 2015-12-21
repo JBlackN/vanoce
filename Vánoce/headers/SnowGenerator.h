@@ -41,8 +41,11 @@ private:
 	float fallHeight;
 	int snowflakeCount;
 	int frameCount;
+
+	Collision * collision;
 public:
-	SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps, bool enabled = true);
+	SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps,
+		Object * collideWith = NULL, bool enabled = true);
 	~SnowGenerator();
 
 	void enable();
@@ -50,7 +53,7 @@ public:
 	bool isEnabled();
 
 	void generate();
-	void update(Collision * collision);
+	void update();
 	void remove(list<Snowflake *>::iterator i);
 	void draw(Camera * camera, map<string, Light *> lights, Fog * fog);
 private:

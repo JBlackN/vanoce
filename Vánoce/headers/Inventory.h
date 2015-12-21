@@ -12,6 +12,7 @@ using namespace std;
 #include "Material.h"
 #include "Light.h"
 #include "Fog.h"
+#include "Collision.h"
 
 class Inventory
 {
@@ -27,9 +28,7 @@ private:
 	unsigned int nBlueOrnaments;
 
 	map<OrnamentType, list<Object *>> placedOrnaments;
-
-	float ornamentDiameter;
-	list<glm::vec3> placedPositions;
+	Collision * collision;
 public:
 	Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
 	~Inventory();

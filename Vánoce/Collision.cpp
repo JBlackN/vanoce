@@ -23,8 +23,17 @@ Collision::Collision(Object * object)
 	float z_min = *min_element(z_values.begin(), z_values.end());
 	float z_max = *max_element(z_values.begin(), z_values.end());
 
-	this->boundaries_min = glm::vec3(x_min, y_min, z_min);
-	this->boundaries_max = glm::vec3(x_max, y_max, z_max);
+	this->homeBoundariesMin = glm::vec3(x_min, y_min, z_min);
+	this->homeBoundariesMax = glm::vec3(x_max, y_max, z_max);
+}
+
+Collision::Collision(int nAttrPerVertex, int nVert, const float * vertices)
+{
+	list<float> y_values;
+	for (int i = 1; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
+		y_values.push_back(vertices[i]);
+
+	this->ornamentDiameter = *max_element(y_values.begin(), y_values.end()) - *min_element(y_values.begin(), y_values.end());
 }
 
 Collision::~Collision()
@@ -33,10 +42,22 @@ Collision::~Collision()
 
 bool Collision::check(glm::vec3 world_position)
 {
-	if (world_position.x >= boundaries_min.x && world_position.x <= boundaries_max.x &&
-		world_position.y >= boundaries_min.y && world_position.y <= boundaries_max.y &&
-		world_position.z >= boundaries_min.z && world_position.z <= boundaries_max.z)
+	if (world_position.x >= homeBoundariesMin.x && world_position.x <= homeBoundariesMax.x &&
+		world_position.y >= homeBoundariesMin.y && world_position.y <= homeBoundariesMax.y &&
+		world_position.z >= homeBoundariesMin.z && world_position.z <= homeBoundariesMax.z)
 		return true;
 	else
 		return false;
+}
+
+bool Collision::sphereCheck(glm::vec3 position)
+{
+	for (list<glm::vec3>::iterator i = ornamentPositions.begin(); i != ornamentPositions.end(); i++)
+		if (glm::length((*i) - position) < 5 * ornamentDiameter) return true;
+	return false;
+}
+
+void Collision::addOrnamentPosition(glm::vec3 position)
+{
+	ornamentPositions.push_back(position);
 }

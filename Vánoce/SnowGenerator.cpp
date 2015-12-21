@@ -1,12 +1,14 @@
 #include "headers\SnowGenerator.h"
 
-SnowGenerator::SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps, bool enabled)
+SnowGenerator::SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps,
+	Object * collideWith, bool enabled)
 {
 	this->enabled = enabled;
 	this->snowflake = snowflake;
 	this->fallHeight = fallHeight;
 	this->snowflakeCount = snowflakeCount;
 	this->frameCount = secondsToFall * fps;
+	this->collision = new Collision(collideWith);
 
 	for (int i = 0; i < snowflakeCount; i++) generate();
 }
@@ -44,7 +46,7 @@ void SnowGenerator::generate()
 	snowflakes.push_back(new Snowflake(newSnowflake, newPath, 0));
 }
 
-void SnowGenerator::update(Collision * collision)
+void SnowGenerator::update()
 {
 	if (!enabled) return;
 

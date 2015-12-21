@@ -55,7 +55,6 @@ Inventory * inventory;
 Hud * hud;
 Overlay * overlay;
 Frame * frame;
-Collision * collision;
 
 void init(void);
 
@@ -237,7 +236,7 @@ void init()
 	treeGenerator = new TreeGenerator(models["tree"], 19);
 	treeGenerator->generateTrees(50);
 
-	snowGenerator = new SnowGenerator(models["snowflake"], 10.0f, 30, 20, 25);
+	snowGenerator = new SnowGenerator(models["snowflake"], 10.0f, 30, 20, 25, objects["home"]);
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
 
 	// Cameras
@@ -289,10 +288,6 @@ void init()
 
 	frame = new Frame(models["frame"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(2.5f, 1.7f, 0.8f)));
-
-	// Collisions
-
-	collision = new Collision(objects["home"]);
 }
 
 void displayFunc()
@@ -507,7 +502,7 @@ void idleFunc()
 
 void timerFunc(int value)
 {
-	snowGenerator->update(collision);
+	snowGenerator->update();
 	overlay->update();
 	frame->update();
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
