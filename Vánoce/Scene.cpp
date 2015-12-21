@@ -62,7 +62,7 @@ void Scene::draw(glm::vec2 window_dimensions)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	hud->draw(inventory, 0, window_dimensions.x, window_dimensions.y, 0, -1.0f, 100.0f);
+	hud->draw(inventory, 0, window_dimensions.x, window_dimensions.y, 0);
 	overlay->draw(0, window_dimensions.x, window_dimensions.y, 0);
 
 	glDisable(GL_BLEND);
@@ -202,7 +202,7 @@ void Scene::createCameras(glm::vec2 window_dimensions)
 
 	cameras["fps"] = new Camera(50.0f, window_aspectRatio, 0.1f, 1000.0f,
 		glm::vec3(2, 7, -50), glm::vec3(0, 7, 0), glm::vec3(0, 1, 0), true, true);
-	cameras["inside"] = new Camera(100.0f, window_aspectRatio, 0.1f, 1000.0f,
+	cameras["inside"] = new Camera(80.0f, window_aspectRatio, 0.1f, 1000.0f,
 		glm::vec3(-5, 10, 5), glm::vec3(1.5f, 4, -1.5f), glm::vec3(0, 1, 0), false, true);
 	cameras["outside"] = new Camera(35.0f, window_aspectRatio, 0.1f, 1000.0f,
 		glm::vec3(100, 100, -100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
