@@ -136,6 +136,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Overlay.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SnowGenerator.cpp" />
     <ClCompile Include="Spline.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="headers\Model.h" />
     <ClInclude Include="headers\Object.h" />
     <ClInclude Include="headers\Overlay.h" />
+    <ClInclude Include="headers\Scene.h" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\SnowGenerator.h" />
     <ClInclude Include="headers\Spline.h" />
