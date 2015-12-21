@@ -234,8 +234,8 @@ void init()
 
 	objects["christmasTree"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
 		glm::vec3(1.5f, 1.4f, -1.5f)));
-	treeGenerator = new TreeGenerator(models["tree"]);
-	treeGenerator->generateTrees(50, 19);
+	treeGenerator = new TreeGenerator(models["tree"], 19);
+	treeGenerator->generateTrees(50);
 
 	snowGenerator = new SnowGenerator(models["snowflake"], 10.0f, 30, 20, 25);
 	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
@@ -330,7 +330,7 @@ void displayFunc()
 
 	glStencilFunc(GL_ALWAYS, 5, -1);
 	objects["christmasTree"]->draw(activeCamera, lights, fog);
-	treeGenerator->drawTrees(activeCamera, lights, fog, true);
+	treeGenerator->drawTrees(activeCamera, lights, fog, 6);
 
 	glDisable(GL_STENCIL_TEST);
 

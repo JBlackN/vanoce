@@ -15,14 +15,22 @@ using namespace std;
 
 class TreeGenerator
 {
-public:
-	Model * tree;
-	vector<Object *> trees;
+private:
+	enum MapSegmentStatus : bool { tree = true, treeSurroundings = true, home = true, nothing = false };
 
-	TreeGenerator(Model * treeModel);
+	Model * treeModel;
+	MapSegmentStatus ** sceneMap;
+	int sceneMapDimension;
+public:
+	vector<Object *> trees;
+public:
+	TreeGenerator(Model * treeModel, int mapDimension);
 	~TreeGenerator();
 
-	void generateTrees(int count, int mapQuadrantDimension);
-	void drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, bool useIds = false);
+	void generateTrees(int count);
+	void drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, int firstID);
+private:
+	void initMap();
+	void markTreeSurroundings(int randomX, int randomZ);
 };
 

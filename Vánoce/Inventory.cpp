@@ -75,8 +75,6 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 {
 	if (ornamentCount(type) == 0) return;
 
-	//cout << "Placing " << type << endl;
-
 	Model * ornamentModel;
 	switch (type)
 	{
@@ -93,7 +91,6 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 	}
 
 	glm::vec3 position = findPosition(tree, window_dimensions, windowX, windowY, camera);
-	//cout << "x= " << position.x << ", y= " << position.y << ", z= " << position.z << endl;
 
 	for (list<glm::vec3>::iterator i = placedPositions.begin(); i != placedPositions.end(); i++)
 		if (glm::length((*i) - position) < 5 * ornamentDiameter) return;

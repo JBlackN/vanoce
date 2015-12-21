@@ -1,64 +1,41 @@
 #include "headers\TreeGenerator.h"
 
-TreeGenerator::TreeGenerator(Model * treeModel)
+TreeGenerator::TreeGenerator(Model * treeModel, int mapDimension)
 {
-	tree = treeModel;
+	this->treeModel = treeModel;
+	this->sceneMapDimension = mapDimension;
+	initMap();
 }
 
 TreeGenerator::~TreeGenerator()
 {
+	for (int i = 0; i < sceneMapDimension; i++)
+		delete sceneMap[i];
+	delete sceneMap;
 }
 
-void TreeGenerator::generateTrees(int count, int mapDimension)
+void TreeGenerator::generateTrees(int count)
 {
-	mapDimension = 2 * mapDimension + 1;
-
-	bool ** map = new bool*[mapDimension];
-	for (int i = 0; i < mapDimension; i++)
-		map[i] = new bool[mapDimension];
-
-	for (int i = 0; i < mapDimension; i++)
-	{
-		for (int j = 0; j < mapDimension; j++)
-		{
-			int k = i - (mapDimension - 1) / 2;
-			int l = j - (mapDimension - 1) / 2;
-
-			if (k >= -5 && k <= 5 && l >= -5 && l <= 5)
-				map[i][j] = true;
-			else
-				map[i][j] = false;
-		}
-	}
-
 	for (int i = 0; i < count; i++)
 	{
-		int randomX = rand() % (mapDimension - 1);
-		int randomZ = rand() % (mapDimension - 1);
+		int randomX = rand() % (sceneMapDimension - 1);
+		int randomZ = rand() % (sceneMapDimension - 1);
 
-		if (!map[randomX][randomZ])
+		if (sceneMap[randomX][randomZ] == nothing)
 		{
-			map[randomX][randomZ] = true;
+			sceneMap[randomX][randomZ] = tree;
+			markTreeSurroundings(randomX, randomZ);
 
-			if (randomX + 1 < mapDimension && randomZ + 1 < mapDimension) map[randomX + 1][randomZ + 1] = true;
-			if (randomZ + 1 < mapDimension) map[randomX][randomZ + 1] = true;
-			if (randomX - 1 >= 0 && randomZ + 1 < mapDimension) map[randomX - 1][randomZ + 1] = true;
-			if (randomX + 1 < mapDimension) map[randomX + 1][randomZ] = true;
-			if (randomX - 1 >= 0) map[randomX - 1][randomZ] = true;
-			if (randomX + 1 < mapDimension && randomZ - 1 >= 0) map[randomX + 1][randomZ - 1] = true;
-			if (randomZ - 1 >= 0) map[randomX][randomZ - 1] = true;
-			if (randomX - 1 >= 0 && randomZ - 1 >= 0) map[randomX - 1][randomZ - 1] = true;
-
-			Object * newTree = new Object(tree, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-				glm::vec3(randomX - (mapDimension - 1) / 2, 1.2f, randomZ - (mapDimension - 1) / 2)));
+			Object * newTree = new Object(treeModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+				glm::vec3(randomX - (sceneMapDimension - 1) / 2, 1.2f, randomZ - (sceneMapDimension - 1) / 2)));
 			trees.push_back(newTree);
 		}
-		else
+		else // Check if map is full
 		{
 			bool guard = true;
-			for (int i = 0; i < mapDimension; i++)
-				for (int j = 0; j < mapDimension; j++)
-					if (map[i][j] == false) guard = false;
+			for (int i = 0; i < sceneMapDimension; i++)
+				for (int j = 0; j < sceneMapDimension; j++)
+					if (sceneMap[i][j] == nothing) guard = false;
 
 			if (!guard)
 			{
@@ -69,18 +46,49 @@ void TreeGenerator::generateTrees(int count, int mapDimension)
 				break;
 		}
 	}
-
-	for (int i = 0; i < mapDimension; i++)
-		delete map[i];
-	delete map;
 }
 
-void TreeGenerator::drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, bool useIds)
+void TreeGenerator::drawTrees(Camera * camera, map<string, Light *> lights, Fog * fog, int firstID)
 {
-	int id = 6;
 	for (vector<Object *>::iterator i = trees.begin(); i != trees.end(); i++)
 	{
-		if (useIds) glStencilFunc(GL_ALWAYS, id++, -1);
+		if (firstID > 0) glStencilFunc(GL_ALWAYS, firstID++, -1);
 		(*i)->draw(camera, lights, fog);
 	}
+}
+
+void TreeGenerator::initMap()
+{
+	sceneMapDimension = 2 * sceneMapDimension + 1;
+
+	sceneMap = new MapSegmentStatus*[sceneMapDimension];
+	for (int i = 0; i < sceneMapDimension; i++)
+		sceneMap[i] = new MapSegmentStatus[sceneMapDimension];
+
+	for (int i = 0; i < sceneMapDimension; i++)
+	{
+		for (int j = 0; j < sceneMapDimension; j++)
+		{
+			int k = i - (sceneMapDimension - 1) / 2;
+			int l = j - (sceneMapDimension - 1) / 2;
+
+			if (k >= -5 && k <= 5 && l >= -5 && l <= 5)
+				sceneMap[i][j] = home;
+			else
+				sceneMap[i][j] = nothing;
+		}
+	}
+}
+
+void TreeGenerator::markTreeSurroundings(int randomX, int randomZ)
+{
+	if (randomX + 1 < sceneMapDimension && randomZ + 1 < sceneMapDimension)
+		sceneMap[randomX + 1][randomZ + 1] = treeSurroundings;
+	if (randomZ + 1 < sceneMapDimension) sceneMap[randomX][randomZ + 1] = treeSurroundings;
+	if (randomX - 1 >= 0 && randomZ + 1 < sceneMapDimension) sceneMap[randomX - 1][randomZ + 1] = treeSurroundings;
+	if (randomX + 1 < sceneMapDimension) sceneMap[randomX + 1][randomZ] = treeSurroundings;
+	if (randomX - 1 >= 0) sceneMap[randomX - 1][randomZ] = treeSurroundings;
+	if (randomX + 1 < sceneMapDimension && randomZ - 1 >= 0) sceneMap[randomX + 1][randomZ - 1] = treeSurroundings;
+	if (randomZ - 1 >= 0) sceneMap[randomX][randomZ - 1] = treeSurroundings;
+	if (randomX - 1 >= 0 && randomZ - 1 >= 0) sceneMap[randomX - 1][randomZ - 1] = treeSurroundings;
 }
