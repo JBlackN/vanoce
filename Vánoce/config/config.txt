@@ -1,0 +1,65 @@
+# Configuration file
+#
+# Syntax:
+# -------
+#
+# vec3=1.0,1.0,1.0
+# vec3=1,1,1
+# float=1
+# float=1.0
+
+# Objects
+
+scale=1
+
+skybox_pos=0,25,0
+carton_pos=-0.9,1.75,-0.6
+home_pos=0,0,0
+table_pos=-1.5,0.5,0
+chair_pos=0,0.5,0
+r_ornament_pos=-0.9,1.0,-0.55
+y_ornament_pos=-1.0,1.0,-0.55
+b_ornament_pos=-0.97,1.0,-0.67
+stand_pos=1.5,0.2,-1.5
+christmas_tree_pos=1.5,1.4,-1.5
+frame_pos=2.5,1.7,0.8
+gift_pos=1.3,0.2,-0.8
+
+gift_rotation=45
+
+## Trees
+
+tree_count=50
+
+## Snowflakes
+
+snowflake_fall_height=10
+snowflake_count=30
+snowflake_secs=20
+
+# Cameras
+
+fps_fov=50
+fps_pos=2,7,-50
+fps_center=0,7,0
+in_fov=80
+in_pos=-5,10,5
+in_center=1.5,4,-1.5
+out_fov=35
+out_pos=100,100,-100
+out_center=0,0,0
+
+# Fog
+
+fog_density=0.015
+fog_color=0,0,0
+
+# Animations
+
+fps=25
+spline_segments=4
+
+# Overlay
+
+overlay_secs=5
+overlay_magnification=25

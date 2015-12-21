@@ -230,6 +230,6 @@ void timerFunc(int value)
 	scene->snowGenerator->update();
 	scene->overlay->update();
 	scene->frame->update();
-	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
+	glutTimerFunc(1000.0 / scene->config->fOpt("fps"), timerFunc, 0);
 	glutPostRedisplay();
 }

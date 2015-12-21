@@ -2,6 +2,8 @@
 
 Scene::Scene(glm::vec2 window_dimensions, void (*timerFunc)(int))
 {
+	config = new Config();
+
 	loadShaders();
 	loadMaterials();
 	loadTextures();
@@ -15,7 +17,7 @@ Scene::Scene(glm::vec2 window_dimensions, void (*timerFunc)(int))
 	initOverlay(window_dimensions);
 	initGenerators();
 
-	glutTimerFunc(1000.0 / 25.0, timerFunc, 0);
+	glutTimerFunc(1000.0 / config->fOpt("fps"), timerFunc, 0);
 }
 
 Scene::~Scene()
@@ -157,55 +159,41 @@ void Scene::loadModels()
 
 void Scene::createObjects()
 {
-	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(), glm::vec3(0, 25, 0)),
-		90.0f, glm::vec3(-1, 0, 0)), glm::vec3(100, 100, 100)));
+	objects["skybox"] = new Object(models["skybox"], glm::scale(glm::rotate(glm::translate(glm::mat4(1),
+		config->vOpt("skybox_pos")), 90.0f, glm::vec3(-1, 0, 0)), config->fOpt("scale") * glm::vec3(100, 100, 100)));
 
-	objects["terrain"] = new Object(models["terrain"], glm::scale(glm::rotate(glm::mat4(), 90.0f, glm::vec3(-1, 0, 0)),
-		glm::vec3(100, 100, 1)));
+	objects["terrain"] = new Object(models["terrain"], glm::scale(glm::rotate(glm::mat4(1), 90.0f, glm::vec3(-1, 0, 0)),
+		config->fOpt("scale") * glm::vec3(100, 100, 1)));
 
-	objects["home"] = new Object(models["home"], glm::scale(glm::mat4(), glm::vec3(5, 5, 5)));
+	objects["carton"] = new Object(models["carton"], glm::translate(glm::scale(glm::mat4(1),
+		config->fOpt("scale") * glm::vec3(5, 3, 5)), config->vOpt("carton_pos")));
 
-	objects["table"] = new Object(models["table"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(-1.5f, 0.5f, 0)));
+	objects["gift"] = new Object(models["gift"], glm::rotate(glm::translate(glm::scale(glm::mat4(1),
+		config->fOpt("scale") * glm::vec3(5, 5, 5)), config->vOpt("gift_pos")),
+		config->fOpt("gift_rotation"), glm::vec3(0, 1, 0)));
 
-	objects["chair"] = new Object(models["chair"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(0, 0.5f, 0)));
+	objects["home"] = new Object(models["home"], getPlacementMatrix(config->vOpt("home_pos")));
+	objects["table"] = new Object(models["table"], getPlacementMatrix(config->vOpt("table_pos")));
+	objects["chair"] = new Object(models["chair"], getPlacementMatrix(config->vOpt("chair_pos")));
+	objects["ornament_red"] = new Object(models["ornament_red"], getPlacementMatrix(config->vOpt("r_ornament_pos")));
+	objects["ornament_yellow"] = new Object(models["ornament_yellow"], getPlacementMatrix(config->vOpt("y_ornament_pos")));
+	objects["ornament_blue"] = new Object(models["ornament_blue"], getPlacementMatrix(config->vOpt("b_ornament_pos")));
+	objects["stand"] = new Object(models["stand"], getPlacementMatrix(config->vOpt("stand_pos")));
+	objects["christmasTree"] = new Object(models["tree"], getPlacementMatrix(config->vOpt("christmas_tree_pos")));
 
-	objects["carton"] = new Object(models["carton"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 3, 5)),
-		glm::vec3(-0.9f, 1.75f, -0.6f)));
-
-	objects["ornament_red"] = new Object(models["ornament_red"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(-0.9f, 1.0f, -0.55f)));
-	
-	objects["ornament_yellow"] = new Object(models["ornament_yellow"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(-1.0f, 1.0f, -0.55f)));
-	
-	objects["ornament_blue"] = new Object(models["ornament_blue"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(-0.97f, 1.0f, -0.67f)));
-
-	objects["stand"] = new Object(models["stand"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(1.5f, 0.2f, -1.5f)));
-	
-	objects["gift"] = new Object(models["gift"], glm::rotate(glm::translate(glm::scale(glm::mat4(),
-		glm::vec3(5, 5, 5)), glm::vec3(1.3f, 0.2f, -0.8f)), 45.0f, glm::vec3(0, 1, 0)));
-
-	objects["christmasTree"] = new Object(models["tree"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(1.5f, 1.4f, -1.5f)));
-
-	frame = new Frame(models["frame"], glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		glm::vec3(2.5f, 1.7f, 0.8f)));
+	frame = new Frame(models["frame"], getPlacementMatrix(config->vOpt("frame_pos")));
 }
 
 void Scene::createCameras(glm::vec2 window_dimensions)
 {
 	float window_aspectRatio = window_dimensions.x / window_dimensions.y;
 
-	cameras["fps"] = new Camera(50.0f, window_aspectRatio, 0.1f, 1000.0f,
-		glm::vec3(2, 7, -50), glm::vec3(0, 7, 0), glm::vec3(0, 1, 0), true, true);
-	cameras["inside"] = new Camera(80.0f, window_aspectRatio, 0.1f, 1000.0f,
-		glm::vec3(-5, 10, 5), glm::vec3(1.5f, 4, -1.5f), glm::vec3(0, 1, 0), false, true);
-	cameras["outside"] = new Camera(35.0f, window_aspectRatio, 0.1f, 1000.0f,
-		glm::vec3(100, 100, -100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	cameras["fps"] = new Camera(config->fOpt("fps_fov"), window_aspectRatio, 0.1f, 1000.0f,
+		config->vOpt("fps_pos"), config->vOpt("fps_center"), glm::vec3(0, 1, 0), true, true);
+	cameras["inside"] = new Camera(config->fOpt("in_fov"), window_aspectRatio, 0.1f, 1000.0f,
+		config->vOpt("in_pos"), config->vOpt("in_center"), glm::vec3(0, 1, 0), false, true);
+	cameras["outside"] = new Camera(config->fOpt("out_fov"), window_aspectRatio, 0.1f, 1000.0f,
+		config->vOpt("out_pos"), config->vOpt("out_dir"), glm::vec3(0, 1, 0));
 
 	activeCamera = cameras["fps"];
 }
@@ -225,7 +213,7 @@ void Scene::createLights()
 
 void Scene::createFog()
 {
-	fog = new Fog(0.015f, glm::vec4(0, 0, 0, 1));
+	fog = new Fog(config->fOpt("fog_density"), glm::vec4(config->vOpt("fog_color"), 1));
 }
 
 void Scene::initInventory()
@@ -264,12 +252,18 @@ void Scene::initOverlay(glm::vec2 window_dimensions)
 	overlayTextures["text"] = textures["overlay_text"];
 
 	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"],
-		overlayTextures, false, 25, 5, 25);
+		overlayTextures, false, config->fOpt("fps"), config->fOpt("overlay_secs"), config->fOpt("overlay_magnification"));
 }
 
 void Scene::initGenerators()
 {
-	snowGenerator = new SnowGenerator(models["snowflake"], 10.0f, 30, 20, 25, objects["home"]);
-	treeGenerator = new TreeGenerator(models["tree"], 19);
-	treeGenerator->generateTrees(50);
+	snowGenerator = new SnowGenerator(models["snowflake"], config->fOpt("snowflake_fall_height"),
+		config->fOpt("snowflake_count"), config->fOpt("snowflake_secs"), config->fOpt("fps"), objects["home"]);
+	treeGenerator = new TreeGenerator(models["tree"], config->fOpt("scale") * 19);
+	treeGenerator->generateTrees(config->fOpt("tree_count"));
+}
+
+glm::mat4 Scene::getPlacementMatrix(glm::vec3 position)
+{
+	return glm::translate(glm::scale(glm::mat4(1), config->fOpt("scale") * glm::vec3(5, 5, 5)), position);
 }

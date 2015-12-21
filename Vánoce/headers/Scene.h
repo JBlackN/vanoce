@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "pgr.h"
+#include "Config.h"
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
@@ -36,6 +37,8 @@ using namespace std;
 class Scene
 {
 public:
+	Config * config;
+
 	map<string, Shader *> shaders;
 	map<string, Material *> materials;
 	map<string, Texture *> textures;
@@ -72,5 +75,7 @@ private:
 	void initHud(glm::vec2 window_dimensions);
 	void initOverlay(glm::vec2 window_dimensions);
 	void initGenerators();
+
+	glm::mat4 getPlacementMatrix(glm::vec3 position);
 };
 
