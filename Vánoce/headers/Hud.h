@@ -16,8 +16,8 @@ class Hud
 {
 public:
 	bool enabled;
-	float hudElementSizePx = 40;
-	float hudElementBorderPercent = 4;
+	float hudElementSizePx;
+	float hudElementBorderPercent;
 private:
 	float * hudElementVertices;
 	unsigned int * hudElementTriangles;
@@ -29,10 +29,12 @@ private:
 	vector<Texture *> numbers;
 public:
 	Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> materials, map<string, Texture *> textures,
-		bool enabled = false);
+		float hudElementSizePx = 40, float hudElementBorderPercent = 4, bool enabled = false);
 	~Hud();
 
 	void draw(Inventory * inventory, float left, float right, float bottom, float top,
 		float nearPlane = -1.0f, float farPlane = 100.0f);
+private:
+	Texture * getNumberTexture(Inventory * inventory, Inventory::OrnamentType type);
 };
 

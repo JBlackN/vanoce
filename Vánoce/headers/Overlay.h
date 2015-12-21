@@ -26,10 +26,10 @@ private:
 	float magnification;
 	float offset;
 	float scale;
-	bool descending;
+	enum ScaleDirection {ascending, descending} scaleDirection;
 public:
 	Overlay(int winWidth, int winHeight, Shader * shader, Material * material, map<string, Texture *> textures,
-		glm::mat4 textureAdjustmentMatrix, bool enabled = false, int fps = 25, float seconds = 5.0f, float magnification = 2.5f);
+		bool enabled = false, int fps = 25, float seconds = 5.0f, float magnification = 25.0f);
 	~Overlay();
 
 	void draw(float left, float right, float bottom, float top, float nearPlane = -1.0f, float farPlane = 100.0f);

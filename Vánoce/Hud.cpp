@@ -1,15 +1,24 @@
 #include "headers\Hud.h"
 
 Hud::Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> materials, map<string, Texture *> textures,
-	bool enabled)
+	float hudElementSizePx, float hudElementBorderPercent, bool enabled)
 {
 	this->enabled = enabled;
+	this->hudElementSizePx = hudElementSizePx;
+	this->hudElementBorderPercent = hudElementBorderPercent;
 
 	this->hudElementVertices = new float[4*8] {
-		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent), winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent), winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
-		winWidth - (winWidth / 100)*hudElementBorderPercent, winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-		winWidth - (winWidth / 100)*hudElementBorderPercent, winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
+		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent), 
+		winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+
+		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent),
+		winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+
+		winWidth - (winWidth / 100)*hudElementBorderPercent,
+		winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+
+		winWidth - (winWidth / 100)*hudElementBorderPercent,
+		winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
 	};
 
 	this->hudElementTriangles = new unsigned int[2*3] {
@@ -47,33 +56,9 @@ void Hud::draw(Inventory * inventory, float left, float right, float bottom, flo
 {
 	if (!enabled) return;
 
-	Texture * redNumberTexture;
-	Texture * yellowNumberTexture;
-	Texture * blueNumberTexture;
-
-	unsigned int redOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::red);
-	if (redOrnamentCount > 0 && redOrnamentCount < 10)
-		redNumberTexture = numbers[redOrnamentCount - 1];
-	else if (redOrnamentCount > 9)
-		redNumberTexture = numbers[8];
-	else
-		redNumberTexture = NULL;
-
-	unsigned int yellowOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::yellow);
-	if (yellowOrnamentCount > 0 && yellowOrnamentCount < 10)
-		yellowNumberTexture = numbers[yellowOrnamentCount - 1];
-	else if (yellowOrnamentCount > 9)
-		yellowNumberTexture = numbers[8];
-	else
-		yellowNumberTexture = NULL;
-
-	unsigned int blueOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::blue);
-	if (blueOrnamentCount > 0 && blueOrnamentCount < 10)
-		blueNumberTexture = numbers[blueOrnamentCount - 1];
-	else if (blueOrnamentCount > 9)
-		blueNumberTexture = numbers[8];
-	else
-		blueNumberTexture = NULL;
+	Texture * redNumberTexture = getNumberTexture(inventory, Inventory::OrnamentType::red);
+	Texture * yellowNumberTexture = getNumberTexture(inventory, Inventory::OrnamentType::yellow);
+	Texture * blueNumberTexture = getNumberTexture(inventory, Inventory::OrnamentType::blue);
 
 	if (redNumberTexture != NULL) hudOrnamentRed->model->textures.push_back(redNumberTexture);
 	hudOrnamentRed->draw(left, right, bottom, top, nearPlane, farPlane);
@@ -86,4 +71,41 @@ void Hud::draw(Inventory * inventory, float left, float right, float bottom, flo
 	if (blueNumberTexture != NULL) hudOrnamentBlue->model->textures.push_back(blueNumberTexture);
 	hudOrnamentBlue->draw(left, right, bottom, top, nearPlane, farPlane);
 	if (blueNumberTexture != NULL) hudOrnamentBlue->model->textures.pop_back();
+}
+
+Texture * Hud::getNumberTexture(Inventory * inventory, Inventory::OrnamentType type)
+{
+	unsigned int redOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::red);
+	unsigned int yellowOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::yellow);
+	unsigned int blueOrnamentCount = inventory->ornamentCount(Inventory::OrnamentType::blue);
+
+	switch (type)
+	{
+	case Inventory::OrnamentType::red:
+		if (redOrnamentCount > 0 && redOrnamentCount < 10)
+			return numbers[redOrnamentCount - 1];
+		else if (redOrnamentCount > 9)
+			return numbers[8];
+		else
+			return NULL;
+
+	case Inventory::OrnamentType::yellow:
+		if (yellowOrnamentCount > 0 && yellowOrnamentCount < 10)
+			return numbers[yellowOrnamentCount - 1];
+		else if (yellowOrnamentCount > 9)
+			return numbers[8];
+		else
+			return NULL;
+
+	case Inventory::OrnamentType::blue:
+		if (blueOrnamentCount > 0 && blueOrnamentCount < 10)
+			return numbers[blueOrnamentCount - 1];
+		else if (blueOrnamentCount > 9)
+			return numbers[8];
+		else
+			return NULL;
+
+	default:
+		return NULL;
+	}
 }

@@ -279,11 +279,11 @@ void init()
 
 	// Overlay
 
-	map<string, Texture *> tmp;
-	tmp["bg"] = textures["glass"];
-	tmp["text"] = textures["overlay_text"];
-	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"], tmp,
-		glm::scale(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)), glm::vec3(0.33f, 1, 1)), false, 25, 5, 25);
+	map<string, Texture *> overlayTextures;
+	overlayTextures["bg"] = textures["glass"];
+	overlayTextures["text"] = textures["overlay_text"];
+	overlay = new Overlay(window_dimensions.x, window_dimensions.y, shaders["overlay"], materials["ornament_blue"],
+		overlayTextures, false, 25, 5, 25);
 
 	// Frame
 

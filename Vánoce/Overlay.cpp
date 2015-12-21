@@ -1,17 +1,17 @@
 #include "headers\Overlay.h"
 
 Overlay::Overlay(int winWidth, int winHeight, Shader * shader, Material * material, map<string, Texture*> textures,
-	glm::mat4 textureAdjustmentMatrix, bool enabled, int fps, float seconds, float magnification)
+	bool enabled, int fps, float seconds, float magnification)
 {
 	this->enabled = enabled;
 	this->fps = fps;
 	this->seconds = seconds;
 
 	this->overlayVertices = new float[4*8] {
-		0.0f, 600.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+		0.0f, (float)winHeight, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
-		800.0f, 600.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-		800.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
+		(float)winWidth, (float)winHeight, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+		(float)winWidth, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
 	};
 	this->overlayTriangles = new unsigned int[2*3] {
 		0, 1, 2,
@@ -23,12 +23,12 @@ Overlay::Overlay(int winWidth, int winHeight, Shader * shader, Material * materi
 	textureArray.push_back(textures["text"]);
 
 	Model * overlayModel = new Model(shader, material, textureArray, 8, 4, 2, overlayVertices, overlayTriangles);
-	this->overlay = new Object(overlayModel, glm::mat4(1), textureAdjustmentMatrix);
+	this->overlay = new Object(overlayModel, glm::mat4(1), glm::scale(glm::mat4(1), glm::vec3(0.33f, 1, 1)));
 
 	this->magnification = magnification;
 	this->offset = 0;
 	this->scale = 1;
-	this->descending = true;
+	this->scaleDirection = descending;
 }
 
 Overlay::~Overlay()
@@ -50,13 +50,13 @@ void Overlay::update()
 	if (offset > offsetRange) offset = 0;
 
 	float scaleRange = 1.0f - (1.0f / glm::sqrt(magnification));
-	if (descending)
+	if (scaleDirection == descending)
 		scale -= (scaleRange / ((float)fps * seconds));
 	else
 		scale += (scaleRange / ((float)fps * seconds));
 
-	if (scale < (1.0f - scaleRange / 2)) descending = false;
-	if (scale > 1.0f) descending = true;
+	if (scale < (1.0f - scaleRange / 2)) scaleDirection = ascending;
+	if (scale > 1.0f) scaleDirection = descending;
 
 	overlay->textureMatrix = glm::scale( // "Global" scale
 		glm::translate( // "Global" translate
