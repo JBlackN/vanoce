@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream> // TODO: REMOVE THIS
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -24,7 +23,7 @@ public:
 private:
 	vector<Point *> points;
 public:
-	Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle);
+	Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle = 90.0f);
 	~Spline();
 
 	Point * point(int frame, int frameCount);

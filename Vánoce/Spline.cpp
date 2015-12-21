@@ -1,11 +1,12 @@
 #include "headers\Spline.h"
 
-Spline::Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle)
+Spline::Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle) // TODO: Use of pointDirAngle (not needed)
 {
 	this->points.push_back(new Point(glm::vec3(start_position.x, start_position.y + 10, start_position.z), glm::vec3(0)));
 
 	float height = start_position.y;
-	this->points.push_back(new Point(start_position, glm::vec3(start_position.x, -start_position.y, start_position.z)));
+	this->points.push_back(new Point(start_position, 
+		glm::normalize(glm::vec3(start_position.x, -start_position.y, start_position.z))));
 
 	for (int i = 1; i < pointCount; i++)
 	{
@@ -13,12 +14,6 @@ Spline::Spline(glm::vec3 start_position, int pointCount, float pointDirectionAng
 		glm::vec3 direction = glm::normalize(glm::vec3(rand() % 38 - 19 - position.x, -1 - position.y, rand() % 38 - 19 - position.z));
 
 		this->points.push_back(new Point(position, direction));
-
-		//cout << "Point " << i << endl;
-		//cout << " - position: (" << position.x << "," << position.y << "," << position.z << ")" << endl;
-		//cout << " - direction: (" << direction.x << "," << direction.y << "," << direction.z << ")" << endl;
-		//glm::vec3 pos_dir = glm::normalize(glm::vec3(0, -1 - position.y, 0));
-		//cout << " - angle: " << glm::degrees(glm::acos((glm::dot(pos_dir, direction)) / (glm::dot(glm::length(pos_dir), glm::length(direction))))) << "°" << endl;
 	}
 
 	this->points.push_back(new Point(glm::vec3(points.back()->position.x, -10, points.back()->position.z), glm::vec3(0)));
