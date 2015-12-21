@@ -10,7 +10,7 @@
 
 # Objects
 
-scale=1
+scale=2
 
 skybox_pos=0,25,0
 carton_pos=-0.9,1.75,-0.6
@@ -48,6 +48,10 @@ in_center=1.5,4,-1.5
 out_fov=35
 out_pos=100,100,-100
 out_center=0,0,0
+
+step_fb=1
+step_lr=10
+step_look=2
 
 # Fog
 

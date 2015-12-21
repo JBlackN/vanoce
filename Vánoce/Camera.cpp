@@ -1,9 +1,12 @@
 #include "headers\Camera.h"
 
-Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane,
+Camera::Camera(Config * config,
+	float fov, float aspectRatio, float nearPlane, float farPlane,
 	glm::vec3 position, glm::vec3 center, glm::vec3 up,
 	bool moving, bool looking)
 {
+	this->config = config;
+
 	this->fov = fov;
 	this->aspectRatio = aspectRatio;
 	this->nearPlane = nearPlane;
@@ -35,7 +38,7 @@ void Camera::move(Direction whereTo)
 {
 	if (!moving) return;
 
-	glm::vec3 direction = glm::normalize(center - position);
+	glm::vec3 direction = config->fOpt("step_fb") * glm::normalize(center - position);
 	direction.y = 0;
 
 	glm::mat4 rotation;
@@ -54,12 +57,12 @@ void Camera::move(Direction whereTo)
 		checkBoundaries(back, direction);
 		break;
 	case left:
-		rotation = glm::rotate(glm::mat4(1.0), 10.0f, up);
+		rotation = glm::rotate(glm::mat4(1.0), config->fOpt("step_lr"), up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 		break;
 	case right:
-		rotation = glm::rotate(glm::mat4(1.0), -10.0f, up);
+		rotation = glm::rotate(glm::mat4(1.0), -config->fOpt("step_lr"), up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 		break;
@@ -82,13 +85,13 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 
 	if (movement_direction.x < 0)
 	{
-		rotation = glm::rotate(glm::mat4(1.0), 2.0f, up);
+		rotation = glm::rotate(glm::mat4(1.0), config->fOpt("step_look"), up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
 	else if (movement_direction.x > 0)
 	{
-		rotation = glm::rotate(glm::mat4(1.0), -2.0f, up);
+		rotation = glm::rotate(glm::mat4(1.0), -config->fOpt("step_look"), up);
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
@@ -97,13 +100,13 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 
 	if (movement_direction.y < 0)
 	{
-		rotation = glm::rotate(glm::mat4(1.0), 2.0f, glm::cross(direction, up));
+		rotation = glm::rotate(glm::mat4(1.0), config->fOpt("step_look"), glm::cross(direction, up));
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
 	else if (movement_direction.y > 0)
 	{
-		rotation = glm::rotate(glm::mat4(1.0), -2.0f, glm::cross(direction, up));
+		rotation = glm::rotate(glm::mat4(1.0), -config->fOpt("step_look"), glm::cross(direction, up));
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
@@ -111,7 +114,10 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 
 void Camera::checkBoundaries(Direction direction, glm::vec3 amount)
 {
-	if (position.x > -100 && position.x < 100 && position.z > -100 && position.z < 100) return;
+	float min_xz = -100 * config->fOpt("scale");
+	float max_xz = 100 * config->fOpt("scale");
+
+	if (position.x > min_xz && position.x < max_xz && position.z > min_xz && position.z < max_xz) return;
 
 	switch (direction)
 	{

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pgr.h"
+#include"Config.h"
 
 class Camera
 {
@@ -18,8 +19,11 @@ public:
 	bool looking;
 
 	enum Direction { forward, back, left, right };
+private:
+	Config * config;
 public:
-	Camera(float fov, float aspectRatio, float nearPlane, float farPlane,
+	Camera(Config * config,
+		float fov, float aspectRatio, float nearPlane, float farPlane,
 		glm::vec3 position, glm::vec3 center, glm::vec3 up,
 		bool moving = false, bool looking = false);
 	~Camera();
