@@ -237,7 +237,9 @@ void Scene::createCameras(glm::vec2 window_dimensions)
 	cameras["inside"] = new Camera(config, config->fOpt("in_fov"), window_aspectRatio, 0.1f, 1000.0f,
 		config->vOpt("in_pos"), config->vOpt("in_center"), glm::vec3(0, 1, 0), false, true);
 	cameras["outside"] = new Camera(config, config->fOpt("out_fov"), window_aspectRatio, 0.1f, 1000.0f,
-		config->vOpt("out_pos"), config->vOpt("out_dir"), glm::vec3(0, 1, 0));
+		config->vOpt("out_pos"), config->vOpt("out_center"), glm::vec3(0, 1, 0));
+	cameras["animated"] = new Camera(config, config->fOpt("cam_anim_fov"), window_aspectRatio, 0.1f, 1000.0f,
+		config->vOpt("out_pos"), config->vOpt("out_center"), glm::vec3(0, 1, 0), false, false, true);
 
 	activeCamera = cameras["fps"];
 }

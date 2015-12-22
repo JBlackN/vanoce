@@ -52,6 +52,25 @@ out_fov=35
 out_pos=100,100,-100
 out_center=0,0,0
 
+cam_anim_fov=50
+cam_anim_seconds=20
+cam_anim_p_start=80,15,-80
+cam_anim_d_start=0,0,0
+cam_anim_p1=80,14,-80
+cam_anim_d1=60,12,60
+cam_anim_p2=60,12,60
+cam_anim_d2=-80,10,80
+cam_anim_p3=-80,10,80
+cam_anim_d3=-60,8,-60
+cam_anim_p4=-60,8,-60
+cam_anim_d4=-2,7,-20
+cam_anim_p5=-2,7,-20
+cam_anim_d5=-4,9,4
+cam_anim_p6=-4,9,4
+cam_anim_d6=4,7,-4
+cam_anim_p_end=4,5,-4
+cam_anim_d_end=0,0,0
+
 step_fb=1
 step_lr=10
 step_look=2

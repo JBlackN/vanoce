@@ -174,6 +174,10 @@ void keyboardSpecialFunc(int key, int x, int y)
 		scene->activeCamera = scene->cameras["outside"];
 		scene->fog->enabled = false;
 		break;
+	case GLUT_KEY_F4:
+		scene->activeCamera = scene->cameras["animated"];
+		scene->fog->enabled = true;
+		break;
 	}
 
 	scene->lights["flashlight"]->position = glm::vec4(scene->cameras["fps"]->position, 1);
@@ -230,6 +234,8 @@ void idleFunc()
 
 void timerFunc(int value)
 {
+	if (scene->activeCamera == scene->cameras["animated"]) scene->activeCamera->update();
+
 	scene->snowGenerator->update();
 	scene->overlay->update();
 	scene->frame->update();

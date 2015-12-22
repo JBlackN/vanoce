@@ -29,6 +29,12 @@ Spline::Spline(Config * config, glm::vec3 start_position, int pointCount, float 
 		points.back()->position.z), glm::vec3(0)));
 }
 
+Spline::Spline(Config * config, vector<Point*> points)
+{
+	this->config = config;
+	this->points = points;
+}
+
 Spline::~Spline()
 {
 	points.clear();

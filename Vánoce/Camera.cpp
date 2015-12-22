@@ -3,7 +3,7 @@
 Camera::Camera(Config * config,
 	float fov, float aspectRatio, float nearPlane, float farPlane,
 	glm::vec3 position, glm::vec3 center, glm::vec3 up,
-	bool moving, bool looking)
+	bool moving, bool looking, bool animated)
 {
 	this->config = config;
 
@@ -18,6 +18,25 @@ Camera::Camera(Config * config,
 
 	this->moving = moving;
 	this->looking = looking;
+	this->animated = animated;
+
+	if (animated)
+	{
+		this->frame = 0;
+		this->seconds = config->fOpt("cam_anim_seconds");
+
+		vector<Spline::Point *> points;
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p_start"), config->vOpt("cam_anim_d_start")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p1"), config->vOpt("cam_anim_d1")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p2"), config->vOpt("cam_anim_d2")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p3"), config->vOpt("cam_anim_d3")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p4"), config->vOpt("cam_anim_d4")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p5"), config->vOpt("cam_anim_d5")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p6"), config->vOpt("cam_anim_d6")));
+		points.push_back(new Spline::Point(config->vOpt("cam_anim_p_end"), config->vOpt("cam_anim_d_end")));
+
+		this->path = new Spline(config, points);
+	}
 }
 
 Camera::~Camera()
@@ -110,6 +129,17 @@ void Camera::look(int window_x, int window_y, glm::vec2 & cursor_position, glm::
 		newDirection = rotation * glm::vec4(center - position, 1);
 		center = position + glm::vec3(newDirection.x, newDirection.y, newDirection.z);
 	}
+}
+
+void Camera::update()
+{
+	if (!animated) return;
+
+	int frameCount = seconds * config->fOpt("fps");
+	if ((++frame) >= frameCount) frame = 0;
+
+	position = path->point(frame, frameCount)->position;
+	center = path->point(frame, frameCount)->direction - position;
 }
 
 void Camera::checkBoundaries(Direction direction, glm::vec3 amount)

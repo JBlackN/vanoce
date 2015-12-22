@@ -26,6 +26,7 @@ private:
 	vector<Point *> points;
 public:
 	Spline(Config * config, glm::vec3 start_position, int pointCount, float pointDirectionAngle = 90.0f);
+	Spline(Config * config, vector<Point *> points);
 	~Spline();
 
 	Point * point(int frame, int frameCount);
