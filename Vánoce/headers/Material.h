@@ -2,6 +2,9 @@
 
 #include "pgr.h"
 
+/**
+ * Class describes material and its properties.
+ */
 class Material
 {
 public:

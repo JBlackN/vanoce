@@ -2,6 +2,9 @@
 
 #include "pgr.h"
 
+/**
+ * Class describes various types of light and their properties.
+ */
 class Light
 {
 public:
