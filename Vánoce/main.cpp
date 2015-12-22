@@ -169,6 +169,12 @@ void keyboardSpecialFunc(int key, int x, int y)
 		scene->activeCamera->move(Camera::Direction::right);
 		break;
 	case GLUT_KEY_F1:
+		/*if (scene->activeCamera == scene->cameras["inside"] || scene->activeCamera == scene->cameras["outside"])
+		{
+			scene->cameras["fps"]->position = scene->activeCamera->position;
+			scene->cameras["fps"]->center = scene->activeCamera->center;
+		}
+		*/
 		scene->activeCamera = scene->cameras["fps"];
 		scene->fog->enabled = true;
 		break;

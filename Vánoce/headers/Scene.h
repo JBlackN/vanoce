@@ -34,6 +34,9 @@ using namespace std;
 #include "models\snowflake.h"
 #include "models\picture.h"
 
+/**
+ * Class holds and manages the entire scene.
+ */
 class Scene
 {
 public:
@@ -55,8 +58,8 @@ public:
 	Inventory * inventory;
 
 	Hud * hud;
-	Overlay * overlay;
-	Frame * frame;
+	Overlay * overlay; ///< Animated overlay.
+	Frame * frame; ///< Animated picture frame.
 public:
 	Scene(glm::vec2 window_dimensions, void (*timerFunc)(int));
 	~Scene();
@@ -77,6 +80,11 @@ private:
 	void initOverlay(glm::vec2 window_dimensions);
 	void initGenerators();
 
+	/**
+	 * Gets placement matrix consisting of scale and translate.
+	 * @param position Object position in the world.
+	 * @return 4x4 placement matrix.
+	 */
 	glm::mat4 getPlacementMatrix(glm::vec3 position);
 };
 
