@@ -13,6 +13,9 @@ using namespace std;
 #include "Object.h"
 #include "Inventory.h"
 
+/**
+ * Class describes user interface.
+ */
 class Hud
 {
 public:
@@ -41,6 +44,12 @@ public:
 	void draw(Inventory * inventory, float left, float right, float bottom, float top,
 		float nearPlane = -1.0f, float farPlane = 100.0f);
 private:
+	/**
+	 * Gets correct texture based on number of ornaments (of specified color) in inventory.
+	 * @param inventory Inventory.
+	 * @param type Ornament color (red, yellow, blue).
+	 * @return Texture.
+	 */
 	Texture * getNumberTexture(Inventory * inventory, Inventory::OrnamentType type);
 };
 
