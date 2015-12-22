@@ -5,9 +5,10 @@
 class Fog
 {
 public:
+	bool enabled;
+
 	float density;
 	glm::vec4 color;
-	bool enabled;
 
 	Fog(float density, glm::vec4 color, bool enabled = true);
 	~Fog();
