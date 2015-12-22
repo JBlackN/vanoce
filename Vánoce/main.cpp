@@ -7,7 +7,7 @@ using namespace std;
 #include "pgr.h"
 #include "headers\Scene.h"
 
-const glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
+glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
 glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
 
 Scene * scene;
@@ -69,8 +69,11 @@ void displayFunc()
 void reshapeFunc(int width, int height)
 {
 	glViewport(0, 0, width, height);
+
 	for (map<string, Camera *>::iterator i = scene->cameras.begin(); i != scene->cameras.end(); i++)
 		(*i).second->aspectRatio = (float)width / (float)height;
+
+	window_dimensions = glm::vec2(width, height);
 }
 
 void keyboardFunc(unsigned char key, int x, int y)
