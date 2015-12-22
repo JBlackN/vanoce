@@ -218,7 +218,7 @@ void Scene::createFog()
 
 void Scene::initInventory()
 {
-	inventory = new Inventory(models["ornament_red"], models["ornament_yellow"], models["ornament_blue"]);
+	inventory = new Inventory(config, models["ornament_red"], models["ornament_yellow"], models["ornament_blue"]);
 }
 
 void Scene::initHud(glm::vec2 window_dimensions)
@@ -242,7 +242,8 @@ void Scene::initHud(glm::vec2 window_dimensions)
 	hudTextures["ornament_8_hud"] = new Texture("textures/ornament_8.png");
 	hudTextures["ornament_9_hud"] = new Texture("textures/ornament_9.png");
 
-	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures);
+	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures,
+		config->fOpt("hud_element_size_px"), config->fOpt("hud_element_border_percent"));
 }
 
 void Scene::initOverlay(glm::vec2 window_dimensions)
@@ -257,9 +258,9 @@ void Scene::initOverlay(glm::vec2 window_dimensions)
 
 void Scene::initGenerators()
 {
-	snowGenerator = new SnowGenerator(models["snowflake"], config->fOpt("snowflake_fall_height"),
+	snowGenerator = new SnowGenerator(config, models["snowflake"], config->fOpt("snowflake_fall_height"),
 		config->fOpt("snowflake_count"), config->fOpt("snowflake_secs"), config->fOpt("fps"), objects["home"]);
-	treeGenerator = new TreeGenerator(models["tree"], config->fOpt("scale") * 19);
+	treeGenerator = new TreeGenerator(config, models["tree"], config->fOpt("scale") * 19);
 	treeGenerator->generateTrees(config->fOpt("tree_count"));
 }
 

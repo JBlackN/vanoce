@@ -10,7 +10,7 @@
 
 # Objects
 
-scale=2
+scale=1
 
 skybox_pos=0,25,0
 carton_pos=-0.9,1.75,-0.6
@@ -62,6 +62,11 @@ fog_color=0,0,0
 
 fps=25
 spline_segments=4
+
+# HUD
+
+hud_element_size_px=40
+hud_element_border_percent=4
 
 # Overlay
 

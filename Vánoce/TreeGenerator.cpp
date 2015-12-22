@@ -1,7 +1,8 @@
 #include "headers\TreeGenerator.h"
 
-TreeGenerator::TreeGenerator(Model * treeModel, int mapDimension)
+TreeGenerator::TreeGenerator(Config * config, Model * treeModel, int mapDimension)
 {
+	this->config = config;
 	this->treeModel = treeModel;
 	this->sceneMapDimension = mapDimension;
 	initMap();
@@ -26,7 +27,8 @@ void TreeGenerator::generateTrees(int count)
 			sceneMap[randomX][randomZ] = tree;
 			markTreeSurroundings(randomX, randomZ);
 
-			Object * newTree = new Object(treeModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
+			Object * newTree = new Object(treeModel, glm::translate(glm::scale(glm::mat4(),
+				config->fOpt("scale") * glm::vec3(5, 5, 5)),
 				glm::vec3(randomX - (sceneMapDimension - 1) / 2, 1.2f, randomZ - (sceneMapDimension - 1) / 2)));
 			trees.push_back(newTree);
 		}
@@ -72,7 +74,10 @@ void TreeGenerator::initMap()
 			int k = i - (sceneMapDimension - 1) / 2;
 			int l = j - (sceneMapDimension - 1) / 2;
 
-			if (k >= -5 && k <= 5 && l >= -5 && l <= 5)
+			float min_xz = -5 * config->fOpt("scale");
+			float max_xz = 5 * config->fOpt("scale");
+
+			if (k >= min_xz && k <= max_xz && l >= min_xz && l <= max_xz)
 				sceneMap[i][j] = home;
 			else
 				sceneMap[i][j] = nothing;

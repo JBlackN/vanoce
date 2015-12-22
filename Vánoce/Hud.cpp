@@ -33,9 +33,12 @@ Hud::Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> m
 	Model * ornamentBlueModel = new Model(shader, materials["ornament_blue_hud"], textures["ornament_blue_hud"],
 		8, 4, 2, hudElementVertices, hudElementTriangles);
 
-	this->hudOrnamentRed = new Object(ornamentRedModel, glm::translate(glm::mat4(1), glm::vec3(-2 * (48), 0, 0)));;
-	this->hudOrnamentYellow = new Object(ornamentYellowModel, glm::translate(glm::mat4(1), glm::vec3(-1 * (48), 0, 0)));;
-	this->hudOrnamentBlue = new Object(ornamentBlueModel, glm::translate(glm::mat4(1), glm::vec3(-0 * (48), 0, 0)));;
+	this->hudOrnamentRed = new Object(ornamentRedModel, glm::translate(glm::mat4(1),
+		glm::vec3(-2 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+	this->hudOrnamentYellow = new Object(ornamentYellowModel, glm::translate(glm::mat4(1),
+		glm::vec3(-1 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+	this->hudOrnamentBlue = new Object(ornamentBlueModel, glm::translate(glm::mat4(1),
+		glm::vec3(-0 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
 
 	this->numbers.push_back(textures["ornament_1_hud"]);
 	this->numbers.push_back(textures["ornament_2_hud"]);

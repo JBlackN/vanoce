@@ -7,6 +7,7 @@
 using namespace std;
 
 #include "pgr.h"
+#include "Config.h"
 #include "Model.h"
 #include "Object.h"
 #include "Camera.h"
@@ -16,6 +17,7 @@ using namespace std;
 class TreeGenerator
 {
 private:
+	Config * config;
 	enum MapSegmentStatus : bool { tree = true, treeSurroundings = true, home = true, nothing = false };
 
 	Model * treeModel;
@@ -24,7 +26,7 @@ private:
 public:
 	vector<Object *> trees;
 public:
-	TreeGenerator(Model * treeModel, int mapDimension);
+	TreeGenerator(Config * config, Model * treeModel, int mapDimension);
 	~TreeGenerator();
 
 	void generateTrees(int count);

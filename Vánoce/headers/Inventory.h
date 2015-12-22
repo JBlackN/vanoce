@@ -6,6 +6,7 @@
 using namespace std;
 
 #include "pgr.h"
+#include "Config.h"
 #include "Model.h"
 #include "Object.h"
 #include "Camera.h"
@@ -19,6 +20,8 @@ class Inventory
 public:
 	enum OrnamentType { red, yellow, blue };
 private:
+	Config * config;
+
 	Model * redOrnament;
 	Model * yellowOrnament;
 	Model * blueOrnament;
@@ -30,7 +33,7 @@ private:
 	map<OrnamentType, list<Object *>> placedOrnaments;
 	Collision * collision;
 public:
-	Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
+	Inventory(Config * config, Model * redOrnament, Model * yellowOrnament, Model * blueOrnament);
 	~Inventory();
 
 	void insertOrnament(OrnamentType type, unsigned int count = 1);

@@ -1,7 +1,9 @@
 #include "headers\Inventory.h"
 
-Inventory::Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOrnament)
+Inventory::Inventory(Config * config, Model * redOrnament, Model * yellowOrnament, Model * blueOrnament)
 {
+	this->config = config;
+
 	this->redOrnament = redOrnament;
 	this->yellowOrnament = yellowOrnament;
 	this->blueOrnament = blueOrnament;
@@ -10,7 +12,7 @@ Inventory::Inventory(Model * redOrnament, Model * yellowOrnament, Model * blueOr
 	this->nYellowOrnaments = 0;
 	this->nBlueOrnaments = 0;
 
-	this->collision = new Collision(redOrnament->nAttrPerVert, redOrnament->nVert, redOrnament->vertices);
+	this->collision = new Collision(config, redOrnament->nAttrPerVert, redOrnament->nVert, redOrnament->vertices);
 }
 
 Inventory::~Inventory()
@@ -87,8 +89,8 @@ void Inventory::placeOrnament(OrnamentType type, Object * tree, glm::vec2 window
 	if (collision->sphereCheck(position)) return;
 	collision->addOrnamentPosition(position);
 
-	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(), glm::vec3(5, 5, 5)),
-		position / 5.0f));
+	Object * placedOrnament = new Object(ornamentModel, glm::translate(glm::scale(glm::mat4(),
+		config->fOpt("scale") * glm::vec3(5, 5, 5)), position / (config->fOpt("scale") * 5.0f)));
 	this->placedOrnaments[type].push_back(placedOrnament);
 
 	removeOrnament(type);

@@ -1,22 +1,32 @@
 #include "headers\Spline.h"
 
-Spline::Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle) // TODO: Use of pointDirAngle (not needed)
+Spline::Spline(Config * config, glm::vec3 start_position, int pointCount, float pointDirectionAngle) // TODO: Use of pointDirAngle (not needed)
 {
-	this->points.push_back(new Point(glm::vec3(start_position.x, start_position.y + 10, start_position.z), glm::vec3(0)));
+	this->config = config;
+
+	this->points.push_back(new Point(glm::vec3(start_position.x, start_position.y + 10 * config->fOpt("scale"), start_position.z),
+		glm::vec3(0)));
 
 	float height = start_position.y;
 	this->points.push_back(new Point(start_position, 
 		glm::normalize(glm::vec3(start_position.x, -start_position.y, start_position.z))));
 
+	int scaledMapSize = config->fOpt("scale") * 38;
 	for (int i = 1; i < pointCount; i++)
 	{
-		glm::vec3 position = glm::vec3(rand() % 38 - 19, (pointCount - 1 - i) * (height / ((float)pointCount - 1.0f)), rand() % 38 - 19);
-		glm::vec3 direction = glm::normalize(glm::vec3(rand() % 38 - 19 - position.x, -1 - position.y, rand() % 38 - 19 - position.z));
+		glm::vec3 position = glm::vec3(rand() % scaledMapSize - (scaledMapSize / 2),
+			(pointCount - 1 - i) * (height / ((float)pointCount - 1.0f)),
+			rand() % scaledMapSize - (scaledMapSize / 2));
+
+		glm::vec3 direction = glm::normalize(glm::vec3(rand() % scaledMapSize - (scaledMapSize / 2) - position.x,
+			-1 - position.y,
+			rand() % scaledMapSize - (scaledMapSize / 2) - position.z));
 
 		this->points.push_back(new Point(position, direction));
 	}
 
-	this->points.push_back(new Point(glm::vec3(points.back()->position.x, -10, points.back()->position.z), glm::vec3(0)));
+	this->points.push_back(new Point(glm::vec3(points.back()->position.x, -10 * config->fOpt("scale"),
+		points.back()->position.z), glm::vec3(0)));
 }
 
 Spline::~Spline()

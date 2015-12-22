@@ -1,7 +1,9 @@
 #include "headers\Collision.h"
 
-Collision::Collision(Object * object)
+Collision::Collision(Config * config, Object * object)
 {
+	this->config = config;
+
 	vector<float> x_values;
 	vector<float> y_values;
 	vector<float> z_values;
@@ -27,8 +29,10 @@ Collision::Collision(Object * object)
 	this->homeBoundariesMax = glm::vec3(x_max, y_max, z_max);
 }
 
-Collision::Collision(int nAttrPerVertex, int nVert, const float * vertices)
+Collision::Collision(Config * config, int nAttrPerVertex, int nVert, const float * vertices)
 {
+	this->config = config;
+
 	list<float> y_values;
 	for (int i = 1; i < nAttrPerVertex * nVert; i += nAttrPerVertex)
 		y_values.push_back(vertices[i]);
@@ -53,7 +57,7 @@ bool Collision::check(glm::vec3 world_position)
 bool Collision::sphereCheck(glm::vec3 position)
 {
 	for (list<glm::vec3>::iterator i = ornamentPositions.begin(); i != ornamentPositions.end(); i++)
-		if (glm::length((*i) - position) < 5 * ornamentDiameter) return true;
+		if (glm::length((*i) - position) < config->fOpt("scale") * 5 * ornamentDiameter) return true;
 	return false;
 }
 

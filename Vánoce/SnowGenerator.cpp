@@ -1,14 +1,15 @@
 #include "headers\SnowGenerator.h"
 
-SnowGenerator::SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps,
-	Object * collideWith, bool enabled)
+SnowGenerator::SnowGenerator(Config * config, Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall,
+	int fps, Object * collideWith, bool enabled)
 {
+	this->config = config;
 	this->enabled = enabled;
 	this->snowflake = snowflake;
 	this->fallHeight = fallHeight;
 	this->snowflakeCount = snowflakeCount;
 	this->frameCount = secondsToFall * fps;
-	this->collision = new Collision(collideWith);
+	this->collision = new Collision(config, collideWith);
 
 	for (int i = 0; i < snowflakeCount; i++) generate();
 }
@@ -38,10 +39,13 @@ void SnowGenerator::generate()
 {
 	if (!enabled) return;
 
-	glm::vec3 start_position = glm::vec3(rand() % 38 - 19, fallHeight, rand() % 38 - 19);
+	int scaledMapSize = config->fOpt("scale") * 38;
+	glm::vec3 start_position = glm::vec3(rand() % scaledMapSize - (scaledMapSize / 2), fallHeight,
+		rand() % scaledMapSize - (scaledMapSize / 2));
 
-	Object * newSnowflake = new Object(snowflake, glm::translate(glm::scale(glm::mat4(1), glm::vec3(5, 5, 5)), start_position));
-	Spline * newPath = new Spline(start_position, 4); // TODO: pointDirectionAngle (not needed)
+	Object * newSnowflake = new Object(snowflake, glm::translate(glm::scale(glm::mat4(1),
+		config->fOpt("scale") * glm::vec3(5, 5, 5)), start_position));
+	Spline * newPath = new Spline(config, start_position, config->fOpt("spline_segments")); // TODO: pointDirectionAngle (not needed)
 
 	snowflakes.push_back(new Snowflake(newSnowflake, newPath, 0));
 }
@@ -92,5 +96,6 @@ glm::mat4 SnowGenerator::getPlacementMatrix(Snowflake * snowflake, glm::vec3 pos
 
 	snowflake->previousDirection = direction;
 
-	return glm::rotate(glm::translate(glm::scale(glm::mat4(1), glm::vec3(5, 5, 5)), position), angle, axis);
+	return glm::rotate(glm::translate(glm::scale(glm::mat4(1), config->fOpt("scale") * glm::vec3(5, 5, 5)), position),
+		angle, axis);
 }

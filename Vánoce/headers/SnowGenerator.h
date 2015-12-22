@@ -33,6 +33,7 @@ public:
 		}
 	};
 private:
+	Config * config;
 	bool enabled;
 
 	Model * snowflake;
@@ -44,7 +45,7 @@ private:
 
 	Collision * collision;
 public:
-	SnowGenerator(Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps,
+	SnowGenerator(Config * config, Model * snowflake, float fallHeight, int snowflakeCount, int secondsToFall, int fps,
 		Object * collideWith = NULL, bool enabled = true);
 	~SnowGenerator();
 

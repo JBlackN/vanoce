@@ -6,6 +6,7 @@
 using namespace std;
 
 #include "pgr.h"
+#include "Config.h"
 
 class Spline
 {
@@ -21,9 +22,10 @@ public:
 		}
 	};
 private:
+	Config * config;
 	vector<Point *> points;
 public:
-	Spline(glm::vec3 start_position, int pointCount, float pointDirectionAngle = 90.0f);
+	Spline(Config * config, glm::vec3 start_position, int pointCount, float pointDirectionAngle = 90.0f);
 	~Spline();
 
 	Point * point(int frame, int frameCount);
