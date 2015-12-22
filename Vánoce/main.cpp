@@ -69,7 +69,8 @@ void displayFunc()
 void reshapeFunc(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	// Setup projection matrix
+	for (map<string, Camera *>::iterator i = scene->cameras.begin(); i != scene->cameras.end(); i++)
+		(*i).second->aspectRatio = (float)width / (float)height;
 }
 
 void keyboardFunc(unsigned char key, int x, int y)
