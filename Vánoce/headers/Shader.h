@@ -6,6 +6,9 @@ using namespace std;
 
 #include "pgr.h"
 
+/**
+ * Class holds shader program (consisting of vertex shader and fragment shader).
+ */
 class Shader
 {
 public:
