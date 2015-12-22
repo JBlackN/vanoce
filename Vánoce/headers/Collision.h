@@ -42,12 +42,14 @@ public:
 	/**
 	 * Check if point lies within the cube.
 	 * @param world_position Position of the point.
+	 * @return Whether point lies within the cube.
 	 */
 	bool check(glm::vec3 world_position);
 
 	/**
 	 * Check if new sphere collides with any of the already placed spheres.
 	 * @param position Position of a new sphere.
+	 * @return Whether new sphere collides with any of the other spheres within the scene.
 	 */
 	bool sphereCheck(glm::vec3 position);
 
