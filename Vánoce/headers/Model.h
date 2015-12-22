@@ -8,6 +8,9 @@ using namespace std;
 #include "Material.h"
 #include "Texture.h"
 
+/**
+ * Class describes model used to generate objects within the scene.
+ */
 class Model
 {
 public:
