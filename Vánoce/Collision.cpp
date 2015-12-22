@@ -42,6 +42,7 @@ Collision::Collision(Config * config, int nAttrPerVertex, int nVert, const float
 
 Collision::~Collision()
 {
+	ornamentPositions.clear();
 }
 
 bool Collision::check(glm::vec3 world_position)

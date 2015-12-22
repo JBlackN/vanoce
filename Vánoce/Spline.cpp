@@ -31,6 +31,7 @@ Spline::Spline(Config * config, glm::vec3 start_position, int pointCount, float 
 
 Spline::~Spline()
 {
+	points.clear();
 }
 
 Spline::Point * Spline::point(int frame, int frameCount)

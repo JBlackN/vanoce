@@ -33,6 +33,10 @@ Overlay::Overlay(int winWidth, int winHeight, Shader * shader, Material * materi
 
 Overlay::~Overlay()
 {
+	delete overlay->model;
+	delete overlay;
+	delete overlayTriangles;
+	delete overlayVertices;
 }
 
 void Overlay::draw(float left, float right, float bottom, float top, float nearPlane, float farPlane)

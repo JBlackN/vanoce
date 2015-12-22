@@ -26,6 +26,16 @@ Hud::Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> m
 		1, 2, 3
 	};
 
+	this->shader = shader;
+
+	this->materials["ornament_red_hud"] = materials["ornament_red_hud"];
+	this->materials["ornament_yellow_hud"] = materials["ornament_yellow_hud"];
+	this->materials["ornament_blue_hud"] = materials["ornament_blue_hud"];
+
+	this->backgrounds["ornament_red_hud"] = textures["ornament_red_hud"];
+	this->backgrounds["ornament_yellow_hud"] = textures["ornament_yellow_hud"];
+	this->backgrounds["ornament_blue_hud"] = textures["ornament_blue_hud"];
+
 	Model * ornamentRedModel = new Model(shader, materials["ornament_red_hud"], textures["ornament_red_hud"],
 		8, 4, 2, hudElementVertices, hudElementTriangles);
 	Model * ornamentYellowModel = new Model(shader, materials["ornament_yellow_hud"], textures["ornament_yellow_hud"],
@@ -34,11 +44,11 @@ Hud::Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> m
 		8, 4, 2, hudElementVertices, hudElementTriangles);
 
 	this->hudOrnamentRed = new Object(ornamentRedModel, glm::translate(glm::mat4(1),
-		glm::vec3(-2 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+		glm::vec3(-2 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));
 	this->hudOrnamentYellow = new Object(ornamentYellowModel, glm::translate(glm::mat4(1),
-		glm::vec3(-1 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+		glm::vec3(-1 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));
 	this->hudOrnamentBlue = new Object(ornamentBlueModel, glm::translate(glm::mat4(1),
-		glm::vec3(-0 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+		glm::vec3(-0 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));
 
 	this->numbers.push_back(textures["ornament_1_hud"]);
 	this->numbers.push_back(textures["ornament_2_hud"]);
@@ -53,6 +63,73 @@ Hud::Hud(int winWidth, int winHeight, Shader * shader, map<string, Material *> m
 
 Hud::~Hud()
 {
+	numbers.clear();
+
+	(hudOrnamentBlue->model->textures).clear();
+	delete hudOrnamentBlue->model->material;
+	delete hudOrnamentBlue->model;
+	delete hudOrnamentBlue;
+
+	(hudOrnamentYellow->model->textures).clear();
+	delete hudOrnamentYellow->model->material;
+	delete hudOrnamentYellow->model;
+	delete hudOrnamentYellow;
+
+	(hudOrnamentRed->model->textures).clear();
+	delete hudOrnamentRed->model->material;
+	delete hudOrnamentRed->model;
+	delete hudOrnamentRed;
+
+	delete hudElementTriangles;
+	delete hudElementVertices;
+}
+
+void Hud::reload(int winWidth, int winHeight, float hudElementSizePx, float hudElementBorderPercent, bool enabled)
+{
+	delete hudOrnamentBlue->model;
+	delete hudOrnamentBlue;
+
+	delete hudOrnamentYellow->model;
+	delete hudOrnamentYellow;
+
+	delete hudOrnamentRed->model;
+	delete hudOrnamentRed;
+
+	delete hudElementTriangles;
+	delete hudElementVertices;
+
+	this->hudElementVertices = new float[4 * 8]{
+		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent),
+		winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+
+		winWidth - (hudElementSizePx + (winWidth / 100)*hudElementBorderPercent),
+		winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+
+		winWidth - (winWidth / 100)*hudElementBorderPercent,
+		winHeight - (winHeight / 100)*hudElementBorderPercent, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+
+		winWidth - (winWidth / 100)*hudElementBorderPercent,
+		winHeight - (hudElementSizePx + (winHeight / 100)*hudElementBorderPercent), 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f
+	};
+
+	this->hudElementTriangles = new unsigned int[2 * 3]{
+		0, 1, 2,
+		1, 2, 3
+	};
+
+	Model * ornamentRedModel = new Model(shader, materials["ornament_red_hud"], backgrounds["ornament_red_hud"],
+		8, 4, 2, hudElementVertices, hudElementTriangles);
+	Model * ornamentYellowModel = new Model(shader, materials["ornament_yellow_hud"], backgrounds["ornament_yellow_hud"],
+		8, 4, 2, hudElementVertices, hudElementTriangles);
+	Model * ornamentBlueModel = new Model(shader, materials["ornament_blue_hud"], backgrounds["ornament_blue_hud"],
+		8, 4, 2, hudElementVertices, hudElementTriangles);
+
+	this->hudOrnamentRed = new Object(ornamentRedModel, glm::translate(glm::mat4(1),
+		glm::vec3(-2 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+	this->hudOrnamentYellow = new Object(ornamentYellowModel, glm::translate(glm::mat4(1),
+		glm::vec3(-1 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
+	this->hudOrnamentBlue = new Object(ornamentBlueModel, glm::translate(glm::mat4(1),
+		glm::vec3(-0 * (hudElementSizePx + 2 * hudElementBorderPercent), 0, 0)));;
 }
 
 void Hud::draw(Inventory * inventory, float left, float right, float bottom, float top, float nearPlane, float farPlane)

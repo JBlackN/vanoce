@@ -10,6 +10,7 @@ TreeGenerator::TreeGenerator(Config * config, Model * treeModel, int mapDimensio
 
 TreeGenerator::~TreeGenerator()
 {
+	trees.clear();
 	for (int i = 0; i < sceneMapDimension; i++)
 		delete sceneMap[i];
 	delete sceneMap;
@@ -27,7 +28,7 @@ void TreeGenerator::generateTrees(int count)
 			sceneMap[randomX][randomZ] = tree;
 			markTreeSurroundings(randomX, randomZ);
 
-			Object * newTree = new Object(treeModel, glm::translate(glm::scale(glm::mat4(),
+			Object * newTree = new Object(treeModel, glm::translate(glm::scale(glm::mat4(1),
 				config->fOpt("scale") * glm::vec3(5, 5, 5)),
 				glm::vec3(randomX - (sceneMapDimension - 1) / 2, 1.2f, randomZ - (sceneMapDimension - 1) / 2)));
 			trees.push_back(newTree);

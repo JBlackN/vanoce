@@ -14,6 +14,7 @@ Frame::Frame(Model * frameModel, glm::mat4 matrix, int fps, float seconds)
 
 Frame::~Frame()
 {
+	delete frame;
 }
 
 void Frame::draw(Camera * camera, map<string, Light*> lights, Fog * fog)

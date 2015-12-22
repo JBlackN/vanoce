@@ -102,6 +102,9 @@ void keyboardFunc(unsigned char key, int x, int y)
 	case 'M':
 		scene->fog->enabled = !scene->fog->enabled;
 		break;
+	case 'R':
+		scene->reload(window_dimensions);
+		break;
 	case 'r':
 		if (treeID == 5)
 			scene->inventory->placeOrnament(Inventory::OrnamentType::red,

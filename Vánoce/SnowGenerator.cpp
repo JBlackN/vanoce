@@ -16,6 +16,8 @@ SnowGenerator::SnowGenerator(Config * config, Model * snowflake, float fallHeigh
 
 SnowGenerator::~SnowGenerator()
 {
+	delete collision;
+	snowflakes.clear();
 }
 
 void SnowGenerator::enable()
@@ -39,9 +41,7 @@ void SnowGenerator::generate()
 {
 	if (!enabled) return;
 
-	int scaledMapSize = config->fOpt("scale") * 38;
-	glm::vec3 start_position = glm::vec3(rand() % scaledMapSize - (scaledMapSize / 2), fallHeight,
-		rand() % scaledMapSize - (scaledMapSize / 2));
+	glm::vec3 start_position = glm::vec3(rand() % 38 - 19, fallHeight, rand() % 38 - 19);
 
 	Object * newSnowflake = new Object(snowflake, glm::translate(glm::scale(glm::mat4(1),
 		config->fOpt("scale") * glm::vec3(5, 5, 5)), start_position));

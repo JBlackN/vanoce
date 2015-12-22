@@ -17,6 +17,10 @@ Inventory::Inventory(Config * config, Model * redOrnament, Model * yellowOrnamen
 
 Inventory::~Inventory()
 {
+	delete collision;
+	placedOrnaments[red].clear();
+	placedOrnaments[yellow].clear();
+	placedOrnaments[blue].clear();
 }
 
 void Inventory::insertOrnament(OrnamentType type, unsigned int count)

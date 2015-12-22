@@ -61,6 +61,7 @@ public:
 	Scene(glm::vec2 window_dimensions, void (*timerFunc)(int));
 	~Scene();
 
+	void reload(glm::vec2 window_dimensions);
 	void draw(glm::vec2 window_dimensions);
 private:
 	void loadShaders();

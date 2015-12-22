@@ -39,6 +39,9 @@ Model::Model(Shader * shader, Material * material, vector<Texture*> textures,
 
 Model::~Model()
 {
+	glDeleteBuffers(1, &ebo);
+	glDeleteBuffers(1, &vbo);
+	glDeleteVertexArrays(1, &vao);
 }
 
 void Model::loadData()

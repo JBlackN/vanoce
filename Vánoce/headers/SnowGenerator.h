@@ -31,6 +31,12 @@ public:
 			this->frame = frame;
 			this->previousDirection = glm::vec3(0);
 		}
+
+		~Snowflake()
+		{
+			delete path;
+			delete snowflake;
+		}
 	};
 private:
 	Config * config;

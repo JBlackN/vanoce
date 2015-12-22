@@ -22,6 +22,50 @@ Scene::Scene(glm::vec2 window_dimensions, void (*timerFunc)(int))
 
 Scene::~Scene()
 {
+	delete snowGenerator;
+	delete treeGenerator;
+	delete overlay;
+	delete inventory;
+	delete fog;
+
+	lights.clear();
+	cameras.clear();
+	objects.clear();
+
+	delete frame;
+	delete hud;
+	
+	models.clear();
+
+	textures.clear();
+	materials.clear();
+	shaders.clear();
+
+	delete config;
+}
+
+void Scene::reload(glm::vec2 window_dimensions)
+{
+	delete treeGenerator;
+	delete snowGenerator;
+	delete overlay;
+	delete inventory;
+	delete fog;
+	cameras.clear();
+	objects.clear();
+	delete config;
+
+	config = new Config();
+	//loadMaterials();
+	hud->reload(window_dimensions.x, window_dimensions.y,
+		config->fOpt("hud_element_size_px"), config->fOpt("hud_element_border_percent"));
+	createObjects();
+	createCameras(window_dimensions);
+	//createLights();
+	createFog();
+	initInventory();
+	initOverlay(window_dimensions);
+	initGenerators();
 }
 
 void Scene::draw(glm::vec2 window_dimensions)
@@ -260,7 +304,7 @@ void Scene::initGenerators()
 {
 	snowGenerator = new SnowGenerator(config, models["snowflake"], config->fOpt("snowflake_fall_height"),
 		config->fOpt("snowflake_count"), config->fOpt("snowflake_secs"), config->fOpt("fps"), objects["home"]);
-	treeGenerator = new TreeGenerator(config, models["tree"], config->fOpt("scale") * 19);
+	treeGenerator = new TreeGenerator(config, models["tree"], 19);
 	treeGenerator->generateTrees(config->fOpt("tree_count"));
 }
 

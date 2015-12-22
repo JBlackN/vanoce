@@ -15,4 +15,5 @@ Texture::Texture(string texPath, bool clamp)
 
 Texture::~Texture()
 {
+	glDeleteTextures(1, &texture);
 }

@@ -15,4 +15,5 @@ Shader::Shader(string vsPath, string fsPath)
 
 Shader::~Shader()
 {
+	pgr::deleteProgramAndShaders(shaderProgram);
 }
