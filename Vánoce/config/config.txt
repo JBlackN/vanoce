@@ -84,6 +84,7 @@ fog_color=0,0,0
 
 fps=25
 spline_segments=4
+spline_tension=0.5
 
 # HUD
 

@@ -50,6 +50,8 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete scene;
+
 	return 0;
 }
 

@@ -64,7 +64,7 @@ Spline::Point * Spline::point(int frame, int frameCount)
 
 glm::vec3 Spline::pointPosition(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t)
 {
-	glm::vec4 r1 = (1.0f / 2.0f) * glm::vec4(t*t*t, t*t, t, 1);
+	glm::vec4 r1 = config->fOpt("spline_tension") * glm::vec4(t*t*t, t*t, t, 1);
 	glm::vec4 r2 = r1 * glm::mat4(
 		glm::vec4(-1, 2, -1, 0),
 		glm::vec4(3, -5, 0, 2),
@@ -80,7 +80,7 @@ glm::vec3 Spline::pointPosition(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::v
 
 glm::vec3 Spline::pointDirection(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t)
 {
-	glm::vec4 r1 = (1.0f / 2.0f) * glm::vec4(3 * t*t, 2 * t, 1, 0);
+	glm::vec4 r1 = config->fOpt("spline_tension") * glm::vec4(3 * t*t, 2 * t, 1, 0);
 	glm::vec4 r2 = r1 * glm::mat4(
 		glm::vec4(-1, 2, -1, 0),
 		glm::vec4(3, -5, 0, 2),
