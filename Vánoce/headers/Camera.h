@@ -33,7 +33,7 @@ public:
 
 	enum Direction { forward, back, left, right };
 private:
-	Config * config; ///< Config loader.
+	Config * config; ///< Config provider.
 public:
 	Camera(Config * config,
 		float fov, float aspectRatio, float nearPlane, float farPlane,
