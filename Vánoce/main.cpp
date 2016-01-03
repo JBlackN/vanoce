@@ -7,10 +7,10 @@ using namespace std;
 #include "pgr.h"
 #include "headers\Scene.h"
 
-glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f);
-glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f);
+glm::vec2 window_dimensions = glm::vec2(800.0f, 600.0f); ///< Initial window dimensions.
+glm::vec2 cursor_position = glm::vec2(0.0f, 0.0f); ///< Initial last cursor position.
 
-Scene * scene;
+Scene * scene; ///< Holds and manages entire scene.
 
 void displayFunc(void);
 void reshapeFunc(int, int);
