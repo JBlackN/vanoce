@@ -70,10 +70,8 @@ void reshapeFunc(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
-	for (map<string, Camera *>::iterator i = scene->cameras.begin(); i != scene->cameras.end(); i++)
-		(*i).second->aspectRatio = (float)width / (float)height;
-
 	window_dimensions = glm::vec2(width, height);
+	scene->reshape(window_dimensions);
 }
 
 void keyboardFunc(unsigned char key, int x, int y)

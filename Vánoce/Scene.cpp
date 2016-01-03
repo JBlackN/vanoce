@@ -56,16 +56,27 @@ void Scene::reload(glm::vec2 window_dimensions)
 	delete config;
 
 	config = new Config();
-	//loadMaterials();
 	hud->reload(window_dimensions.x, window_dimensions.y,
 		config->fOpt("hud_element_size_px"), config->fOpt("hud_element_border_percent"));
 	createObjects();
 	createCameras(window_dimensions);
-	//createLights();
 	createFog();
 	initInventory();
 	initOverlay(window_dimensions);
 	initGenerators();
+}
+
+void Scene::reshape(glm::vec2 window_dimensions)
+{
+	delete overlay;
+
+	hud->reload(window_dimensions.x, window_dimensions.y,
+		config->fOpt("hud_element_size_px"), config->fOpt("hud_element_border_percent"));
+
+	for (map<string, Camera *>::iterator i = cameras.begin(); i != cameras.end(); i++)
+		(*i).second->aspectRatio = (float)window_dimensions.x / (float)window_dimensions.y;
+
+	initOverlay(window_dimensions);
 }
 
 void Scene::draw(glm::vec2 window_dimensions)
