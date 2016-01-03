@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
 
 	glutInitWindowSize(window_dimensions.x, window_dimensions.y);
-	glutCreateWindow("Window");
+	glutCreateWindow("Vánoce");
 
 	glutDisplayFunc(displayFunc);
 	glutReshapeFunc(reshapeFunc);
