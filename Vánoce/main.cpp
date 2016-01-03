@@ -157,6 +157,8 @@ void keyboardFunc(unsigned char key, int x, int y)
 
 void keyboardSpecialFunc(int key, int x, int y)
 {
+	Camera * lastCamera = NULL;
+
 	switch (key)
 	{
 	case GLUT_KEY_UP:
@@ -172,31 +174,48 @@ void keyboardSpecialFunc(int key, int x, int y)
 		scene->activeCamera->move(Camera::Direction::right);
 		break;
 	case GLUT_KEY_F1:
-		/*if (scene->activeCamera == scene->cameras["inside"] || scene->activeCamera == scene->cameras["outside"])
-		{
-			scene->cameras["fps"]->position = scene->activeCamera->position;
-			scene->cameras["fps"]->center = scene->activeCamera->center;
-		}
-		*/
+		lastCamera = scene->activeCamera;
 		scene->activeCamera = scene->cameras["fps"];
 		scene->fog->enabled = true;
 		break;
 	case GLUT_KEY_F2:
+		lastCamera = scene->activeCamera;
 		scene->activeCamera = scene->cameras["inside"];
 		scene->fog->enabled = true;
 		break;
 	case GLUT_KEY_F3:
+		lastCamera = scene->activeCamera;
 		scene->activeCamera = scene->cameras["outside"];
 		scene->fog->enabled = false;
 		break;
 	case GLUT_KEY_F4:
+		lastCamera = scene->activeCamera;
 		scene->activeCamera = scene->cameras["animated"];
+		scene->fog->enabled = true;
+		break;
+	case GLUT_KEY_F5:
+		lastCamera = scene->activeCamera;
+		scene->cameras["free"]->fov = scene->activeCamera->fov;
+		scene->cameras["free"]->aspectRatio = scene->activeCamera->aspectRatio;
+		scene->cameras["free"]->nearPlane = scene->activeCamera->nearPlane;
+		scene->cameras["free"]->farPlane = scene->activeCamera->farPlane;
+		scene->cameras["free"]->position = scene->activeCamera->position;
+		scene->cameras["free"]->center = scene->activeCamera->center;
+		scene->activeCamera = scene->cameras["free"];
 		scene->fog->enabled = true;
 		break;
 	}
 
-	scene->lights["flashlight"]->position = glm::vec4(scene->cameras["fps"]->position, 1);
-	scene->lights["flashlight"]->spot_direction = scene->cameras["fps"]->center - scene->cameras["fps"]->position;
+	if (lastCamera == scene->cameras["fps"])
+	{
+		scene->lights["flashlight"]->position = glm::vec4(scene->cameras["fps"]->position, 1);
+		scene->lights["flashlight"]->spot_direction = scene->cameras["fps"]->center - scene->cameras["fps"]->position;
+	}
+	else if (lastCamera == scene->cameras["free"])
+	{
+		scene->lights["flashlight"]->position = glm::vec4(scene->cameras["free"]->position, 1);
+		scene->lights["flashlight"]->spot_direction = scene->cameras["free"]->center - scene->cameras["free"]->position;
+	}
 
 	glutPostRedisplay();
 }

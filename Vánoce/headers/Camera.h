@@ -25,6 +25,7 @@ public:
 
 	bool moving; ///< Can camera move?
 	bool looking; ///< Can camera look?
+	bool free; ///< Can camera move on Y axis?
 	bool animated;
 
 	Spline * path;
@@ -38,7 +39,7 @@ public:
 	Camera(Config * config,
 		float fov, float aspectRatio, float nearPlane, float farPlane,
 		glm::vec3 position, glm::vec3 center, glm::vec3 up,
-		bool moving = false, bool looking = false, bool animated = false);
+		bool moving = false, bool looking = false, bool free = false, bool animated = false);
 	~Camera();
 
 	glm::mat4 getProjectionMatrix();

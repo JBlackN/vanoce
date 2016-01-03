@@ -71,6 +71,10 @@ cam_anim_d6=4,7,-4
 cam_anim_p_end=4,5,-4
 cam_anim_d_end=0,0,0
 
+cam_free_fov=50
+cam_free_pos=2,7,-50
+cam_free_center=0,7,0
+
 step_fb=1
 step_lr=10
 step_look=2

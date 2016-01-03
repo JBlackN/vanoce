@@ -3,7 +3,7 @@
 Camera::Camera(Config * config,
 	float fov, float aspectRatio, float nearPlane, float farPlane,
 	glm::vec3 position, glm::vec3 center, glm::vec3 up,
-	bool moving, bool looking, bool animated)
+	bool moving, bool looking, bool free, bool animated)
 {
 	this->config = config;
 
@@ -18,6 +18,7 @@ Camera::Camera(Config * config,
 
 	this->moving = moving;
 	this->looking = looking;
+	this->free = free;
 	this->animated = animated;
 
 	if (animated)
@@ -58,7 +59,7 @@ void Camera::move(Direction whereTo)
 	if (!moving) return;
 
 	glm::vec3 direction = config->fOpt("step_fb") * glm::normalize(center - position);
-	direction.y = 0;
+	if (!free) direction.y = 0;
 
 	glm::mat4 rotation;
 	glm::vec4 newDirection;
@@ -144,10 +145,13 @@ void Camera::update()
 
 void Camera::checkBoundaries(Direction direction, glm::vec3 amount)
 {
+	float min_y = 0;
+	float max_y = 100 * config->fOpt("scale");
 	float min_xz = -100 * config->fOpt("scale");
 	float max_xz = 100 * config->fOpt("scale");
 
-	if (position.x > min_xz && position.x < max_xz && position.z > min_xz && position.z < max_xz) return;
+	if (position.x > min_xz && position.x < max_xz && position.z > min_xz && position.z < max_xz &&
+		position.y > min_y && position.y < max_y) return;
 
 	switch (direction)
 	{
