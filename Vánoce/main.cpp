@@ -112,6 +112,7 @@ void keyboardFunc(unsigned char key, int x, int y)
 		scene->reload(window_dimensions);
 		break;
 	case 'r':
+		if (treeID > scene->treeGenerator->trees.size() - 1) break;
 		if (treeID == 5)
 			scene->inventory->placeOrnament(Inventory::OrnamentType::red,
 				scene->objects["christmasTree"], window_dimensions, x, y, scene->activeCamera);
@@ -120,6 +121,7 @@ void keyboardFunc(unsigned char key, int x, int y)
 				scene->treeGenerator->trees[(int)treeID - 6], window_dimensions, x, y, scene->activeCamera);
 		break;
 	case 'y':
+		if (treeID > scene->treeGenerator->trees.size() - 1) break;
 		if (treeID == 5)
 			scene->inventory->placeOrnament(Inventory::OrnamentType::yellow,
 				scene->objects["christmasTree"], window_dimensions, x, y, scene->activeCamera);
@@ -128,6 +130,7 @@ void keyboardFunc(unsigned char key, int x, int y)
 				scene->treeGenerator->trees[(int)treeID - 6], window_dimensions, x, y, scene->activeCamera);
 		break;
 	case 'b':
+		if (treeID > scene->treeGenerator->trees.size() - 1) break;
 		if (treeID == 5)
 			scene->inventory->placeOrnament(Inventory::OrnamentType::blue,
 				scene->objects["christmasTree"], window_dimensions, x, y, scene->activeCamera);
