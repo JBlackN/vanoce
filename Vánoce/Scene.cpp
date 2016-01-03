@@ -142,18 +142,18 @@ void Scene::loadMaterials()
 
 void Scene::loadTextures()
 {
-	textures["skybox"] = new Texture("textures/skybox.jpg", true);
-	textures["snow"] = new Texture("textures/snow.png");
-	textures["home"] = new Texture("textures/home.png");
-	textures["wood"] = new Texture("textures/wood.jpg");
-	textures["fabric"] = new Texture("textures/fabric.png");
-	textures["cardboard"] = new Texture("textures/cardboard.jpg");
-	textures["glass"] = new Texture("textures/glass.png");
-	textures["metal"] = new Texture("textures/metal.png");
-	textures["tree"] = new Texture("textures/tree.png");
-	textures["gift"] = new Texture("textures/gift.png");
-	textures["overlay_text"] = new Texture("textures/overlay_text.png");
-	textures["pictures"] = new Texture("textures/pictures.png");
+	textures["skybox"] = new Texture("data/textures/skybox.jpg", true);
+	textures["snow"] = new Texture("data/textures/snow.png");
+	textures["home"] = new Texture("data/textures/home.png");
+	textures["wood"] = new Texture("data/textures/wood.jpg");
+	textures["fabric"] = new Texture("data/textures/fabric.png");
+	textures["cardboard"] = new Texture("data/textures/cardboard.jpg");
+	textures["glass"] = new Texture("data/textures/glass.png");
+	textures["metal"] = new Texture("data/textures/metal.png");
+	textures["tree"] = new Texture("data/textures/tree.png");
+	textures["gift"] = new Texture("data/textures/gift.png");
+	textures["overlay_text"] = new Texture("data/textures/overlay_text.png");
+	textures["pictures"] = new Texture("data/textures/pictures.png");
 }
 
 void Scene::loadModels()
@@ -277,18 +277,18 @@ void Scene::initHud(glm::vec2 window_dimensions)
 	hudMaterials["ornament_blue_hud"] = new Material(glm::vec3(0), glm::vec3(0.2f, 0.2f, 1), glm::vec3(0), 0, glm::vec3(0));
 
 	map<string, Texture *> hudTextures;
-	hudTextures["ornament_red_hud"] = new Texture("textures/ornament_red.png");
-	hudTextures["ornament_yellow_hud"] = new Texture("textures/ornament_yellow.png");
-	hudTextures["ornament_blue_hud"] = new Texture("textures/ornament_blue.png");
-	hudTextures["ornament_1_hud"] = new Texture("textures/ornament_1.png");
-	hudTextures["ornament_2_hud"] = new Texture("textures/ornament_2.png");
-	hudTextures["ornament_3_hud"] = new Texture("textures/ornament_3.png");
-	hudTextures["ornament_4_hud"] = new Texture("textures/ornament_4.png");
-	hudTextures["ornament_5_hud"] = new Texture("textures/ornament_5.png");
-	hudTextures["ornament_6_hud"] = new Texture("textures/ornament_6.png");
-	hudTextures["ornament_7_hud"] = new Texture("textures/ornament_7.png");
-	hudTextures["ornament_8_hud"] = new Texture("textures/ornament_8.png");
-	hudTextures["ornament_9_hud"] = new Texture("textures/ornament_9.png");
+	hudTextures["ornament_red_hud"] = new Texture("data/textures/ornament_red.png");
+	hudTextures["ornament_yellow_hud"] = new Texture("data/textures/ornament_yellow.png");
+	hudTextures["ornament_blue_hud"] = new Texture("data/textures/ornament_blue.png");
+	hudTextures["ornament_1_hud"] = new Texture("data/textures/ornament_1.png");
+	hudTextures["ornament_2_hud"] = new Texture("data/textures/ornament_2.png");
+	hudTextures["ornament_3_hud"] = new Texture("data/textures/ornament_3.png");
+	hudTextures["ornament_4_hud"] = new Texture("data/textures/ornament_4.png");
+	hudTextures["ornament_5_hud"] = new Texture("data/textures/ornament_5.png");
+	hudTextures["ornament_6_hud"] = new Texture("data/textures/ornament_6.png");
+	hudTextures["ornament_7_hud"] = new Texture("data/textures/ornament_7.png");
+	hudTextures["ornament_8_hud"] = new Texture("data/textures/ornament_8.png");
+	hudTextures["ornament_9_hud"] = new Texture("data/textures/ornament_9.png");
 
 	hud = new Hud(window_dimensions.x, window_dimensions.y, shaders["hud"], hudMaterials, hudTextures,
 		config->fOpt("hud_element_size_px"), config->fOpt("hud_element_border_percent"));

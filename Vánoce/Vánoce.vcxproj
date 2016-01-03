@@ -153,6 +153,20 @@
     <None Include="shaders\skybox.frag" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data\models\carton.h" />
+    <ClInclude Include="data\models\chair.h" />
+    <ClInclude Include="data\models\crate.h" />
+    <ClInclude Include="data\models\gift.h" />
+    <ClInclude Include="data\models\home.h" />
+    <ClInclude Include="data\models\ornament.h" />
+    <ClInclude Include="data\models\picture.h" />
+    <ClInclude Include="data\models\skybox.h" />
+    <ClInclude Include="data\models\snowflake-lowpoly.h" />
+    <ClInclude Include="data\models\snowflake.h" />
+    <ClInclude Include="data\models\stand.h" />
+    <ClInclude Include="data\models\table.h" />
+    <ClInclude Include="data\models\terrain.h" />
+    <ClInclude Include="data\models\tree.h" />
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\Collision.h" />
     <ClInclude Include="headers\Config.h" />
@@ -171,18 +185,6 @@
     <ClInclude Include="headers\Spline.h" />
     <ClInclude Include="headers\Texture.h" />
     <ClInclude Include="headers\TreeGenerator.h" />
-    <ClInclude Include="models\carton.h" />
-    <ClInclude Include="models\chair.h" />
-    <ClInclude Include="models\gift.h" />
-    <ClInclude Include="models\home.h" />
-    <ClInclude Include="models\ornament.h" />
-    <ClInclude Include="models\skybox.h" />
-    <ClInclude Include="models\snowflake-lowpoly.h" />
-    <ClInclude Include="models\snowflake.h" />
-    <ClInclude Include="models\stand.h" />
-    <ClInclude Include="models\table.h" />
-    <ClInclude Include="models\terrain.h" />
-    <ClInclude Include="models\tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config\config.txt" />

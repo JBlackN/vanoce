@@ -118,30 +118,6 @@
     <ClInclude Include="headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\terrain.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\home.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\table.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\chair.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\carton.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\ornament.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\stand.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\tree.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="headers\TreeGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,9 +126,6 @@
     </ClInclude>
     <ClInclude Include="headers\Material.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="models\skybox.h">
-      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="headers\Fog.h">
       <Filter>Header Files</Filter>
@@ -163,20 +136,11 @@
     <ClInclude Include="headers\Hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\gift.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="headers\SnowGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\Spline.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="models\snowflake.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="models\snowflake-lowpoly.h">
-      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="headers\Overlay.h">
       <Filter>Header Files</Filter>
@@ -192,6 +156,48 @@
     </ClInclude>
     <ClInclude Include="headers\Config.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\carton.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\crate.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\gift.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\home.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\chair.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\ornament.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\skybox.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\snowflake.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\snowflake-lowpoly.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\stand.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\table.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\terrain.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\tree.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="data\models\picture.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
