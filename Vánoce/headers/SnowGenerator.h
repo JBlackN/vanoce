@@ -22,7 +22,7 @@ class SnowGenerator
 {
 public:
 	/**
-	 * Structure describes a snowflake.
+	 * Structure describes one snowflake.
 	 */
 	struct Snowflake {
 		Object * snowflake;
