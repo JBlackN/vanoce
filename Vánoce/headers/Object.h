@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Object.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Object class.
+*
+*  File contains Object class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <string>

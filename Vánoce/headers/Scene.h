@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Scene.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Scene class.
+*
+*  File contains Scene class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <list>

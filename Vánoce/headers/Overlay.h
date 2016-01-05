@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Overlay.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Overlay class.
+*
+*  File contains Overlay class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <string>

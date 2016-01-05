@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Model.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Model class.
+*
+*  File contains Model class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <vector>

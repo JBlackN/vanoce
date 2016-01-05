@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Config.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Config class.
+*
+*  File contains Config class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <fstream>

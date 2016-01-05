@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Light.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Light class.
+*
+*  File contains Light class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include "pgr.h"

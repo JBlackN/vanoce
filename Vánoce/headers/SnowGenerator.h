@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       SnowGenerator.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains SnowGenerator class.
+*
+*  File contains SnowGenerator class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <cstdlib>

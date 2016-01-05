@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Camera.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Camera class.
+*
+*  File contains Camera class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <cstdlib>

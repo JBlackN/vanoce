@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Collision.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Collision class.
+*
+*  File contains Collision class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <vector>

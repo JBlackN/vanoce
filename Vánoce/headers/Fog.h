@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Fog.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Fog class.
+*
+*  File contains Fog class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include "pgr.h"

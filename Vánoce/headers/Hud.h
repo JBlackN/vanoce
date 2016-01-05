@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Hud.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Hud class.
+*
+*  File contains Hud class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <string>
@@ -14,7 +25,7 @@ using namespace std;
 #include "Inventory.h"
 
 /**
- * Class describes user interface.
+ * Class describes user interface (heads-up display).
  */
 class Hud
 {

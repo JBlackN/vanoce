@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       Frame.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains Frame class.
+*
+*  File contains Frame class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include "pgr.h"
@@ -6,6 +17,9 @@
 #include "Light.h"
 #include "Fog.h"
 
+/**
+* Class describes animated picture frame.
+*/
 class Frame
 {
 public:

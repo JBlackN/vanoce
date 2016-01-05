@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       main.cpp
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains main function and GLUT callbacks.
+*
+*  Functions in this file create a window using GLUT and register callbacks. Scene is
+*  created and drawn in the window. Callbacks call scene's methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #include <iostream>
 #include <ctime>
 #include <string>

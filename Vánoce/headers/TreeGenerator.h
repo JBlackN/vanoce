@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       TreeGenerator.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains TreeGenerator class.
+*
+*  File contains TreeGenerator class, its variables and methods.
+*
+*/
+//----------------------------------------------------------------------------------------
 #pragma once
 
 #include <cstdlib>
