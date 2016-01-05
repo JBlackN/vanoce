@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       carton.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a carton.
+*
+*  File contains carton's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int cartonNAttribsPerVertex = 8;
 const int cartonNVertices = 69;
 const int cartonNTriangles = 46;

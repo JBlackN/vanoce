@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       snowflake.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a snowflake.
+*
+*  File contains snowflake's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int snowflakeNAttribsPerVertex = 8;
 const int snowflakeNVertices = 1821;
 const int snowflakeNTriangles = 1446;

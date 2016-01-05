@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       home.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a house.
+*
+*  File contains house's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int homeNAttribsPerVertex = 8;
 const int homeNVertices = 177;
 const int homeNTriangles = 120;

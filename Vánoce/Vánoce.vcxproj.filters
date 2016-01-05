@@ -160,9 +160,6 @@
     <ClInclude Include="data\models\carton.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="data\models\crate.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="data\models\gift.h">
       <Filter>Models</Filter>
     </ClInclude>

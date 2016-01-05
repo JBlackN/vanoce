@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       stand.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a Christmas tree stand.
+*
+*  File contains stand's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int standNAttribsPerVertex = 8;
 const int standNVertices = 298;
 const int standNTriangles = 336;

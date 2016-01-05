@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       tree.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a tree.
+*
+*  File contains tree's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int treeNAttribsPerVertex = 8;
 const int treeNVertices = 924;
 const int treeNTriangles = 1205;

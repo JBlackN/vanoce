@@ -161,7 +161,6 @@
   <ItemGroup>
     <ClInclude Include="data\models\carton.h" />
     <ClInclude Include="data\models\chair.h" />
-    <ClInclude Include="data\models\crate.h" />
     <ClInclude Include="data\models\gift.h" />
     <ClInclude Include="data\models\home.h" />
     <ClInclude Include="data\models\ornament.h" />

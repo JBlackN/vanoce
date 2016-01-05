@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       skybox.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a skybox.
+*
+*  File contains skybox's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int skyboxNAttribsPerVertex = 8;
 const int skyboxNVertices = 24;
 const int skyboxNTriangles = 12;

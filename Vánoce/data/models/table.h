@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       table.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a table.
+*
+*  File contains table's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int tableNAttribsPerVertex = 8;
 const int tableNVertices = 117;
 const int tableNTriangles = 76;

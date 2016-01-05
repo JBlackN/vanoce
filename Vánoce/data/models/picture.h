@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       picture.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a picture frame.
+*
+*  File contains picture frame's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int pictureNAttribsPerVertex = 8;
 const int pictureNVertices = 63;
 const int pictureNTriangles = 60;

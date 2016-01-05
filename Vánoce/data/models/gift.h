@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       gift.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a Christmas gift.
+*
+*  File contains gift's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int giftNAttribsPerVertex = 8;
 const int giftNVertices = 88;
 const int giftNTriangles = 56;

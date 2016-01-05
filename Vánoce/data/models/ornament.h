@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       ornament.h
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains model of a Christmas ornament.
+*
+*  File contains ornament's number of attributes per vertex, number of vertices,
+*  number of triangles, array of vertices and array of triangles.
+*
+*/
+//----------------------------------------------------------------------------------------
 const int ornamentNAttribsPerVertex = 8;
 const int ornamentNVertices = 596;
 const int ornamentNTriangles = 960;
