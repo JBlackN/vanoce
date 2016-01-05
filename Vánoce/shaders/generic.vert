@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       generic.vert
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains generic vertex shader.
+*
+*  File contains generic vertex shader.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 vPosition;

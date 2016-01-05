@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       animatedTexture.vert
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains vertex shader for animated texture.
+*
+*  File contains vertex shader for animated texture.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 vPosition;

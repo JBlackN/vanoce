@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       generic.frag
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains generic fragment shader.
+*
+*  File contains overlay fragment shader with two textures.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 fPosition;

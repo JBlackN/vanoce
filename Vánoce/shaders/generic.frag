@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       generic.frag
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains generic fragment shader.
+*
+*  File contains generic fragment shader with lights, materials and fog.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 fPosition;
@@ -13,9 +24,12 @@ uniform sampler2D tex;
 uniform vec3 cameraPosition;
 uniform int lightCount;
 
+/**
+ * Structure describes light and its parameters.
+ */
 uniform struct Light
 {
-	int type;
+	int type; ///< 0 - point, 1 - spot, 2 - directional
 	bool enabled;
 
 	vec3 ambient;
@@ -31,8 +45,11 @@ uniform struct Light
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
-} lights[10];
+} lights[10]; ///< Max. 10 lights in the scene.
 
+/**
+* Structure describes material and its parameters.
+*/
 uniform struct Material
 {
 	vec3 ambient;
@@ -42,6 +59,9 @@ uniform struct Material
 	float shininess;
 } material;
 
+/**
+* Structure describes fog and its parameters.
+*/
 uniform struct Fog
 {
 	bool enabled;
@@ -49,6 +69,14 @@ uniform struct Fog
 	vec4 color;
 } fog;
 
+/**
+ * Function applies modifiers specific to point light and spot light (attenuation, spotlight effect).
+ * @param light Light whose modifiers are to be applied.
+ * @param directionToLight Direction to light vector.
+ * @param lightType Type of light (0 - point light, 1 - spot light).
+ * @param baseColor Color to be modified by light.
+ * @return New color vector.
+ */
 vec3 applyLightModifiers(Light light, vec3 directionToLight, int lightType, vec3 baseColor)
 {
 	float attenuation = 1.0 / (light.constantAttenuation + (length(directionToLight) * light.linearAttenuation)
@@ -65,6 +93,13 @@ vec3 applyLightModifiers(Light light, vec3 directionToLight, int lightType, vec3
 	}
 }
 
+/**
+* Function computes light's color.
+* @param light Light to compute color from.
+* @param normal Normal vector.
+* @param worldPosition Position vector.
+* @return Color vector.
+*/
 vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 {
 	if (!light.enabled) return 0;
@@ -81,6 +116,12 @@ vec3 useLight(Light light, vec3 normal, vec3 worldPosition)
 	return light.type == 2 ? baseColor : applyLightModifiers(light, directionToLight, light.type, baseColor);
 }
 
+/**
+* Function applies fog.
+* @param color Color to be modified by fog.
+* @param worldPosition Position vector.
+* @return New color vector.
+*/
 vec4 useFog(vec4 color, vec3 worldPosition)
 {
 	if (!fog.enabled) return color;

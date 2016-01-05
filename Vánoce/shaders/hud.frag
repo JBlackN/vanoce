@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       hud.frag
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains HUD fragment shader.
+*
+*  File contains HUD fragment shader with two textures and a material.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 fPosition;
@@ -9,6 +20,9 @@ out vec4 color;
 uniform sampler2D bgTex;
 uniform sampler2D fgTex;
 
+/**
+ * Structure describes material and its properties.
+ */
 uniform struct Material
 {
 	vec3 ambient;

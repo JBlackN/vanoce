@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------------------
+/**
+* \file       skybox.frag
+* \author     Petr Schmied
+* \date       2016/01/05
+* \brief      File contains skybox fragment shader.
+*
+*  File contains skybox fragment shader without lights, materials and fog.
+*
+*/
+//----------------------------------------------------------------------------------------
 #version 140
 
 in vec3 fPosition;
