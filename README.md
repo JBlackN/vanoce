@@ -2,7 +2,7 @@
 
 Interactive Christmas minigame with tree decorations and animated snowflakes. Class project.
 
-All 3D models are my own work. See [texture attributions](#texture-attributions) below.
+All 3D models are my own work (using [Blender](https://www.blender.org/)). See [texture attributions](#texture-attributions) below.
 
 ![Vánoce application screencast 2](screencast2.gif)
 ![Vánoce application screencast 1](screencast1.gif)
